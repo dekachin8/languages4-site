@@ -1,0 +1,99 @@
+@charset "utf-8";
+.font-dark {
+    color: #183E4B;
+}
+.Languages4-head {
+    color: #183E4B;
+    font-family: "Neue Kabel";
+    font-weight: 900;
+    font-size: 65px;
+    text-decoration: underline;
+}
+.Languages4-head2 {
+    color: #183E4B;
+    font-family: "Neue Kabel";
+    font-weight: 900;
+    text-decoration: underline;
+}
+.Languages4-head2-white {
+    color: #FFF;
+    font-family: "Neue Kabel";
+    font-weight: 900;
+    text-decoration: underline;
+}
+Languages4-medium {
+    color: #000000;
+    font-weight: 600;
+    font-size: 65px;
+    text-decoration: underline;
+}
+.Languages4-head-nounderline {
+    color: #183E4B;
+    font-family: "Neue Kabel";
+    font-weight: 600;
+    font-size: 30 px;    
+}
+.languages4-medium {
+}
+.font-light {
+    color: #FFFFFF;
+}
+.card-body {
+}
+.card-header-footer {
+    background-color: #C7522A;
+}
+
+body {
+  margin: 0;
+  font-family: 'Bahnschrift', 'Arial', 'Segoe UI', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 2;
+  color: #212529;
+  text-align: left;
+  background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6, p, li {
+  font-family: 'Bahnschrift', 'Arial', 'Segoe UI', sans-serif;
+}
+
+
+
+
+$grid-gutter-width: 30px;
+
+
+@media (max-width: 1800px){
+}
+
+/*Floating Photo card*/
+.profile-card-5 {
+   margin-top: 20px;
+}
+
+.profile-card-5 .btn {
+   border-radius: 6px;
+   border-color: #183E4B        
+   text-transform: uppercase;
+   font-size: 12px;
+   padding: 7px 20px;
+}
+
+.profile-card-5 .card-img-block {
+   width: 91%;
+   margin: 0 auto;
+   position: relative;
+   top: -10px;
+}
+
+.profile-card-5 .card-img-block img {
+   border-radius: 5px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.63);
+}
+}
+.profile-card-5 .btn-primary {
+   background-color: #c7522a;
+   border-color: #c7522a;
+}
