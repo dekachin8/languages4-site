@@ -1,0 +1,36 @@
+---
+// SchemaOrg.astro - Structured data for search engines
+// Helps Google understand your business and show rich snippets
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Languages 4",
+  "legalName": "Languages 4",
+  "url": "https://www.languages4.com",
+  "logo": "https://www.languages4.com/images/logo.png",
+  "description": "Languages 4 partners with Indigenous communities to create custom language learning platforms. We specialize in affordable, fast, community-led language reclamation software.",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-480-304-1378",
+    "contactType": "Customer Service",
+    "email": "info@languages4.com",
+    "areaServed": "US",
+    "availableLanguage": ["English"]
+  },
+  "sameAs": [
+    "https://instagram.com/l4_languages4",
+    "https://linkedin.com/companies/languages4",
+    "https://facebook.com/profile.php?id=100090258725077",
+    "https://twitter.com/l4languages4"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Phoenix",
+    "addressRegion": "AZ",
+    "addressCountry": "US"
+  }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

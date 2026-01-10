@@ -1,0 +1,113 @@
+---
+// ShowcaseLoader.astro - Loads random images with alternating fun animations
+---
+
+<script>
+  // List of ALL random pool images
+  const randomImages = [
+    '/images/showcase/random/antelope_canyon_outside.webp',
+    '/images/showcase/random/couple_with_mobilestudy.webp',
+    '/images/showcase/random/elder_nativewoman_smiling.webp',
+    '/images/showcase/random/grandpa_grandson.webp',
+    '/images/showcase/random/high_tech_mohawk_language.webp',
+    '/images/showcase/random/Laptop+Mobile+software.webp',
+    '/images/showcase/random/Moose_Etymology.webp',
+    '/images/showcase/random/mother_daughter_learning_vidstill.webp',
+    '/images/showcase/random/nez_perce_warrioronhorse600h.webp',
+    '/images/showcase/random/polynesian_patchwork1200.webp',
+    '/images/showcase/random/salmon_stream_1923.webp',
+    '/images/showcase/random/Teacher_holding_tablet_w_software.webp',
+    '/images/showcase/random/two_girls_back_to_school.webp',
+    '/images/showcase/random/Vuntut_Gwitchin_Men_ca1937_800.webp',
+    '/images/showcase/random/wild_ricing.webp'
+  ];
+
+  // Spots that should show random images (the non-hero spots)
+  const randomSpots = [
+    '.row-1-img-1',
+    '.row-1-img-3',
+    '.row-2-img-2',
+    '.row-3-img-1',
+    '.row-3-img-3',
+    '.row-4-img-1',
+    '.row-4-img-2'
+  ];
+
+  // Function to shuffle array
+  function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }
+
+  // Get or initialize page load counter
+  function getLoadCount() {
+    let count = parseInt(localStorage.getItem('l4-load-count') || '0');
+    count++;
+    localStorage.setItem('l4-load-count', count.toString());
+    return count;
+  }
+
+  // Determine which animation to use (alternates every 4th load)
+  function getAnimationType() {
+    const count = getLoadCount();
+    return Math.floor((count - 1) / 4) % 2 === 0 ? 'popIn' : 'slideRotate';
+  }
+
+  // Apply Pop In animation (SLOWER & MORE DRAMATIC)
+  function applyPopInAnimation(element, delay) {
+    element.style.opacity = '0';
+    element.style.transform = 'scale(0.1) rotate(-15deg)';
+    element.style.transition = 'all 1.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+    
+    setTimeout(() => {
+      element.style.opacity = '1';
+      element.style.transform = 'scale(1) rotate(0deg)';
+    }, delay + 300);
+  }
+
+  // Apply Slide & Rotate animation (SLOWER & MORE DRAMATIC)
+  function applySlideRotateAnimation(element, delay) {
+    element.style.opacity = '0';
+    element.style.transform = 'translateX(300px) translateY(-100px) rotate(90deg)';
+    element.style.transition = 'all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    
+    setTimeout(() => {
+      element.style.opacity = '1';
+      element.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
+    }, delay + 300);
+  }
+
+  // Load random images with animation
+  document.addEventListener('DOMContentLoaded', () => {
+    const animationType = getAnimationType();
+    const shuffledImages = shuffleArray(randomImages);
+    
+    randomSpots.forEach((spotClass, index) => {
+      const deviceElement = document.querySelector(spotClass);
+      const imgElement = deviceElement?.querySelector('img');
+      
+      if (deviceElement && imgElement && shuffledImages[index]) {
+        // Calculate stagger delay
+        const delay = index * 300; // Each image delayed by 200ms
+        
+        // Preload image
+        const img = new Image();
+        img.onload = () => {
+          imgElement.src = shuffledImages[index];
+          
+          // Apply animation based on type
+          if (animationType === 'popIn') {
+            applyPopInAnimation(deviceElement, delay);
+          } else {
+            applySlideRotateAnimation(deviceElement, delay);
+          }
+        };
+        img.src = shuffledImages[index];
+      }
+    });
+  });
+</script>

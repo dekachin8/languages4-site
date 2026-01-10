@@ -1,0 +1,6 @@
+# Allow all search engines to crawl everything
+User-agent: *
+Allow: /
+
+# Sitemap location (Astro generates this automatically)
+Sitemap: https://www.languages4.com/sitemap-index.xml
