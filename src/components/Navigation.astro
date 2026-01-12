@@ -161,9 +161,16 @@
     }
   }
 
-  // Open menu
+  // Toggle menu (open if closed, close if open)
   if (menuButton) {
-    menuButton.addEventListener('click', openMenu);
+    menuButton.addEventListener('click', () => {
+      const isOpen = mobileMenu?.style.transform === 'translateX(0px)';
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
   }
 
   // Close menu
@@ -171,15 +178,28 @@
     closeButton.addEventListener('click', closeMenu);
   }
 
-  // Close menu when clicking a link
+  // Close menu when clicking a link (always close, even if same page)
   const menuLinks = document.querySelectorAll('.menu-link');
   menuLinks.forEach(link => {
-    link.addEventListener('click', closeMenu);
+    link.addEventListener('click', (e) => {
+      closeMenu();
+    });
   });
 
   // Close menu on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && mobileMenu?.classList.contains('translate-x-0')) {
+    if (e.key === 'Escape') {
+      const isOpen = mobileMenu?.style.transform === 'translateX(0px)';
+      if (isOpen) {
+        closeMenu();
+      }
+    }
+  });
+
+  // Close menu when clicking outside of it
+  document.addEventListener('click', (e) => {
+    const isOpen = mobileMenu?.style.transform === 'translateX(0px)';
+    if (isOpen && mobileMenu && !mobileMenu.contains(e.target) && e.target !== menuButton && !menuButton?.contains(e.target)) {
       closeMenu();
     }
   });
