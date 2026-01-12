@@ -278,16 +278,16 @@ body {
    ======================================== */
 .device-showcase {
   position: absolute;
-  top: -45%;
-  right: -4%;
-  width: 60%;
-  height: 130%;
+  top: -40%;
+  right: -17%;
+  width: 73%;
+  height: 125%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   gap: 1.5rem;
   padding: 2rem;
-  transform: rotate(28deg);
+  transform: rotate(20deg);
   transform-origin: center center;
   z-index: 1;
 }
