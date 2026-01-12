@@ -1,0 +1,30 @@
+# Proprietary License
+
+Copyright © 2026 Languages 4®. All rights reserved.
+
+This software and associated documentation files (the "Software") are the proprietary property of Languages 4.
+
+## Restrictions
+
+The Software is confidential and proprietary information of Languages 4. You may not:
+- Use, copy, modify, or distribute the Software without explicit written permission
+- Reverse engineer, decompile, or disassemble the Software
+- Remove or alter any proprietary notices or labels on the Software
+
+## Authorized Use
+
+This Software is provided for the exclusive use of Languages 4 and its authorized contractors for the purpose of maintaining and developing the Languages 4 website.
+
+## No Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+
+## Contact
+
+For licensing inquiries, contact: info@languages4.com
+
+---
+
+Languages 4  
+Phoenix, Arizona, United States  
+https://www.languages4.com
