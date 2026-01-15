@@ -1,0 +1,137 @@
+---
+// src/pages/newsletters/archive/[year].astro - Yearly newsletter archive
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { getYears, filterByYear, getMonthsInYear, getMonthName } from '../../../utils/archiveUtils';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Get newsletter articles (not volumes)
+  const allArticles = await getCollection('newsletter-articles', ({ data }) => data.draft !== true);
+  const years = getYears(allArticles);
+  
+  return years.map(year => ({
+    params: { year: String(year) },
+    props: { year }
+  }));
+};
+
+const { year } = Astro.props;
+
+// Get all articles for this year
+const allArticles = await getCollection('newsletter-articles', ({ data }) => data.draft !== true);
+const yearArticles = filterByYear(allArticles, year).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Get available months for navigation
+const months = getMonthsInYear(allArticles, year);
+
+// Get all available years for navigation
+const allYears = getYears(allArticles);
+---
+
+<MainLayout 
+  title={`Newsletter Archive ${year} - Languages 4`}
+  description={`Browse all newsletter articles published in ${year}`}
+>
+
+<!-- Hero Section -->
+<section class="relative min-h-[40vh] flex items-center justify-center overflow-hidden pr-20 md:pr-24 bg-primary-900">
+  <div class="relative z-10 max-w-5xl mx-auto px-8 py-16 text-center">
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-4 leading-tight border-b-4 border-white pb-4 inline-block">
+      Newsletter Archive: {year}
+    </h1>
+    <p class="text-xl md:text-2xl text-white uppercase tracking-wide leading-relaxed font-semibold mt-6">
+      {yearArticles.length} {yearArticles.length === 1 ? 'Article' : 'Articles'} Published in {year}
+    </p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="bg-neutral-50 py-12 pr-20 md:pr-24">
+  <div class="max-w-7xl mx-auto px-8">
+    
+    <!-- Archive Navigation -->
+    <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200 mb-8">
+      <div class="flex flex-col md:flex-row gap-6">
+        
+        <!-- Year Navigation -->
+        <div class="flex-1">
+          <h2 class="font-display text-xl font-bold text-primary-900 mb-4">Browse by Year</h2>
+          <div class="flex flex-wrap gap-2">
+            {allYears.map(y => (
+              <a
+                href={`/newsletters/archive/${y}`}
+                class:list={[
+                  "px-4 py-2 rounded-lg font-semibold transition-colors",
+                  y === year
+                    ? "bg-accent-600 text-white"
+                    : "bg-neutral-100 text-neutral-700 hover:bg-accent-100 hover:text-accent-700"
+                ]}
+              >
+                {y}
+              </a>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Month Navigation -->
+        {months.length > 0 && (
+          <div class="flex-1">
+            <h2 class="font-display text-xl font-bold text-primary-900 mb-4">Browse by Month</h2>
+            <div class="flex flex-wrap gap-2">
+              {months.map(m => (
+                <a
+                  href={`/newsletters/archive/${year}/${String(m).padStart(2, '0')}`}
+                  class="px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-accent-100 hover:text-accent-700 transition-colors font-semibold"
+                >
+                  {getMonthName(m)}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      
+      <!-- Back to All Newsletters -->
+      <div class="mt-6 pt-6 border-t border-neutral-200">
+        <a 
+          href="/newsletters"
+          class="inline-flex items-center text-accent-600 font-semibold hover:text-accent-700 transition-colors"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back to All Newsletters
+        </a>
+      </div>
+    </div>
+    
+    <!-- Articles Grid -->
+    {yearArticles.length > 0 ? (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {yearArticles.map(article => (
+          <ArticleCard
+            title={article.data.title}
+            description={article.data.description}
+            pubDate={article.data.pubDate}
+            heroImage={article.data.heroImage}
+            slug={`${article.data.volume}/${article.slug}`}
+            author={article.data.author}
+            tags={article.data.tags}
+            collection="newsletters"
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="bg-white rounded-lg p-12 text-center shadow-md">
+        <p class="text-neutral-600 text-lg">No newsletter articles published in {year}</p>
+      </div>
+    )}
+    
+  </div>
+</section>
+
+</MainLayout>

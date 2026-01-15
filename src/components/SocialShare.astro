@@ -1,143 +1,129 @@
 ---
-// SocialShare.astro - Social sharing buttons for articles
+// SocialShare.astro - Social sharing buttons matching homepage icon style
 interface Props {
-  title: string;
-  url: string;
+  title?: string;
   description?: string;
 }
 
-const { title, url, description = '' } = Astro.props;
+const { title, description } = Astro.props;
 
-// Generate share URLs
-const encodedUrl = encodeURIComponent(url);
-const encodedTitle = encodeURIComponent(title);
-const encodedDescription = encodeURIComponent(description);
+// Get current URL
+const currentUrl = Astro.url.href;
 
-const shareLinks = {
-  twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
-  facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-  linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-  whatsapp: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
-  sms: `sms:?&body=${encodedTitle}%20${encodedUrl}`,
-  email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
-};
+// Encode for URLs
+const encodedUrl = encodeURIComponent(currentUrl);
+const encodedTitle = encodeURIComponent(title || 'Languages 4');
+const encodedDescription = encodeURIComponent(description || 'Indigenous language reclamation');
+
+// Social share URLs
+const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+const twitterUrl = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+const redditUrl = `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
+const emailUrl = `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`;
+const whatsappUrl = `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`;
+const smsUrl = `sms:?body=${encodedTitle}%20${encodedUrl}`;
 ---
 
-<div class="flex items-center gap-3 py-6 border-t border-b border-neutral-200 my-8">
-  <span class="text-sm font-semibold text-neutral-600 uppercase tracking-wide">Share:</span>
-  
-  <!-- Twitter -->
-  <a 
-    href={shareLinks.twitter}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#1DA1F2] text-white hover:bg-[#1a8cd8] transition-colors duration-brand"
-    aria-label="Share on Twitter"
-  >
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-    </svg>
-  </a>
+<div class="flex items-center gap-4 pt-4 border-t border-neutral-300">
+  <span class="text-sm text-neutral-600 font-semibold">Share this article:</span>
   
   <!-- Facebook -->
   <a 
-    href={shareLinks.facebook}
+    href={facebookUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] text-white hover:bg-[#166fe5] transition-colors duration-brand"
     aria-label="Share on Facebook"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
   >
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+    </svg>
+  </a>
+  
+  <!-- Twitter -->
+  <a 
+    href={twitterUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on Twitter"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
+  >
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
     </svg>
   </a>
   
   <!-- LinkedIn -->
   <a 
-    href={shareLinks.linkedin}
+    href={linkedinUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#0A66C2] text-white hover:bg-[#095196] transition-colors duration-brand"
     aria-label="Share on LinkedIn"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
   >
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
     </svg>
   </a>
   
-  <!-- WhatsApp -->
+  <!-- Reddit -->
   <a 
-    href={shareLinks.whatsapp}
+    href={redditUrl}
     target="_blank"
     rel="noopener noreferrer"
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:bg-[#20BA5A] transition-colors duration-brand"
-    aria-label="Share on WhatsApp"
+    aria-label="Share on Reddit"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
   >
-    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-    </svg>
-  </a>
-  
-  <!-- SMS/Text -->
-  <a 
-    href={shareLinks.sms}
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-[#00A859] text-white hover:bg-[#008C4A] transition-colors duration-brand"
-    aria-label="Share via Text Message"
-  >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M24 11.779c0-1.459-1.192-2.645-2.657-2.645-.715 0-1.363.286-1.84.746-1.81-1.191-4.259-1.949-6.971-2.046l1.483-4.669 4.016.941-.006.058c0 1.193.975 2.163 2.174 2.163 1.198 0 2.172-.97 2.172-2.163s-.975-2.164-2.172-2.164c-.92 0-1.704.574-2.021 1.379l-4.329-1.015c-.189-.046-.381.063-.44.249l-1.654 5.207c-2.838.034-5.409.798-7.3 2.025-.474-.438-1.103-.712-1.799-.712-1.465 0-2.656 1.187-2.656 2.646 0 .97.533 1.811 1.317 2.271-.052.282-.086.567-.086.857 0 3.911 4.808 7.093 10.719 7.093s10.72-3.182 10.72-7.093c0-.274-.029-.544-.075-.81.832-.447 1.405-1.312 1.405-2.318zm-17.224 1.816c0-.868.71-1.575 1.582-1.575.872 0 1.581.707 1.581 1.575s-.709 1.574-1.581 1.574-1.582-.706-1.582-1.574zm9.061 4.669c-.797.793-2.048 1.179-3.824 1.179l-.013-.003-.013.003c-1.777 0-3.028-.386-3.824-1.179-.145-.144-.145-.379 0-.523.145-.145.381-.145.526 0 .65.647 1.729.961 3.298.961l.013.003.013-.003c1.569 0 2.648-.315 3.298-.962.145-.145.381-.144.526 0 .145.145.145.379 0 .524zm-.189-3.095c-.872 0-1.581-.706-1.581-1.574 0-.868.709-1.575 1.581-1.575s1.581.707 1.581 1.575-.709 1.574-1.581 1.574z"/>
     </svg>
   </a>
   
   <!-- Email -->
   <a 
-    href={shareLinks.email}
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-600 text-white hover:bg-neutral-700 transition-colors duration-brand"
+    href={emailUrl}
     aria-label="Share via Email"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
   >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/>
+    </svg>
+  </a>
+  
+  <!-- WhatsApp -->
+  <a 
+    href={whatsappUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Share on WhatsApp"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
+  >
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.130-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+  </a>
+  
+  <!-- SMS -->
+  <a 
+    href={smsUrl}
+    aria-label="Share via SMS"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110"
+  >
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 0c-6.627 0-12 4.975-12 11.111 0 3.497 1.745 6.616 4.472 8.652v4.237l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111 0-6.136-5.373-11.111-12-11.111zm1 14h-2v-2h2v2zm0-3h-2v-6h2v6z"/>
     </svg>
   </a>
   
   <!-- Copy Link -->
   <button 
-    id="copy-link-btn"
-    data-url={url}
-    class="w-10 h-10 flex items-center justify-center rounded-full bg-primary-900 text-white hover:bg-primary-800 transition-colors duration-brand"
-    aria-label="Copy link"
-    title="Copy link to clipboard"
+    type="button"
+    onclick="navigator.clipboard.writeText(window.location.href).then(() => { this.querySelector('svg').style.fill = '#C7522A'; setTimeout(() => { this.querySelector('svg').style.fill = ''; }, 2000); })"
+    aria-label="Copy link to clipboard"
+    class="text-primary-900 transition-all duration-brand hover:text-accent-600 hover:scale-110 cursor-pointer"
   >
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M6.188 8.719c.439-.439.926-.801 1.444-1.087 2.887-1.591 6.589-.745 8.445 2.069l-2.246 2.245c-.644-1.469-2.243-2.305-3.834-1.949-.599.134-1.168.433-1.633.898l-4.304 4.306c-1.307 1.307-1.307 3.433 0 4.74 1.307 1.307 3.433 1.307 4.74 0l1.327-1.327c1.207.479 2.501.67 3.779.575l-2.929 2.929c-2.511 2.511-6.582 2.511-9.093 0s-2.511-6.582 0-9.093l4.304-4.306zm6.836-6.836l-2.929 2.929c1.277-.096 2.572.096 3.779.574l1.326-1.326c1.307-1.307 3.433-1.307 4.74 0 1.307 1.307 1.307 3.433 0 4.74l-4.305 4.305c-1.311 1.311-3.44 1.3-4.74 0-.303-.303-.564-.68-.727-1.051l-2.246 2.245c.236.358.481.667.796.982.812.812 1.846 1.417 3.036 1.704 1.542.371 3.194.166 4.613-.617.518-.286 1.005-.648 1.444-1.087l4.304-4.305c2.512-2.511 2.512-6.582.001-9.093-2.511-2.51-6.581-2.51-9.092 0z"/>
     </svg>
   </button>
-  
-  <!-- Copied notification -->
-  <span id="copy-notification" class="text-sm text-accent-600 font-semibold opacity-0 transition-opacity duration-300">
-    Copied!
-  </span>
 </div>
-
-<script>
-  // Copy link functionality
-  const copyBtn = document.getElementById('copy-link-btn');
-  const notification = document.getElementById('copy-notification');
-  
-  if (copyBtn && notification) {
-    copyBtn.addEventListener('click', async () => {
-      const url = copyBtn.getAttribute('data-url');
-      if (url) {
-        try {
-          await navigator.clipboard.writeText(url);
-          notification.style.opacity = '1';
-          setTimeout(() => {
-            notification.style.opacity = '0';
-          }, 2000);
-        } catch (err) {
-          console.error('Failed to copy:', err);
-        }
-      }
-    });
-  }
-</script>

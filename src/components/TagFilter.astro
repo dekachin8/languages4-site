@@ -1,0 +1,92 @@
+---
+// TagFilter.astro - Tag filtering UI for collection pages
+interface Props {
+  tags: Array<{ tag: string; count: number }>;
+  currentTag: string | null;
+  collection: 'whatarel4' | 'signature-collections' | 'ancestors';
+  showCounts?: boolean;
+}
+
+const { tags, currentTag, collection, showCounts = true } = Astro.props;
+
+// Get base URL for the collection
+const baseUrl = `/${collection}`;
+---
+
+<div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200 mb-8">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-display text-2xl font-bold text-primary-900">
+      Filter by Tag
+    </h2>
+    
+    <!-- Clear Filter Button (only show if tag is active) -->
+    {currentTag && (
+      <a 
+        href={baseUrl}
+        class="text-sm font-semibold text-accent-600 hover:text-accent-700 transition-colors flex items-center gap-1"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        Clear Filter
+      </a>
+    )}
+  </div>
+  
+  <!-- Currently Filtered Tag -->
+  {currentTag && (
+    <div class="mb-4 pb-4 border-b border-neutral-200">
+      <p class="text-sm text-neutral-600 mb-2">Showing articles tagged:</p>
+      <span class="inline-flex items-center gap-2 px-4 py-2 bg-accent-600 text-white rounded-md font-semibold text-sm uppercase">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+        </svg>
+        {currentTag}
+      </span>
+    </div>
+  )}
+  
+  <!-- Tag Cloud -->
+  <div class="flex flex-wrap gap-2">
+    {tags.map(({ tag, count }) => {
+      const isActive = currentTag?.toLowerCase() === tag.toLowerCase();
+      const tagUrl = `${baseUrl}?tag=${encodeURIComponent(tag)}`;
+      
+      return (
+        <a 
+          href={tagUrl}
+          class:list={[
+            "px-4 py-2 rounded-md font-semibold text-sm uppercase tracking-wide transition-all duration-brand",
+            isActive 
+              ? "bg-accent-600 text-white border-2 border-accent-600" 
+              : "border-2 border-neutral-300 text-neutral-700 hover:border-accent-600 hover:text-accent-600"
+          ]}
+        >
+          {tag}
+          {showCounts && (
+            <span class:list={[
+              "ml-1.5 text-xs font-normal",
+              isActive ? "text-white/80" : "text-neutral-500"
+            ]}>
+              ({count})
+            </span>
+          )}
+        </a>
+      );
+    })}
+  </div>
+  
+  <!-- No Tags Message -->
+  {tags.length === 0 && (
+    <p class="text-neutral-500 text-center py-4">
+      No tags available yet.
+    </p>
+  )}
+</div>
+
+<style>
+  /* Smooth tag transitions */
+  a {
+    will-change: border-color, color;
+  }
+</style>

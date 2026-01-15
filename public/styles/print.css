@@ -1,0 +1,368 @@
+/* print.css - Print-optimized styles for articles */
+
+@media print {
+  /* ============================================
+     GLOBAL PRINT SETTINGS
+     ============================================ */
+
+  * {
+    /* Force black text for better printing */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    /* Letter size with margins */
+    size: letter;
+    margin: 0.75in;
+  }
+
+  body {
+    /* Remove background colors */
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     HIDE NON-ESSENTIAL ELEMENTS
+     ============================================ */
+
+  /* Hide navigation */
+  nav,
+  [role="navigation"],
+  .navigation,
+  header nav {
+    display: none !important;
+  }
+
+  /* Hide footer */
+  footer,
+  [role="contentinfo"],
+  .footer {
+    display: none !important;
+  }
+
+  /* Hide sidebar */
+  aside,
+  [role="complementary"],
+  .sidebar {
+    display: none !important;
+  }
+
+  /* Hide interactive elements */
+  button,
+  .social-share,
+  .tag-filter,
+  .related-posts,
+  .newsletter-signup,
+  .comments,
+  .back-button,
+  a[href^="#"] {
+    display: none !important;
+  }
+
+  /* Hide hero images (optional - saves ink) */
+  .hero-section,
+  section[class*="hero"],
+  [class*="banner"] {
+    display: none !important;
+  }
+
+  /* ============================================
+     ARTICLE CONTENT
+     ============================================ */
+
+  /* Make article full width */
+  article,
+  main,
+  [role="main"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+  }
+
+  /* Article title */
+  h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  /* Article metadata */
+  time,
+  .article-meta,
+  .author,
+  .pubdate {
+    font-size: 10pt;
+    color: #666 !important;
+    margin-bottom: 1em;
+  }
+
+  /* Article description/excerpt */
+  .description,
+  [class*="excerpt"],
+  article > p:first-of-type {
+    font-size: 11pt;
+    font-style: italic;
+    margin-bottom: 1.5em;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1em;
+  }
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  h2 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+    page-break-after: avoid;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.3em;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin-bottom: 1em;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* ============================================
+     LINKS
+     ============================================ */
+
+  /* Show URLs for external links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* Don't show URLs for internal links */
+  a[href^="/"]::after,
+  a[href^="#"]::after {
+    content: "";
+  }
+
+  /* Remove link styling */
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  /* ============================================
+     LISTS
+     ============================================ */
+
+  ul,
+  ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+
+  /* ============================================
+     IMAGES
+     ============================================ */
+
+  /* Optimize images for print */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+    border: 1px solid #ccc;
+    margin: 1em 0;
+  }
+
+  figure {
+    page-break-inside: avoid;
+    margin: 1em 0;
+  }
+
+  figcaption {
+    font-size: 10pt;
+    font-style: italic;
+    color: #666;
+    margin-top: 0.5em;
+  }
+
+  /* ============================================
+     BLOCKQUOTES
+     ============================================ */
+
+  blockquote {
+    border-left: 3px solid #333;
+    padding-left: 1em;
+    margin: 1.5em 0;
+    font-style: italic;
+    page-break-inside: avoid;
+  }
+
+  /* ============================================
+     CODE BLOCKS
+     ============================================ */
+
+  code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10pt;
+    background: #f5f5f5 !important;
+    padding: 0.2em 0.4em;
+    border: 1px solid #ddd;
+  }
+
+  pre {
+    background: #f5f5f5 !important;
+    border: 1px solid #ddd;
+    padding: 1em;
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    page-break-inside: avoid;
+    font-size: 9pt;
+    line-height: 1.4;
+  }
+
+  pre code {
+    background: none !important;
+    border: none;
+    padding: 0;
+  }
+
+  /* ============================================
+     TABLES
+     ============================================ */
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5em 0;
+    page-break-inside: avoid;
+    font-size: 10pt;
+  }
+
+  th,
+  td {
+    border: 1px solid #333;
+    padding: 0.5em;
+    text-align: left;
+  }
+
+  th {
+    background: #f0f0f0 !important;
+    font-weight: bold;
+  }
+
+  /* ============================================
+     PAGE BREAKS
+     ============================================ */
+
+  /* Avoid breaks after headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  /* Avoid breaks inside these elements */
+  blockquote,
+  pre,
+  table,
+  figure,
+  img {
+    page-break-inside: avoid;
+  }
+
+  /* ============================================
+     PRINT-SPECIFIC CONTENT
+     ============================================ */
+
+  /* Add page URL to footer of printed page */
+  @page {
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+    }
+  }
+
+  /* Article URL (optional) */
+  .print-url::after {
+    content: "URL: " attr(data-url);
+    display: block;
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #ccc;
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* ============================================
+     GRID FIXES
+     ============================================ */
+
+  /* Remove grid layouts */
+  .grid,
+  [class*="grid-"],
+  [style*="display: grid"],
+  [style*="display:grid"] {
+    display: block !important;
+  }
+
+  /* Remove flex layouts */
+  .flex,
+  [class*="flex-"],
+  [style*="display: flex"],
+  [style*="display:flex"] {
+    display: block !important;
+  }
+
+  /* ============================================
+     TAILWIND/UTILITY OVERRIDES
+     ============================================ */
+
+  /* Remove all shadows */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Remove transforms */
+  * {
+    transform: none !important;
+  }
+
+  /* Force visible */
+  article *,
+  main * {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}

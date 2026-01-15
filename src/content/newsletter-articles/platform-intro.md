@@ -1,7 +1,9 @@
 ---
+volume: "volume-1"
 volumeNumber: 1
 title: "Meet Languages 4: Technology for Language Reclamation"
 description: "An introduction to Languages 4's custom software platform designed specifically for Indigenous communities working to reclaim their ancestral languages."
+pubDate: 2024-01-14
 section: "Feature"
 sectionOrder: 1
 heroImage: "/images/newsletters/articles/platform-overview.webp"

@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import SocialShare from '../../components/SocialShare.astro';
 import ReadingTime from '../../components/ReadingTime.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
@@ -128,6 +129,14 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
             prose-img:rounded-xl prose-img:shadow-lg
           ">
             <Content />
+          </div>
+          
+          <!-- Social Sharing -->
+          <div class="mt-12 pt-8 border-t border-neutral-200">
+            <SocialShare 
+              title={post.data.title}
+              description={post.data.description}
+            />
           </div>
           
           {post.data.tags.length > 0 && (

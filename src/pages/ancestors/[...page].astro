@@ -1,32 +1,56 @@
 ---
-// src/pages/ancestors/[...page].astro - Paginated ancestors listing
-import { getCollection } from 'astro:content';
+// src/pages/ancestors/[...page].astro - Ancestor profiles with pagination and tag filtering
 import type { GetStaticPaths, Page } from 'astro';
 import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
-import ArticleHero from '../../components/ArticleHero.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { filterByTag, getAllTagsWithCounts } from '../../utils/tagFilter';
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
-  const allPosts = await getCollection('ancestors', ({ data }) => data.draft !== true);
-  const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  // Get all published profiles
+  const allProfiles = await getCollection('ancestors', ({ data }) => {
+    return data.draft !== true;
+  });
   
-  // 12 posts per page
-  return paginate(sortedPosts, { pageSize: 12 });
+  // Sort by publication date (newest first)
+  const sortedProfiles = allProfiles.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  
+  // Get all tags with counts
+  const allTagsWithCounts = getAllTagsWithCounts(sortedProfiles);
+  
+  // Paginate all profiles (filtering happens client-side via URL params)
+  return paginate(sortedProfiles, {
+    pageSize: 12,
+    props: {
+      allTags: allTagsWithCounts
+    }
+  });
 };
 
 type Props = {
   page: Page<CollectionEntry<'ancestors'>>;
+  allTags: Array<{ tag: string; count: number }>;
 };
 
-const { page } = Astro.props;
+const { page, allTags } = Astro.props;
 
-// Get popular posts for sidebar (from all posts, not just current page)
-const allPosts = await getCollection('ancestors', ({ data }) => data.draft !== true);
-const popularPosts = allPosts
+// Get tag from URL query parameter
+const activeTag = Astro.url.searchParams.get('tag');
+
+// Filter profiles by active tag if present
+const displayProfiles = activeTag 
+  ? filterByTag(page.data, activeTag)
+  : page.data;
+
+// Get popular profiles for sidebar
+const allProfilesForSidebar = await getCollection('ancestors', ({ data }) => data.draft !== true);
+const popularProfiles = allProfilesForSidebar
   .filter(post => post.data.featured)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3)
   .map(post => ({
     title: post.data.title,
@@ -35,112 +59,148 @@ const popularPosts = allPosts
     collection: 'ancestors' as const,
   }));
 
-// Get all unique tags
-const allTags = [...new Set(allPosts.flatMap(post => post.data.tags))].sort();
+const pageTitle = activeTag 
+  ? `Indigenous Ancestors - ${activeTag}` 
+  : 'Indigenous Ancestors';
 
-// Get all unique tribes for filtering context
-const allTribes = [...new Set(allPosts.map(post => post.data.tribe).filter(Boolean))].sort();
+const pageDescription = activeTag
+  ? `Profiles of Indigenous leaders and language keepers - ${activeTag}`
+  : 'Honoring Indigenous leaders, language keepers, and cultural champions who shaped language reclamation';
 ---
 
-<MainLayout 
-  title="Languages 4 Generations | Indigenous Ancestors"
-  description="Honoring Indigenous leaders, cultural champions, and ancestors who shaped language preservation and cultural resilience across generations."
->
+<MainLayout title={pageTitle} description={pageDescription}>
 
 <!-- Hero Section -->
-<ArticleHero 
-  title="Languages 4 Generations | Indigenous Ancestors"
-  subtitle="Potsanaquahip (Buffalo Hump) - Comanche Chief of Resilience and Resistance"
-  backgroundImage="/images/ancestors/ancestors-hero.webp"
-  backgroundAlt="Traditional Indigenous dwelling with cultural landscape"
-/>
+<section class="relative min-h-[40vh] flex items-center justify-center overflow-hidden pr-20 md:pr-24">
+  <div class="absolute inset-0 z-0">
+    <img 
+      src="/images/ancestors/ancestors-hero.webp" 
+      alt="Indigenous Ancestors"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-primary-900/70"></div>
+  </div>
+  
+  <div class="relative z-10 max-w-5xl mx-auto px-8 py-16 text-center">
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-4 leading-tight border-b-4 border-white pb-4 inline-block">
+      Languages 4 Generations | Indigenous Ancestors
+    </h1>
+    <p class="text-xl md:text-2xl text-white uppercase tracking-wide leading-relaxed font-semibold mt-6">
+      Honoring Indigenous Leaders and Language Keepers
+    </p>
+    {activeTag && (
+      <p class="text-lg text-accent-400 mt-4 font-semibold">
+        Filtered by: {activeTag}
+      </p>
+    )}
+  </div>
+</section>
 
-<!-- Main Content Area -->
+<!-- Main Content -->
 <section class="bg-neutral-50 py-12 pr-20 md:pr-24">
   <div class="max-w-7xl mx-auto px-8">
     
+    <!-- Info Box -->
+    <div class="bg-white rounded-lg p-6 shadow-md border-l-4 border-accent-600 mb-8">
+      <h2 class="font-display text-2xl font-bold text-primary-900 mb-2">Welcome to Indigenous Ancestors</h2>
+      <p class="text-neutral-700 leading-relaxed">
+        {activeTag 
+          ? `Discover profiles of Indigenous leaders related to ${activeTag}. Click "Clear Filter" to see all profiles.`
+          : 'Explore profiles of Indigenous leaders, language keepers, and cultural champions who have shaped language reclamation movements.'
+        }
+      </p>
+    </div>
+    
     <div class="grid lg:grid-cols-3 gap-12">
       
-      <!-- Main Article Grid (2 columns) -->
+      <!-- Main Content (2 columns) -->
       <div class="lg:col-span-2">
         
-        <!-- Ancestors Info Box -->
-        <div class="bg-accent-50 border-l-4 border-accent-600 p-6 rounded-lg mb-8">
-          <h2 class="text-xl font-display font-bold text-primary-900 mb-3">
-            🪶 Honoring Our Ancestors
-          </h2>
-          <p class="text-neutral-700 mb-3">
-            These profiles honor Indigenous leaders, cultural champions, and visionaries whose wisdom, resistance, and dedication to their people continue to inspire language reclamation and cultural resilience today.
-          </p>
-          {allTribes.length > 0 && (
-            <div>
-              <p class="text-sm font-semibold text-neutral-600 mb-2">Nations Featured:</p>
-              <div class="flex flex-wrap gap-2">
-                {allTribes.map(tribe => (
-                  <span class="inline-block bg-white text-accent-700 text-sm font-semibold px-3 py-1 rounded-full border border-accent-200">
-                    {tribe}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        <!-- Tag Filter -->
+        <TagFilter 
+          tags={allTags}
+          currentTag={activeTag}
+          collection="ancestors"
+          showCounts={true}
+        />
         
-        <!-- Articles Grid -->
-        <div class="grid md:grid-cols-2 gap-6 mb-12">
-          {page.data.map(post => (
-            <ArticleCard 
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              heroImage={post.data.heroImage}
-              heroImageAlt={post.data.heroImageAlt}
-              slug={post.slug}
-              collection="ancestors"
-              tags={post.data.tags}
-              ancestorName={post.data.ancestorName}
-              tribe={post.data.tribe}
-              lifespan={post.data.lifespan}
-            />
-          ))}
-        </div>
+        <!-- Results Count -->
+        {activeTag && (
+          <div class="mb-6 text-neutral-600">
+            <p class="font-semibold">
+              {displayProfiles.length} {displayProfiles.length === 1 ? 'profile' : 'profiles'} found
+            </p>
+          </div>
+        )}
         
-        <!-- Pagination Controls -->
-        {(page.lastPage > 1) && (
-          <nav class="flex justify-center items-center gap-4 flex-wrap" aria-label="Pagination">
-            
-            {/* Previous Button */}
+        <!-- Profiles Grid -->
+        {displayProfiles.length > 0 ? (
+          <div class="grid md:grid-cols-2 gap-8 mb-12">
+            {displayProfiles.map((post) => (
+              <ArticleCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                heroImage={post.data.heroImage}
+                slug={post.slug}
+                author={post.data.author}
+                tags={post.data.tags}
+                collection="ancestors"
+                ancestorName={post.data.ancestorName}
+                tribe={post.data.tribe}
+                lifespan={post.data.lifespan}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="bg-white rounded-lg p-12 text-center shadow-md">
+            <svg class="w-16 h-16 mx-auto text-neutral-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <h3 class="font-display text-2xl font-bold text-neutral-700 mb-2">No Profiles Found</h3>
+            <p class="text-neutral-600 mb-6">
+              No profiles match the tag "{activeTag}". Try a different tag or clear the filter.
+            </p>
+            <a 
+              href="/ancestors"
+              class="inline-block px-6 py-3 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition-colors"
+            >
+              View All Profiles
+            </a>
+          </div>
+        )}
+        
+        <!-- Pagination (only show if we have results and more than one page) -->
+        {!activeTag && displayProfiles.length > 0 && (page.lastPage > 1) && (
+          <nav class="flex justify-center items-center gap-2" aria-label="Pagination">
             {page.url.prev && (
               <a 
                 href={page.url.prev}
-                class="px-6 py-3 bg-primary-900 text-white font-semibold rounded-lg hover:bg-primary-800 transition-colors duration-brand"
+                class="px-4 py-2 bg-white border-2 border-neutral-300 text-neutral-700 rounded-lg hover:border-accent-600 hover:text-accent-600 transition-colors font-semibold"
               >
                 ← Previous
               </a>
             )}
             
-            {/* Page Numbers */}
-            <div class="flex items-center gap-2">
-              {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => (
-                <a
-                  href={pageNum === 1 ? '/ancestors' : `/ancestors/${pageNum}`}
-                  class={`w-10 h-10 flex items-center justify-center rounded-lg font-semibold transition-colors duration-brand ${
-                    pageNum === page.currentPage
-                      ? 'bg-accent-600 text-white'
-                      : 'bg-white text-primary-900 hover:bg-accent-100 border border-neutral-300'
-                  }`}
-                  aria-current={pageNum === page.currentPage ? 'page' : undefined}
-                >
-                  {pageNum}
-                </a>
-              ))}
-            </div>
+            {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => (
+              <a
+                href={pageNum === 1 ? '/ancestors' : `/ancestors/${pageNum}`}
+                class:list={[
+                  "px-4 py-2 rounded-lg font-semibold transition-colors",
+                  pageNum === page.currentPage
+                    ? "bg-accent-600 text-white"
+                    : "bg-white border-2 border-neutral-300 text-neutral-700 hover:border-accent-600 hover:text-accent-600"
+                ]}
+                aria-current={pageNum === page.currentPage ? 'page' : undefined}
+              >
+                {pageNum}
+              </a>
+            ))}
             
-            {/* Next Button */}
             {page.url.next && (
               <a 
                 href={page.url.next}
-                class="px-6 py-3 bg-primary-900 text-white font-semibold rounded-lg hover:bg-primary-800 transition-colors duration-brand"
+                class="px-4 py-2 bg-white border-2 border-neutral-300 text-neutral-700 rounded-lg hover:border-accent-600 hover:text-accent-600 transition-colors font-semibold"
               >
                 Next →
               </a>
@@ -148,20 +208,13 @@ const allTribes = [...new Set(allPosts.map(post => post.data.tribe).filter(Boole
           </nav>
         )}
         
-        <!-- Empty State -->
-        {page.data.length === 0 && (
-          <div class="text-center py-16">
-            <p class="text-xl text-neutral-600">No profiles yet. Check back soon!</p>
-          </div>
-        )}
-        
       </div>
       
       <!-- Sidebar (1 column) -->
       <div class="lg:col-span-1">
         <Sidebar 
-          popularArticles={popularPosts}
-          tags={allTags}
+          popularArticles={popularProfiles}
+          tags={allTags.slice(0, 15).map(t => t.tag)}
           collection="ancestors"
         />
       </div>

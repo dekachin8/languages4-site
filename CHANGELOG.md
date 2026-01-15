@@ -8,20 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Planned - Phase 3 (Remaining)
+### Planned - Phase 4 (Future Enhancements)
 
-- Tag/Category filtering system
-- Archive pages (by date)
-- Print styles for articles
-- Newsletter CTAs
+- Newsletter CTAs throughout site
 - Author system (if multiple authors needed)
 - Language tag system (unique to mission)
+- Content migration of 50+ blog posts
+- Print styles refinement (hide "Related Articles" section)
 
 ---
 
-## [2026-01-14] - Phase 3 Started: Search Functionality Complete
+## [2026-01-15] - Phase 3 Complete: Discovery & User Experience Features ✅
 
-### Phase 3: Discovery Features (1 of 4) ✅
+### Phase 3: Discovery Features (5 of 5) ✅
 
 #### Added - Search Functionality (Pagefind)
 
@@ -42,28 +41,128 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - ~10KB bundle size
   - Zero backend required
   - Fully static/client-side
-- **Performance:** Indexes all pages during build, searches 12 pages with 454 words in 0.033 seconds
+- **Performance:** Indexes all pages during build, searches pages in ~0.033 seconds
 
-#### Changed - Navigation Menu
+#### Added - Tag Filtering System
 
-- Added search link as 2nd menu item (below home icon)
+- **Tag Filtering** for all 3 main collections (whatarel4, signature-collections, ancestors)
+- Created `/src/components/TagFilter.astro` - Reusable tag filtering component
+- Modified `/src/pages/whatarel4/[...page].astro` - Added tag filtering
+- Modified `/src/pages/signature-collections/[...page].astro` - Added tag filtering
+- Modified `/src/pages/ancestors/[...page].astro` - Added tag filtering
+- **Features:**
+  - URL-based filtering (e.g., `/whatarel4?tag=indigenous`)
+  - "All Tags" button to clear filters
+  - Active tag highlighting
+  - Tag counts displayed
+  - Alphabetically sorted tags
+  - Responsive grid layout
+  - Maintains pagination when filtering
+
+#### Added - Enhanced Social Sharing
+
+- **Enhanced Social Media Integration** across site
+- Updated `/src/components/SocialShare.astro` - Now includes 8 sharing options
+- Added TikTok to homepage hero social section
+- Added TikTok to side navigation bar
+- **Sharing Options:**
+  - Facebook
+  - Twitter
+  - LinkedIn
+  - Reddit ← NEW
+  - Email
+  - WhatsApp
+  - SMS
+  - Copy Link ← NEW (with visual feedback)
+- **Follow Options (Homepage & Navigation):**
+  - Instagram
+  - LinkedIn
+  - Facebook
+  - Twitter
+  - TikTok ← NEW
+- **Styling:**
+  - Icon-only design (consistent with homepage)
+  - Horizontal layout with proper spacing
+  - Color: teal (`text-primary-900`)
+  - Hover: orange (`hover:text-accent-600`) with scale effect
+  - 20x20 icon size
+  - "Share this article:" / "Follow Us:" labels
+
+#### Added - Archive Pages
+
+- **Date-Based Archives** for whatarel4 and newsletters
+- Created `/src/utils/archiveUtils.ts` - Archive utility functions
+- Created `/src/pages/whatarel4/archive/[year].astro` - Yearly archives
+- Created `/src/pages/whatarel4/archive/[year]/[month].astro` - Monthly archives
+- Created `/src/pages/newsletters/archive/[year].astro` - Newsletter yearly archives
+- **Features:**
+  - Browse posts by year (e.g., `/whatarel4/archive/2024`)
+  - Browse posts by month (e.g., `/whatarel4/archive/2024/06`)
+  - Year navigation buttons
+  - Month navigation buttons
+  - Breadcrumb navigation on monthly pages
+  - Article counts per year/month
+  - Responsive article grid (3 columns)
+  - Back navigation links
+- **Utility Functions:**
+  - Group posts by year
+  - Group posts by year/month
+  - Filter posts by date
+  - Get available years and months
+  - Month name conversion
+- **Note:** Archive pages are ready but will be more useful after content migration with real publication dates
+
+#### Added - Print Styles
+
+- **Print-Optimized CSS** for all articles
+- Added inline print styles to `/src/layouts/MainLayout.astro`
+- **Print Features:**
+  - Hides navigation bar (right-side fixed nav)
+  - Hides footer
+  - Hides hero images (saves ink)
+  - Hides interactive elements (buttons, social sharing, tags)
+  - Full-width article content
+  - Clean typography (11-20pt sizes)
+  - Black & white friendly
+  - Letter size (8.5" x 11") with 0.5" margins
+  - Proper page breaks (no orphaned headings)
+  - Professional document layout
+- **Status:** ~95% complete - Navigation hidden, minor refinements needed for "Related Articles" section
+
+#### Changed - Navigation & Social Integration
+
+- Added search link as 2nd menu item in navigation
+- Added TikTok to social media icons (@l4_languages4) in both navigation and homepage
+- Updated animation delays for navigation items
 - Centered home icon in navigation menu
-- Updated animation delays for 8 menu items
+
+### Fixed
+
+- Print styles properly hide fixed right navigation bar
+- Print styles remove padding compensating for navigation
+- Copy Link button provides visual feedback (icon turns orange for 2 seconds)
 
 ### Notes
 
-**Search Implementation:**
+**Phase 3 Summary:**
 
-- Search page accessible at `/search`
-- Pagefind runs automatically after each `npm run build`
-- Search index stored in `dist/pagefind/` (not `dist/_pagefind/` - v1.0 format)
-- Only works in production builds (`npm run build` then `npm run preview`)
-- Does not work in development mode (`npm run dev`)
-- Will become more useful as content is migrated (currently indexes 12 pages)
+- ✅ All 5 discovery and UX features implemented
+- ✅ Search functionality ready for production
+- ✅ Tag filtering works across all collections
+- ✅ Archive pages infrastructure complete
+- ✅ Print styles functional (95% complete)
+- ✅ Social sharing enhanced with Reddit and Copy Link
+- ✅ TikTok integration complete across all locations
+
+**Testing Notes:**
+
+- Search only works in production builds (`npm run build` then `npm run preview`)
+- Archive pages will populate automatically once content with various dates is migrated
+- Print styles tested and functional (press Ctrl+P to preview)
 
 ---
 
-## [2026-01-14] - Phase 1 & 2 Complete: Content Features & Navigation
+## [2026-01-14] - Phase 1 & 2 Complete: Foundation & Content Enhancement
 
 ### Phase 1: Foundation Features ✅
 
@@ -92,9 +191,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Created `/src/pages/newsletters/[...page].astro` - Newsletter volumes pagination
 - Features: page numbers, prev/next buttons, responsive grids, collection-specific info boxes
 
-#### Added - Social Sharing
+#### Added - Social Sharing (Initial)
 
-- Enhanced `/src/components/SocialShare.astro` with WhatsApp and SMS
+- Created `/src/components/SocialShare.astro` with 6 options
 - 6 sharing options: Facebook, Twitter, LinkedIn, Email, WhatsApp, SMS
 - Shares current page URL and title
 
@@ -162,7 +261,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - **Astro Content Collections** - Type-safe content management system
-  - `whatarel4` collection (main blog - 30+ articles to migrate)
+  - `whatarel4` collection (main blog - 50+ articles to migrate)
   - `signature-collections` collection (multi-part series)
   - `ancestors` collection (Indigenous leader profiles)
   - `newsletters` collection (volume containers)
@@ -184,30 +283,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Simple Pages:**
   - `/about` - Mission, values, team
   - `/smash` - Partner page with external link
-- **File Structure:**
-  - Complete content collections architecture in `/src/content/`
-  - Dynamic routing with `[slug].astro` for all content types
-  - Type-safe schemas with frontmatter validation
 
 ### Changed
 
 - **Hero Section Rebuilt in Pure Tailwind:**
   - Converted all CSS to inline Tailwind utilities
   - Implemented `rotate-[20deg]` custom rotation for showcase mosaic
-  - Removed `landing-page.css` dependency (commented out in MainLayout)
   - Responsive breakpoints: 2 columns (mobile), 3 columns (tablet), 4 columns (desktop)
-  - Large screen optimization with `max-w-[1750px]` and `-top-[65%]`
-- **Content Collections Structure:**
-  - Renamed `blog` collection to `whatarel4` to match brand
-  - Renamed `collections` to `signature-collections` for clarity
-
-### Fixed
-
-- Resolved showcase image 404 errors
-- Fixed responsive grid display issues
-- Corrected `ladies_haka.webp` path
-- Mobile layout now uses flat (non-rotated) 2-column grid
-- Fixed file location issues (moved from `/content/pages/` to `/src/pages/`)
 
 ---
 
@@ -216,25 +298,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - Modern right-side fixed navigation component
-- Triple-pulse animated hamburger menu (pulse-pulse-pulse pattern with 5-second pause)
+- Triple-pulse animated hamburger menu
 - Slide-out menu panel with smooth animations
-- Click-outside-to-close functionality
-- Hamburger toggle (click to open/close)
-- Escape key to close menu
 - Clean 3-column footer with contact info and social links
-- Comprehensive project documentation (README.md)
-- Repository cleanup (.gitignore)
-
-### Changed
-
-- Disabled Netlify auto-deploy to conserve build credits
-- Updated MainLayout to use new Navigation and Footer components
-
-### Fixed
-
-- Menu now properly slides from right side next to navigation bar
-- Hamburger button now visible with clear three-line icon
-- Menu closes on link click, outside click, escape key, and hamburger toggle
 
 ---
 
@@ -245,94 +311,60 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Complete Tailwind CSS v3 design system
 - 9 brand colors with full scales (50-950)
 - Fluid responsive typography system
-- Custom spacing, shadows, and transitions
-- Font weight scale and letter spacing
-- Line height options and max-width constraints
-- Z-index layering system
-- Aspect ratio helpers
-- Container configuration with responsive padding
-
-### Changed
-
-- Migrated from WordPress + Bootstrap to Astro + Tailwind
-- Resolved Tailwind v3/v4 dependency conflicts
-- Configured proper Astro + Tailwind integration
 
 ### Performance
 
 - Achieved 99/100 desktop performance score
 - Achieved 100/100 SEO score
-- Set up automatic sitemap generation
-- Configured structured data and Open Graph tags
 
 ---
 
-## Notes
+## Project Status Summary
 
-### Architecture Decisions
+### Completed (Production Ready)
 
-- **Content Collections over Database:** Static site generation for performance and SEO
-- **Tailwind over Custom CSS:** Maintainability and design system consistency
-- **Component Reusability:** Single ArticleCard component serves all content types
-- **SEO-First Approach:** Proper meta tags, structured data, automatic sitemaps
-- **View Transitions:** SPA-like experience while maintaining SSG benefits
-- **Type Safety:** TypeScript schemas for all content collections
+**Phase 1: Foundation (5 features) ✅**
 
-### Current Status
+- View Transitions
+- RSS Feed
+- Pagination System
+- Social Sharing (initial)
+- Newsletter System Architecture
 
-**Completed Features (Production Ready):**
+**Phase 2: Content Enhancement (4 features) ✅**
 
-- ✅ View Transitions across entire site
-- ✅ RSS feed aggregating all content
-- ✅ Pagination for all 4 collections
-- ✅ Social sharing (6 platforms)
-- ✅ Newsletter 3-level system
-- ✅ Reading time estimates
-- ✅ Series navigation for multi-part articles
-- ✅ Auto-generated table of contents
-- ✅ Related posts recommendations
-- ✅ Responsive sidebar with Popular/Tags/Newsletters
+- Reading Time
+- Series Navigation
+- Table of Contents
+- Related Posts
 
-**Ready for Content Migration:**
+**Phase 3: Discovery (5 features) ✅**
 
-- 50+ blog posts need conversion from .php/HTML to markdown
-- Newsletter volumes ready for content
-- Signature collections ready for multi-part series
-- Ancestor profiles ready for Indigenous leader content
+- Search Functionality (Pagefind)
+- Tag Filtering System
+- Enhanced Social Sharing (8 options + TikTok)
+- Archive Pages (Year/Month)
+- Print Styles (~95% complete)
 
-### Credits Management
+**Total: 14 Major Features Complete**
 
-- Each production deploy: 15 credits
-- Monthly limit: 300 credits (free tier)
-- Strategy: Manual deploys only at milestones
-- Current usage: Monitor to stay under limit
+### Next Steps
 
----
+**Immediate Priority:**
 
-## Next Steps
-
-### Immediate - Phase 3
-
-1. **Search Functionality** - Pagefind integration for site-wide search
-2. **Tag Filtering** - Filter articles by tags on archive pages
-3. **Archive Pages** - Browse by date/month
-4. **Print Styles** - Optimized printing for articles
-
-### Content Migration
-
-1. Convert existing 50+ blog posts to markdown
+1. Content migration (50+ blog posts from .php/HTML to markdown)
 2. Add frontmatter metadata to all posts
-3. Organize into appropriate collections (whatarel4, signature-collections, ancestors)
-4. Verify all images and links work
-5. Add newsletter volume content
+3. Verify all images and links
+4. Add newsletter volume content
 
-### Polish & Optimization
+**Future Enhancements (Phase 4):**
 
-1. Add newsletter CTAs throughout site
-2. Implement author system (if needed)
-3. Add language-specific tags (unique to mission)
-4. Performance optimization pass
-5. Accessibility audit
+1. Newsletter CTAs throughout site
+2. Author system (if needed)
+3. Language-specific tags
+4. Final print styles polish
+5. Performance optimization
+6. Accessibility audit
 
 ---
 

@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import Sidebar from '../../components/Sidebar.astro';
+import SocialShare from '../../components/SocialShare.astro';
 import ReadingTime from '../../components/ReadingTime.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
@@ -118,6 +119,14 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
             <Content />
           </div>
           
+          <!-- Social Sharing -->
+          <div class="mt-12 pt-8 border-t border-neutral-200">
+            <SocialShare 
+              title={post.data.title}
+              description={post.data.description}
+            />
+          </div>
+          
           {post.data.tags.length > 0 && (
             <div class="mt-12 pt-8 border-t border-neutral-200">
               <h3 class="text-sm font-bold text-neutral-500 uppercase tracking-wide mb-4">Tagged:</h3>
@@ -162,7 +171,9 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       </article>
       
       <div class="lg:col-span-1 space-y-8">
-        <TableOfContents content={post.body} />
+        <div class="sticky top-8">
+          <TableOfContents content={post.body} />
+        </div>
 
         <Sidebar 
           popularArticles={popularPosts}

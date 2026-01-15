@@ -7,6 +7,7 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
+
 interface Props {
   title: string;
   description?: string;
@@ -56,6 +57,83 @@ const {
 
   <!-- Structured Data for Rich Snippets -->
   <SchemaOrg />
+
+<style is:global>
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Hide the fixed right navigation specifically */
+  nav.fixed,
+  nav[class*="fixed"],
+  #mobile-menu,
+  #mobile-menu-button {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  /* Hide hero section */
+  body > section:first-of-type,
+  main > section:first-of-type {
+    display: none !important;
+  }
+  
+  /* Hide footer */
+  footer {
+    display: none !important;
+  }
+  
+  /* Hide sidebar (TOC, Popular Articles) */
+  aside,
+  .lg\:col-span-1 {
+    display: none !important;
+  }
+  
+  /* Hide elements after article content */
+  h3:contains("Related"),
+  div:has(> h3) {
+    display: none !important;
+  }
+  
+  /* Remove right padding that accounts for nav bar */
+  main,
+  section,
+  body {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Full width article */
+  article {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0.5in !important;
+  }
+  
+  /* Typography */
+  h1 { font-size: 20pt; font-weight: bold; margin-bottom: 0.5em; page-break-after: avoid; }
+  h2 { font-size: 16pt; font-weight: bold; margin: 1em 0 0.3em; page-break-after: avoid; }
+  h3 { font-size: 14pt; font-weight: bold; margin: 0.8em 0 0.3em; page-break-after: avoid; }
+  p { font-size: 11pt; line-height: 1.5; margin-bottom: 0.8em; }
+  time { font-size: 9pt; color: #666; }
+  
+  /* Hide "Related Articles" section specifically */
+  article ~ * {
+    display: none !important;
+  }
+}
+</style>
+
 </head>
 
 <body class="font-sans text-body bg-background">

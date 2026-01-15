@@ -1,0 +1,177 @@
+---
+// src/pages/whatarel4/archive/[year]/[month].astro - Monthly archive
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import MainLayout from '../../../../layouts/MainLayout.astro';
+import ArticleCard from '../../../../components/ArticleCard.astro';
+import { getYears, filterByYearMonth, getMonthName, getMonthsInYear } from '../../../../utils/archiveUtils';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allPosts = await getCollection('whatarel4', ({ data }) => data.draft !== true);
+  const years = getYears(allPosts);
+  
+  const paths: any[] = [];
+  
+  years.forEach(year => {
+    const months = getMonthsInYear(allPosts, year);
+    months.forEach(month => {
+      paths.push({
+        params: { 
+          year: String(year),
+          month: String(month).padStart(2, '0')
+        },
+        props: { year, month }
+      });
+    });
+  });
+  
+  return paths;
+};
+
+const { year, month } = Astro.props;
+
+// Get all posts for this month
+const allPosts = await getCollection('whatarel4', ({ data }) => data.draft !== true);
+const monthPosts = filterByYearMonth(allPosts, year, month).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Get available months in this year for navigation
+const months = getMonthsInYear(allPosts, year);
+
+// Get all available years for navigation
+const allYears = getYears(allPosts);
+
+const monthName = getMonthName(month);
+---
+
+<MainLayout 
+  title={`${monthName} ${year} Articles - What Are Languages 4?`}
+  description={`Browse all articles published in ${monthName} ${year} about Indigenous language reclamation`}
+>
+
+<!-- Hero Section -->
+<section class="relative min-h-[40vh] flex items-center justify-center overflow-hidden pr-20 md:pr-24">
+  <div class="absolute inset-0 z-0">
+    <img 
+      src="/images/whatarel4/whatarel4-hero.webp" 
+      alt="What Are Languages 4?"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-primary-900/70"></div>
+  </div>
+  
+  <div class="relative z-10 max-w-5xl mx-auto px-8 py-16 text-center">
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-4 leading-tight border-b-4 border-white pb-4 inline-block">
+      Archive: {monthName} {year}
+    </h1>
+    <p class="text-xl md:text-2xl text-white uppercase tracking-wide leading-relaxed font-semibold mt-6">
+      {monthPosts.length} {monthPosts.length === 1 ? 'Article' : 'Articles'} Published
+    </p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="bg-neutral-50 py-12 pr-20 md:pr-24">
+  <div class="max-w-7xl mx-auto px-8">
+    
+    <!-- Archive Navigation -->
+    <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200 mb-8">
+      <div class="flex flex-col gap-6">
+        
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm text-neutral-600">
+          <a href="/whatarel4" class="hover:text-accent-600 transition-colors">All Articles</a>
+          <span>→</span>
+          <a href={`/whatarel4/archive/${year}`} class="hover:text-accent-600 transition-colors">{year}</a>
+          <span>→</span>
+          <span class="text-accent-600 font-semibold">{monthName}</span>
+        </div>
+        
+        <!-- Month Navigation -->
+        <div>
+          <h2 class="font-display text-xl font-bold text-primary-900 mb-4">Other Months in {year}</h2>
+          <div class="flex flex-wrap gap-2">
+            {months.map(m => (
+              <a
+                href={`/whatarel4/archive/${year}/${String(m).padStart(2, '0')}`}
+                class:list={[
+                  "px-4 py-2 rounded-lg font-semibold transition-colors",
+                  m === month
+                    ? "bg-accent-600 text-white"
+                    : "bg-neutral-100 text-neutral-700 hover:bg-accent-100 hover:text-accent-700"
+                ]}
+              >
+                {getMonthName(m)}
+              </a>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Year Navigation -->
+        <div>
+          <h2 class="font-display text-xl font-bold text-primary-900 mb-4">Other Years</h2>
+          <div class="flex flex-wrap gap-2">
+            {allYears.map(y => (
+              <a
+                href={`/whatarel4/archive/${y}`}
+                class:list={[
+                  "px-4 py-2 rounded-lg font-semibold transition-colors",
+                  y === year
+                    ? "bg-accent-600 text-white"
+                    : "bg-neutral-100 text-neutral-700 hover:bg-accent-100 hover:text-accent-700"
+                ]}
+              >
+                {y}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <!-- Back Links -->
+      <div class="mt-6 pt-6 border-t border-neutral-200 flex gap-4">
+        <a 
+          href={`/whatarel4/archive/${year}`}
+          class="inline-flex items-center text-accent-600 font-semibold hover:text-accent-700 transition-colors"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back to {year}
+        </a>
+        <a 
+          href="/whatarel4"
+          class="inline-flex items-center text-neutral-600 font-semibold hover:text-accent-600 transition-colors"
+        >
+          Back to All Articles
+        </a>
+      </div>
+    </div>
+    
+    <!-- Articles Grid -->
+    {monthPosts.length > 0 ? (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {monthPosts.map(post => (
+          <ArticleCard
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            heroImage={post.data.heroImage}
+            slug={post.slug}
+            author={post.data.author}
+            tags={post.data.tags}
+            collection="whatarel4"
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="bg-white rounded-lg p-12 text-center shadow-md">
+        <p class="text-neutral-600 text-lg">No articles published in {monthName} {year}</p>
+      </div>
+    )}
+    
+  </div>
+</section>
+
+</MainLayout>

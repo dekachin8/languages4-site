@@ -77,9 +77,11 @@ const newslettersCollection = defineCollection({
 const newsletterArticlesCollection = defineCollection({
   type: "content",
   schema: z.object({
+    volume: z.string(), // Add this - links to volume slug
     volumeNumber: z.number(), // Links to parent volume (e.g., 19)
     title: z.string(), // Article title
     description: z.string(), // Article summary
+    pubDate: z.date(), // ADD THIS LINE
     section: z.enum([
       "Feature",
       "Community",
