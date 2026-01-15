@@ -1,0 +1,163 @@
+---
+// Search.astro - Site-wide search powered by Pagefind
+// This component provides instant search across all content collections
+
+interface Props {
+  placeholder?: string;
+}
+
+const { placeholder = "Search articles, collections, profiles..." } = Astro.props;
+---
+
+<div class="search-container">
+  <!-- Search Input -->
+  <div class="relative">
+    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+      <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+    </div>
+    <input
+      id="search"
+      type="search"
+      placeholder={placeholder}
+      class="w-full pl-12 pr-4 py-3 bg-white border-2 border-neutral-300 rounded-lg focus:outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-600/20 transition-all duration-brand text-neutral-900 placeholder-neutral-400"
+    />
+  </div>
+  
+  <!-- Search Results -->
+  <div id="search-results" class="mt-4 hidden"></div>
+</div>
+
+<style>
+  /* Pagefind UI Customization */
+  :global(.pagefind-ui__search-input) {
+    display: none; /* We're using our custom input */
+  }
+  
+  :global(.pagefind-ui__results) {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    padding: 1rem;
+  }
+  
+  :global(.pagefind-ui__result) {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 0;
+  }
+  
+  :global(.pagefind-ui__result:last-child) {
+    border-bottom: none;
+  }
+  
+  :global(.pagefind-ui__result-title) {
+    font-family: var(--font-display, 'Neue Kabel', sans-serif);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #183e4b; /* primary-900 */
+    margin-bottom: 0.5rem;
+  }
+  
+  :global(.pagefind-ui__result-title:hover) {
+    color: #c7522a; /* accent-600 */
+  }
+  
+  :global(.pagefind-ui__result-excerpt) {
+    color: #4b5563; /* neutral-600 */
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  :global(.pagefind-ui__result-link) {
+    text-decoration: none;
+  }
+  
+  :global(mark) {
+    background-color: #fef3c7; /* accent-100 */
+    color: #92400e; /* accent-900 */
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+  }
+  
+  :global(.pagefind-ui__message) {
+    color: #6b7280; /* neutral-500 */
+    font-size: 0.875rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  :global(.pagefind-ui__loading) {
+    color: #c7522a; /* accent-600 */
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  // Initialize Pagefind search
+  async function initSearch() {
+    // @ts-ignore - Pagefind is loaded via CDN in production
+    if (typeof PagefindUI === 'undefined') {
+      console.warn('Pagefind not loaded - search will not work in development. Run build to test search.');
+      return;
+    }
+    
+    // @ts-ignore
+    new PagefindUI({
+      element: "#search-results",
+      resetStyles: false,
+      showImages: false,
+      showSubResults: true,
+      excerptLength: 15,
+      processResult: function(result) {
+        // Customize result display
+        return result;
+      }
+    });
+    
+    // Connect our custom input to Pagefind
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const searchResults = document.getElementById('search-results');
+    const pagefindInput = document.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
+    
+    if (searchInput && searchResults && pagefindInput) {
+      searchInput.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        pagefindInput.value = target.value;
+        pagefindInput.dispatchEvent(new Event('input', { bubbles: true }));
+        
+        // Show/hide results
+        if (target.value.length > 0) {
+          searchResults.classList.remove('hidden');
+        } else {
+          searchResults.classList.add('hidden');
+        }
+      });
+      
+      // Focus on custom input
+      searchInput.addEventListener('focus', () => {
+        if (searchInput.value.length > 0) {
+          searchResults.classList.remove('hidden');
+        }
+      });
+      
+      // Click outside to close
+      document.addEventListener('click', (e) => {
+        if (!searchResults.contains(e.target as Node) && e.target !== searchInput) {
+          searchResults.classList.add('hidden');
+        }
+      });
+    }
+  }
+  
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearch);
+  } else {
+    initSearch();
+  }
+  
+  // Reinitialize after View Transitions
+  document.addEventListener('astro:after-swap', initSearch);
+</script>

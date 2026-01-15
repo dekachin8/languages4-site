@@ -1,0 +1,31 @@
+---
+// ReadingTime.astro - Displays estimated reading time
+interface Props {
+  content: string; // Raw markdown from post.body
+  wordsPerMinute?: number;
+}
+
+const { content, wordsPerMinute = 200 } = Astro.props;
+
+function countWords(text: string): number {
+  const cleanText = text
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`]*`/g, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/[#*_~\[\]()]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  
+  return cleanText.split(/\s+/).filter(w => w.length > 0).length;
+}
+
+const readingTime = Math.ceil(countWords(content) / wordsPerMinute);
+const text = readingTime === 1 ? '1 min read' : `${readingTime} min read`;
+---
+
+<div class="inline-flex items-center gap-2 text-neutral-600">
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+  </svg>
+  <span class="text-sm font-medium">{text}</span>
+</div>

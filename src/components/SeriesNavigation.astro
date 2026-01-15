@@ -1,0 +1,75 @@
+---
+// SeriesNavigation.astro - Prev/Next navigation for multi-part series
+import { getCollection } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+  seriesTitle: string;
+  currentOrder?: number;
+}
+
+const { currentSlug, seriesTitle, currentOrder } = Astro.props;
+
+// Get all posts in this series
+const allPosts = await getCollection('signature-collections', ({ data }) => {
+  return data.seriesTitle === seriesTitle && data.draft !== true;
+});
+
+// Sort by series order
+const seriesPosts = allPosts.sort((a, b) => {
+  const orderA = a.data.seriesOrder || 999;
+  const orderB = b.data.seriesOrder || 999;
+  return orderA - orderB;
+});
+
+const currentIndex = seriesPosts.findIndex(post => post.slug === currentSlug);
+const prevPost = currentIndex > 0 ? seriesPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < seriesPosts.length - 1 ? seriesPosts[currentIndex + 1] : null;
+const totalParts = seriesPosts.length;
+---
+
+{(prevPost || nextPost || totalParts > 1) && (
+  <div class="bg-accent-50 border-l-4 border-accent-600 p-6 rounded-lg">
+    {/* Series Info */}
+    {currentOrder && totalParts > 1 && (
+      <div class="mb-4">
+        <p class="text-sm font-semibold text-accent-700 uppercase tracking-wide">
+          📚 Part {currentOrder} of {totalParts} in "{seriesTitle}"
+        </p>
+      </div>
+    )}
+    
+    {/* Navigation Buttons */}
+    {(prevPost || nextPost) && (
+      <nav class="flex gap-4" aria-label="Series navigation">
+        {prevPost ? (
+          <a 
+            href={`/signature-collections/${prevPost.slug}`}
+            class="flex-1 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-brand group border border-accent-200"
+          >
+            <div class="text-xs text-accent-600 font-semibold mb-1 uppercase">← Previous</div>
+            <div class="text-sm font-semibold text-primary-900 group-hover:text-accent-600 transition-colors line-clamp-2">
+              {prevPost.data.seriesOrder && `Part ${prevPost.data.seriesOrder}: `}{prevPost.data.title}
+            </div>
+          </a>
+        ) : (
+          <div class="flex-1"></div>
+        )}
+        
+        {nextPost ? (
+          <a 
+            href={`/signature-collections/${nextPost.slug}`}
+            class="flex-1 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-brand group border border-accent-200 text-right"
+          >
+            <div class="text-xs text-accent-600 font-semibold mb-1 uppercase">Next →</div>
+            <div class="text-sm font-semibold text-primary-900 group-hover:text-accent-600 transition-colors line-clamp-2">
+              {nextPost.data.seriesOrder && `Part ${nextPost.data.seriesOrder}: `}{nextPost.data.title}
+            </div>
+          </a>
+        ) : (
+          <div class="flex-1"></div>
+        )}
+      </nav>
+    )}
+  </div>
+)}

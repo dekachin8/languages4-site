@@ -1,0 +1,99 @@
+---
+// RelatedPosts.astro - Shows 3 related posts based on shared tags
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  currentSlug: string;
+  currentTags: string[];
+  collection: 'whatarel4' | 'signature-collections' | 'ancestors';
+  maxPosts?: number;
+}
+
+const { currentSlug, currentTags, collection, maxPosts = 3 } = Astro.props;
+
+// Get all posts from the same collection
+const allPosts = await getCollection(collection, ({ data }) => data.draft !== true);
+
+// Calculate relevance score based on shared tags
+const scoredPosts = allPosts
+  .filter(post => post.slug !== currentSlug) // Exclude current post
+  .map(post => {
+    const sharedTags = post.data.tags.filter(tag => currentTags.includes(tag));
+    return {
+      post,
+      score: sharedTags.length,
+      sharedTags
+    };
+  })
+  .filter(item => item.score > 0) // Only posts with at least one shared tag
+  .sort((a, b) => {
+    // Sort by score, then by date
+    if (b.score !== a.score) return b.score - a.score;
+    return b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf();
+  })
+  .slice(0, maxPosts);
+
+// Format dates
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+}
+---
+
+{scoredPosts.length > 0 && (
+  <section class="bg-neutral-100 rounded-lg p-8 mt-12">
+    <h3 class="text-2xl font-display font-bold text-primary-900 mb-6 flex items-center gap-2">
+      <svg class="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      </svg>
+      Related Articles
+    </h3>
+    
+    <div class="grid md:grid-cols-3 gap-6">
+      {scoredPosts.map(({ post, sharedTags }) => (
+        <article class="bg-white rounded-lg shadow-brand overflow-hidden hover:shadow-brand-lg transition-all duration-brand group">
+          {/* Image */}
+          {post.data.heroImage && (
+            <a href={`/${collection}/${post.slug}`} class="block overflow-hidden aspect-video">
+              <img 
+                src={post.data.heroImage}
+                alt={post.data.heroImageAlt || post.data.title}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-brand"
+              />
+            </a>
+          )}
+          
+          {/* Content */}
+          <div class="p-4">
+            <div class="text-xs text-neutral-500 mb-2">
+              {formatDate(post.data.pubDate)}
+            </div>
+            
+            <h4 class="font-display font-bold text-primary-900 mb-2 group-hover:text-accent-600 transition-colors line-clamp-2">
+              <a href={`/${collection}/${post.slug}`}>
+                {post.data.title}
+              </a>
+            </h4>
+            
+            <p class="text-sm text-neutral-600 line-clamp-2 mb-3">
+              {post.data.description}
+            </p>
+            
+            {/* Shared Tags */}
+            <div class="flex flex-wrap gap-1">
+              {sharedTags.map(tag => (
+                <span class="text-xs bg-accent-100 text-accent-700 px-2 py-1 rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

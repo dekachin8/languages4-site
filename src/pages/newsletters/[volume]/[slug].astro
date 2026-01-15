@@ -1,0 +1,226 @@
+---
+// src/pages/newsletters/[volume]/[slug].astro - Individual newsletter article
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import SocialShare from '../../../components/SocialShare.astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const articles = await getCollection('newsletter-articles');
+  
+  return articles.map((article) => ({
+    params: { 
+      volume: `volume-${article.data.volumeNumber}`,
+      slug: article.slug 
+    },
+    props: { article },
+  }));
+};
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+
+// Get the parent volume
+const volumes = await getCollection('newsletters');
+const parentVolume = volumes.find(v => v.data.volumeNumber === article.data.volumeNumber);
+
+// Get all articles in this volume for navigation
+const volumeArticles = await getCollection('newsletter-articles', ({ data }) => {
+  return data.volumeNumber === article.data.volumeNumber && data.draft !== true;
+});
+const sortedArticles = volumeArticles.sort((a, b) => {
+  const orderA = a.data.sectionOrder || 999;
+  const orderB = b.data.sectionOrder || 999;
+  return orderA - orderB;
+});
+
+// Find prev/next articles in volume
+const currentIndex = sortedArticles.findIndex(a => a.slug === article.slug);
+const prevArticle = currentIndex > 0 ? sortedArticles[currentIndex - 1] : null;
+const nextArticle = currentIndex < sortedArticles.length - 1 ? sortedArticles[currentIndex + 1] : null;
+
+// Generate canonical URL
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<MainLayout 
+  title={article.data.title}
+  description={article.data.description}
+  image={article.data.heroImage}
+  type="article"
+  author={article.data.author}
+  tags={article.data.tags}
+>
+
+<article class="bg-neutral-50 py-12 pr-20 md:pr-24">
+  <div class="max-w-4xl mx-auto px-8">
+    
+    <!-- Breadcrumb Navigation -->
+    <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-2 text-neutral-600">
+        <li>
+          <a href="/newsletters" class="hover:text-accent-600 transition-colors">
+            Newsletters
+          </a>
+        </li>
+        <li>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </li>
+        {parentVolume && (
+          <>
+            <li>
+              <a 
+                href={`/newsletters/${parentVolume.slug}`}
+                class="hover:text-accent-600 transition-colors"
+              >
+                Volume {parentVolume.data.volumeNumber}
+              </a>
+            </li>
+            <li>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </li>
+          </>
+        )}
+        <li class="text-primary-900 font-semibold">
+          {article.data.title}
+        </li>
+      </ol>
+    </nav>
+    
+    <!-- Article Header -->
+    <header class="mb-8">
+      <!-- Section Badge -->
+      <div class="inline-block bg-accent-100 text-accent-700 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+        {article.data.section}
+      </div>
+      
+      <!-- Title -->
+      <h1 class="text-4xl md:text-5xl font-display font-bold text-primary-900 mb-4">
+        {article.data.title}
+      </h1>
+      
+      <!-- Metadata -->
+      <div class="flex items-center gap-4 text-neutral-600">
+        {article.data.author && (
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span>{article.data.author}</span>
+          </div>
+        )}
+        {parentVolume && (
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            <a 
+              href={`/newsletters/${parentVolume.slug}`}
+              class="hover:text-accent-600 transition-colors"
+            >
+              From Volume {parentVolume.data.volumeNumber}
+            </a>
+          </div>
+        )}
+      </div>
+    </header>
+    
+    <!-- Hero Image (if exists) -->
+    {article.data.heroImage && (
+      <div class="mb-8 rounded-lg overflow-hidden shadow-brand">
+        <img 
+          src={article.data.heroImage}
+          alt={article.data.heroImageAlt || article.data.title}
+          class="w-full h-auto"
+        />
+      </div>
+    )}
+    
+    <!-- Article Content -->
+    <div class="bg-white rounded-lg shadow-brand p-8 mb-8">
+      <div class="prose prose-lg max-w-none">
+        <Content />
+      </div>
+      
+      <!-- Tags -->
+      {article.data.tags.length > 0 && (
+        <div class="mt-8 pt-8 border-t border-neutral-200">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="text-sm font-semibold text-neutral-600 uppercase tracking-wide">Tags:</span>
+            {article.data.tags.map(tag => (
+              <span class="inline-block bg-neutral-100 text-neutral-700 text-sm px-3 py-1 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+      
+      <!-- Social Share -->
+      <SocialShare 
+        title={article.data.title}
+        url={canonicalURL.toString()}
+        description={article.data.description}
+      />
+    </div>
+    
+    <!-- Article Navigation Within Volume -->
+    <nav class="flex justify-between items-center gap-4 mb-8" aria-label="Article navigation">
+      {prevArticle ? (
+        <a 
+          href={`/newsletters/volume-${article.data.volumeNumber}/${prevArticle.slug}`}
+          class="flex-1 p-4 bg-white rounded-lg shadow-brand hover:shadow-brand-lg transition-all duration-brand group"
+        >
+          <div class="text-xs text-neutral-500 mb-1">Previous Article</div>
+          <div class="font-semibold text-primary-900 group-hover:text-accent-600 transition-colors flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span class="line-clamp-1">{prevArticle.data.title}</span>
+          </div>
+        </a>
+      ) : (
+        <div class="flex-1"></div>
+      )}
+      
+      {nextArticle ? (
+        <a 
+          href={`/newsletters/volume-${article.data.volumeNumber}/${nextArticle.slug}`}
+          class="flex-1 p-4 bg-white rounded-lg shadow-brand hover:shadow-brand-lg transition-all duration-brand group text-right"
+        >
+          <div class="text-xs text-neutral-500 mb-1">Next Article</div>
+          <div class="font-semibold text-primary-900 group-hover:text-accent-600 transition-colors flex items-center justify-end gap-2">
+            <span class="line-clamp-1">{nextArticle.data.title}</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </a>
+      ) : (
+        <div class="flex-1"></div>
+      )}
+    </nav>
+    
+    <!-- Back to Volume -->
+    {parentVolume && (
+      <div class="text-center">
+        <a 
+          href={`/newsletters/${parentVolume.slug}`}
+          class="inline-flex items-center gap-2 px-6 py-3 bg-primary-900 text-white font-semibold rounded-lg hover:bg-primary-800 transition-colors duration-brand"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back to Volume {parentVolume.data.volumeNumber}
+        </a>
+      </div>
+    )}
+    
+  </div>
+</article>
+
+</MainLayout>

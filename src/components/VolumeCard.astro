@@ -1,0 +1,99 @@
+---
+// VolumeCard.astro - Newsletter volume card for archive page
+interface Props {
+  volumeNumber: number;
+  title: string;
+  description: string;
+  pubDate: Date;
+  coverImage?: string;
+  coverImageAlt?: string;
+  slug: string;
+  theme?: string;
+  featured?: boolean;
+}
+
+const {
+  volumeNumber,
+  title,
+  description,
+  pubDate,
+  coverImage,
+  coverImageAlt,
+  slug,
+  theme,
+  featured = false
+} = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+});
+---
+
+<article class={`group bg-white rounded-lg shadow-brand hover:shadow-brand-lg transition-all duration-brand overflow-hidden ${featured ? 'ring-2 ring-accent-600' : ''}`}>
+  <!-- Volume Cover Image -->
+  <a href={`/newsletters/${slug}`} class="block relative overflow-hidden aspect-[3/2]">
+    {coverImage ? (
+      <img 
+        src={coverImage}
+        alt={coverImageAlt || `${title} cover`}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-brand"
+      />
+    ) : (
+      <div class="w-full h-full bg-gradient-to-br from-primary-900 to-primary-700 flex items-center justify-center">
+        <div class="text-center text-white">
+          <div class="text-6xl font-display font-bold mb-2">Vol. {volumeNumber}</div>
+          <div class="text-xl font-semibold px-4">{theme || 'L4 Newsletter'}</div>
+        </div>
+      </div>
+    )}
+    
+    <!-- Featured Badge -->
+    {featured && (
+      <div class="absolute top-4 right-4 bg-accent-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+        Featured
+      </div>
+    )}
+    
+    <!-- Volume Number Badge -->
+    <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm text-primary-900 text-sm font-bold px-3 py-1 rounded-full shadow-lg">
+      Volume {volumeNumber}
+    </div>
+  </a>
+
+  <!-- Volume Info -->
+  <div class="p-6">
+    <!-- Date -->
+    <div class="text-sm text-neutral-500 mb-2">{formattedDate}</div>
+    
+    <!-- Title -->
+    <h3 class="text-xl font-display font-bold text-primary-900 mb-2 group-hover:text-accent-600 transition-colors duration-brand">
+      <a href={`/newsletters/${slug}`}>
+        {title}
+      </a>
+    </h3>
+    
+    <!-- Theme (if exists) -->
+    {theme && (
+      <div class="text-sm font-semibold text-accent-600 mb-3 uppercase tracking-wide">
+        {theme}
+      </div>
+    )}
+    
+    <!-- Description -->
+    <p class="text-neutral-600 mb-4 line-clamp-3">
+      {description}
+    </p>
+    
+    <!-- Read More Link -->
+    <a 
+      href={`/newsletters/${slug}`}
+      class="inline-flex items-center gap-2 text-primary-900 font-semibold hover:text-accent-600 transition-colors duration-brand"
+    >
+      Read This Issue
+      <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </a>
+  </div>
+</article>

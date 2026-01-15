@@ -1,0 +1,37 @@
+---
+// ArticleHero.astro - Full-width hero with background image overlay
+interface Props {
+  title: string;
+  subtitle: string;
+  backgroundImage: string;
+  backgroundAlt?: string;
+}
+
+const { title, subtitle, backgroundImage, backgroundAlt = '' } = Astro.props;
+---
+
+<section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden pr-20 md:pr-24">
+  
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0 z-0">
+    <img 
+      src={backgroundImage} 
+      alt={backgroundAlt}
+      class="w-full h-full object-cover"
+    />
+    <!-- Dark overlay for text readability -->
+    <div class="absolute inset-0 bg-primary-900/70"></div>
+  </div>
+  
+  <!-- Hero Content -->
+  <div class="relative z-10 max-w-5xl mx-auto px-8 py-20 text-center">
+    <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight border-b-4 border-white pb-4 inline-block">
+      {title}
+    </h1>
+    <p class="text-xl md:text-2xl text-white uppercase tracking-wide leading-relaxed font-semibold">
+      {subtitle}
+    </p>
+  </div>
+  
+</section>
+    

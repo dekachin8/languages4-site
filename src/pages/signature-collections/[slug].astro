@@ -1,0 +1,179 @@
+---
+// src/pages/signature-collections/[slug].astro
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import ReadingTime from '../../components/ReadingTime.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RelatedPosts from '../../components/RelatedPosts.astro';
+
+export async function getStaticPaths() {
+  const collectionPosts = await getCollection('signature-collections', ({ data }) => {
+    return data.draft !== true;
+  });
+  
+  return collectionPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<'signature-collections'>;
+};
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const allPosts = await getCollection('signature-collections', ({ data }) => data.draft !== true);
+const popularPosts = allPosts
+  .filter(p => p.data.featured)
+  .slice(0, 3)
+  .map(p => ({
+    title: p.data.title,
+    slug: p.slug,
+    heroImage: p.data.heroImage,
+    collection: 'signature-collections' as const,
+  }));
+
+const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
+
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}).format(post.data.pubDate);
+---
+
+<MainLayout 
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.heroImage}
+>
+
+<!-- Hero Section -->
+<section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden pr-20 md:pr-24">
+  <div class="absolute inset-0 z-0">
+    {post.data.heroImage && (
+      <>
+        <img 
+          src={post.data.heroImage} 
+          alt={post.data.heroImageAlt || post.data.title}
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-primary-900/70"></div>
+      </>
+    )}
+  </div>
+  
+  <div class="relative z-10 max-w-5xl mx-auto px-8 py-20 text-center">
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-6 leading-tight border-b-4 border-white pb-4 inline-block">
+      Signature Collections: Language & Culture
+    </h1>
+    <p class="text-xl md:text-2xl text-white uppercase tracking-wide leading-relaxed font-semibold">
+      {post.data.seriesTitle}
+    </p>
+  </div>
+</section>
+
+<!-- Article Content -->
+<section class="bg-neutral-50 py-12 pr-20 md:pr-24">
+  <div class="max-w-7xl mx-auto px-8">
+    
+    <div class="grid lg:grid-cols-3 gap-12">
+      
+      <!-- Main Content (2 columns) -->
+      <article class="lg:col-span-2">
+        
+        <div class="bg-white rounded-lg p-8 md:p-12 shadow-md mb-8">
+          
+          {post.data.seriesOrder && (
+            <div class="inline-block px-4 py-2 bg-accent-100 text-accent-700 rounded-full text-sm font-bold uppercase mb-4">
+              Part {post.data.seriesOrder}
+            </div>
+          )}
+          
+          <time class="text-sm text-neutral-500 block mb-4">
+            {formattedDate}
+          </time>
+          
+          <ReadingTime content={post.body} />
+          
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-primary-900 mb-6 leading-tight">
+            {post.data.title}
+          </h2>
+          
+          <p class="text-xl text-neutral-700 italic mb-8 pb-8 border-b border-neutral-200">
+            {post.data.description}
+          </p>
+          
+          <div class="prose prose-lg max-w-none
+            prose-headings:font-display prose-headings:text-primary-900
+            prose-p:text-neutral-700 prose-p:leading-relaxed
+            prose-a:text-accent-600 prose-a:font-semibold hover:prose-a:text-accent-700
+            prose-strong:text-primary-900 prose-strong:font-bold
+            prose-img:rounded-xl prose-img:shadow-lg
+          ">
+            <Content />
+          </div>
+          
+          {post.data.tags.length > 0 && (
+            <div class="mt-12 pt-8 border-t border-neutral-200">
+              <h3 class="text-sm font-bold text-neutral-500 uppercase tracking-wide mb-4">Tagged:</h3>
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map(tag => (
+                  <a 
+                    href={`/signature-collections?tag=${encodeURIComponent(tag)}`}
+                    class="px-4 py-2 bg-neutral-100 text-neutral-700 rounded-full hover:bg-accent-600 hover:text-white transition-colors text-sm font-semibold uppercase"
+                  >
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div class="mt-8 pt-8 border-t border-neutral-200">
+            <p class="text-neutral-600">
+              By <span class="font-semibold text-primary-900">{post.data.author}</span>
+            </p>
+          </div>
+        </div>
+
+        <RelatedPosts 
+          currentSlug={post.slug}
+          currentTags={post.data.tags}
+          collection="signature-collections"
+        />
+        
+        <div class="text-center">
+          <a 
+            href="/signature-collections"
+            class="inline-flex items-center px-6 py-3 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition-colors"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Collections
+          </a>
+        </div>
+        
+      </article>
+      
+      <div class="lg:col-span-1 space-y-8">
+        <TableOfContents content={post.body} />
+
+        <Sidebar 
+          popularArticles={popularPosts}
+          tags={allTags}
+          collection="signature-collections"
+        />
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+</MainLayout>

@@ -1,0 +1,62 @@
+---
+// TableOfContents.astro - Auto-generates TOC from article headings
+interface Props {
+  content: string; // Raw markdown content
+}
+
+const { content } = Astro.props;
+
+// Extract headings from markdown
+interface Heading {
+  level: number;
+  text: string;
+  id: string;
+}
+
+function extractHeadings(markdown: string): Heading[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headings: Heading[] = [];
+  let match;
+  
+  while ((match = headingRegex.exec(markdown)) !== null) {
+    const level = match[1].length;
+    const text = match[2].trim();
+    // Create URL-safe ID
+    const id = text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-');
+    
+    headings.push({ level, text, id });
+  }
+  
+  return headings;
+}
+
+const headings = extractHeadings(content);
+---
+
+{headings.length > 0 && (
+  <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
+    <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
+      Table of Contents
+    </h2>
+    
+    <nav>
+      <ul class="space-y-3">
+        {headings.map(heading => (
+          <li 
+            class={heading.level === 3 ? 'ml-4' : ''}
+          >
+            <a 
+              href={`#${heading.id}`}
+              class="text-accent-600 hover:text-accent-700 hover:underline transition-colors leading-snug block text-sm font-medium"
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+)}

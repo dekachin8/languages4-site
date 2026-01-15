@@ -1,11 +1,13 @@
 ---
 // ShowcaseLoader.astro - Loads random images with alternating fun animations
+// Now supports 12 random slots for responsive 2/3/4 column layout
+// FIXED: Works with View Transitions
 ---
 
 <script>
   // List of ALL random pool images
   const randomImages = [
-    '/images/showcase/random/antelope_canyon_outside.webp',
+    '/images/showcase/random/antelope canyon_outside.webp',
     '/images/showcase/random/couple_with_mobilestudy.webp',
     '/images/showcase/random/elder_nativewoman_smiling.webp',
     '/images/showcase/random/grandpa_grandson.webp',
@@ -19,18 +21,33 @@
     '/images/showcase/random/Teacher_holding_tablet_w_software.webp',
     '/images/showcase/random/two_girls_back_to_school.webp',
     '/images/showcase/random/Vuntut_Gwitchin_Men_ca1937_800.webp',
-    '/images/showcase/random/wild_ricing.webp'
+    '/images/showcase/random/wild_ricing.webp',
+    '/images/showcase/random/Sheep_MonumentValley800.450.webp',
+    '/images/showcase/random/kwetlal_restoration-800.webp',
+    '/images/showcase/random/native_lacrosse_game.webp',
+    '/images/showcase/random/mobile_devices_1000-1.webp',
+    '/images/showcase/random/Leah_R2D2_Navajo-1.webp',
+    '/images/showcase/random/Indigenous_Lady_Gardening.webp',
   ];
 
-  // Spots that should show random images (the non-hero spots)
+  // Spots that should show random images (12 random slots for 4-column grid)
   const randomSpots = [
+    // Row 1: 3 random slots
     '.row-1-img-1',
-    '.row-1-img-3',
+    '.row-1-img-2',
+    '.row-1-img-4',
+    // Row 2: 2 random slots
     '.row-2-img-2',
+    '.row-2-img-3',
+    // Row 3: 3 random slots
     '.row-3-img-1',
-    '.row-3-img-3',
+    '.row-3-img-2',
+    '.row-3-img-4',
+    // Row 4: 4 random slots
     '.row-4-img-1',
-    '.row-4-img-2'
+    '.row-4-img-2',
+    '.row-4-img-3',
+    '.row-4-img-4'
   ];
 
   // Function to shuffle array
@@ -81,8 +98,8 @@
     }, delay + 300);
   }
 
-  // Load random images with animation
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize showcase animation - works with View Transitions
+  function initShowcaseAnimation() {
     const animationType = getAnimationType();
     const shuffledImages = shuffleArray(randomImages);
     
@@ -92,7 +109,7 @@
       
       if (deviceElement && imgElement && shuffledImages[index]) {
         // Calculate stagger delay
-        const delay = index * 300; // Each image delayed by 200ms
+        const delay = index * 300; // Each image delayed by 300ms
         
         // Preload image
         const img = new Image();
@@ -109,5 +126,11 @@
         img.src = shuffledImages[index];
       }
     });
-  });
+  }
+
+  // Run on initial page load
+  document.addEventListener('DOMContentLoaded', initShowcaseAnimation);
+  
+  // Re-run after View Transitions (when navigating back to homepage)
+  document.addEventListener('astro:after-swap', initShowcaseAnimation);
 </script>

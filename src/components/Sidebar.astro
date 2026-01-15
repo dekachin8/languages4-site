@@ -1,0 +1,85 @@
+---
+// Sidebar.astro - Reusable sidebar for article pages
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  popularArticles?: Array<{
+    title: string;
+    slug: string;
+    heroImage?: string;
+    collection: 'whatarel4' | 'signature-collections' | 'ancestors';
+  }>;
+  tags?: string[];
+  collection: 'whatarel4' | 'signature-collections' | 'ancestors';
+}
+
+const { popularArticles = [], tags = [], collection } = Astro.props;
+---
+
+<aside class="space-y-8">
+  
+  <!-- Popular Articles -->
+  {popularArticles.length > 0 && (
+    <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
+      <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
+        Popular Articles
+      </h2>
+      
+      <div class="space-y-6">
+        {popularArticles.map(article => (
+          <a 
+            href={`/${article.collection}/${article.slug}`}
+            class="block group"
+          >
+            {article.heroImage && (
+              <img 
+                src={article.heroImage} 
+                alt={article.title}
+                class="w-full h-32 object-cover rounded-lg mb-3 group-hover:opacity-80 transition-opacity"
+              />
+            )}
+            <h3 class="text-accent-600 font-semibold group-hover:text-accent-700 transition-colors leading-snug">
+              {article.title}
+            </h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+  
+  <!-- Tags -->
+  {tags.length > 0 && (
+    <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
+      <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
+        Tags
+      </h2>
+      
+      <div class="flex flex-wrap gap-3">
+        {tags.map(tag => (
+          <a 
+            href={`/${collection}?tag=${encodeURIComponent(tag)}`}
+            class="px-4 py-2 border-2 border-neutral-300 text-neutral-700 rounded-md hover:border-accent-600 hover:text-accent-600 transition-colors font-medium text-sm uppercase tracking-wide"
+          >
+            {tag}
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+  
+  <!-- Past Newsletter Issues (NOW ON ALL PAGES) -->
+  <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
+    <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
+      Past Newsletter Issues
+    </h2>
+    
+    <ul class="space-y-2 text-sm">
+      <li><a href="/newsletters#volume-1" class="text-accent-600 hover:text-accent-700 hover:underline">Volume 1 - Platform Spotlight</a></li>
+      <li><a href="/newsletters#volume-2" class="text-accent-600 hover:text-accent-700 hover:underline">Volume 2 - Shy Learner to Family Storyteller</a></li>
+      <li><a href="/newsletters#volume-3" class="text-accent-600 hover:text-accent-700 hover:underline">Volume 3 - What is Scaffolded Immersion</a></li>
+      <li><a href="/newsletters#volume-4" class="text-accent-600 hover:text-accent-700 hover:underline">Volume 4 - The Core Values of Languages 4</a></li>
+      <li class="pt-2"><a href="/newsletters" class="text-primary-900 font-semibold hover:text-accent-600">View All Volumes →</a></li>
+    </ul>
+  </div>
+  
+</aside>

@@ -1,5 +1,6 @@
 ---
 // MainLayout.astro - Main site layout with modern Tailwind navigation and footer
+import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import SchemaOrg from '../components/SchemaOrg.astro';
 import Navigation from '../components/Navigation.astro';
@@ -32,6 +33,9 @@ const {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ClientRouther for smooth page navigation (Astro's killer feature!) -->
+  <ClientRouter />
+  
   <!-- SEO Foundation - handles all meta tags, Open Graph, Twitter Cards, etc. -->
   <BaseHead 
     title={title}
@@ -43,13 +47,12 @@ const {
     author={author}
     tags={tags}
   />
+  
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/rss+xml" title="Languages 4 RSS Feed" href="/rss.xml" />
 
   <!-- Adobe Fonts - Neue Kabel (your brand font) -->
   <link rel="stylesheet" href="https://use.typekit.net/zrh5nnx.css">
-
-  <!-- TEMPORARY: Landing Page CSS for hero section -->
-  <!-- We'll rebuild this with Tailwind soon, but keeping it for now so hero displays -->
-  <link rel="stylesheet" href="/landing-page.css">
 
   <!-- Structured Data for Rich Snippets -->
   <SchemaOrg />
@@ -67,5 +70,14 @@ const {
 
   <!-- Modern Tailwind Footer Component -->
   <Footer />
+
+<!-- Pagefind Search Script (only loads in production) -->
+{import.meta.env.PROD && (
+  <>
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  </>
+)}
+
 </body>
 </html>
