@@ -56,7 +56,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 >
 
 <!-- Hero Section -->
-<section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden pr-20 md:pr-24">
+<section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden lg:pr-20 xl:pr-24">
   <div class="absolute inset-0 z-0">
     {post.data.heroImage && (
       <>
@@ -81,15 +81,15 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 </section>
 
 <!-- Article Content -->
-<section class="bg-neutral-50 py-12 pr-20 md:pr-24">
-  <div class="max-w-7xl mx-auto px-8">
+<section class="bg-neutral-50 py-12 lg:pr-20 xl:pr-24">
+  <div class="max-w-7xl mx-auto px-2 sm:px-4 md:px-8">
     
     <div class="grid lg:grid-cols-3 gap-12">
       
       <!-- Main Content (2 columns) -->
       <article class="lg:col-span-2">
         
-        <div class="bg-white rounded-lg p-8 md:p-12 shadow-md mb-8">
+        <div class="bg-white rounded-lg p-4 sm:p-6 md:p-12 shadow-md mb-8">
           
           <!-- Ancestor Info Box -->
           <div class="bg-accent-50 rounded-lg p-6 mb-8">
@@ -192,19 +192,17 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       </article>
       
       <!-- Sidebar (1 column) -->
-      <div class="lg:col-span-1 space-y-8">
-        <!-- Sticky TOC -->
-        <div class="sticky top-8">
-          <TableOfContents content={post.body} />
-        </div>
-
-        <!-- Static Sidebar Components -->
-        <Sidebar 
-          popularArticles={popularProfiles}
-          tags={allTagsWithCounts}
-          collection="ancestors"
-        />
+   <div class="hidden lg:block lg:col-span-1 space-y-8">
+      <div class="sticky top-8">
+        <TableOfContents content={post.body} />
       </div>
+
+      <Sidebar 
+        popularArticles={popularPosts}
+        tags={allTagsWithCounts}
+        collection="signature-collections"
+      />
+    </div>
       
     </div>
     
