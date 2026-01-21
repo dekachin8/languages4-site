@@ -8,6 +8,7 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import Sidebar from '../../components/Sidebar.astro';
 import TagFilter from '../../components/TagFilter.astro';
 import { filterByTag, getAllTagsWithCounts } from '../../utils/tagFilter';
+import { groupByYear } from '../../utils/archiveUtils';
 
 export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   // Get all published posts
@@ -27,7 +28,8 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   return paginate(sortedPosts, {
     pageSize: 12,
     props: {
-      allTags: allTagsWithCounts
+      allTags: allTagsWithCounts,
+      allPostsSorted: sortedPosts // Pass all posts for sectioning
     }
   });
 };
@@ -35,9 +37,10 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
 type Props = {
   page: Page<CollectionEntry<'whatarel4'>>;
   allTags: Array<{ tag: string; count: number }>;
+  allPostsSorted: CollectionEntry<'whatarel4'>[];
 };
 
-const { page, allTags } = Astro.props;
+const { page, allTags, allPostsSorted } = Astro.props;
 
 // Get tag from URL query parameter
 const activeTag = Astro.url.searchParams.get('tag');
@@ -47,10 +50,20 @@ const displayPosts = activeTag
   ? filterByTag(page.data, activeTag)
   : page.data;
 
-// Get popular posts for sidebar
+// Split into sections (only on page 1, no tag filter)
+const showSections = page.currentPage === 1 && !activeTag;
+const latestPosts = showSections ? allPostsSorted.slice(0, 4) : [];
+const remainingPosts = showSections 
+  ? allPostsSorted.slice(4, 12).sort(() => Math.random() - 0.5) // Show articles 5-12 randomized
+  : displayPosts;
+
+// Get popular posts for sidebar (random selection)
 const allPostsForSidebar = await getCollection('whatarel4', ({ data }) => data.draft !== true);
-const popularPosts = allPostsForSidebar
-  .filter(post => post.data.featured)
+
+// Shuffle array for random selection
+const shuffled = [...allPostsForSidebar].sort(() => Math.random() - 0.5);
+
+const popularPosts = shuffled
   .slice(0, 3)
   .map(post => ({
     title: post.data.title,
@@ -58,6 +71,12 @@ const popularPosts = allPostsForSidebar
     heroImage: post.data.heroImage,
     collection: 'whatarel4' as const,
   }));
+
+// Get archive years with counts
+const yearGroups = groupByYear(allPostsForSidebar);
+const archiveYears = Array.from(yearGroups.entries())
+  .map(([year, posts]) => ({ year, count: posts.length }))
+  .sort((a, b) => b.year - a.year);
 
 const pageTitle = activeTag 
   ? `What Are Languages 4? - ${activeTag}` 
@@ -115,15 +134,7 @@ const pageDescription = activeTag
       
       <!-- Main Content (2 columns) -->
       <div class="lg:col-span-2">
-        
-        <!-- Tag Filter -->
-        <TagFilter 
-          tags={allTags}
-          currentTag={activeTag}
-          collection="whatarel4"
-          showCounts={true}
-        />
-        
+            
         <!-- Results Count -->
         {activeTag && (
           <div class="mb-6 text-neutral-600">
@@ -133,23 +144,59 @@ const pageDescription = activeTag
           </div>
         )}
         
-        <!-- Article Grid -->
-        {displayPosts.length > 0 ? (
-          <div class="grid md:grid-cols-2 gap-8 mb-12">
-            {displayPosts.map((post) => (
+      <!-- Articles Container with Scale Compensation -->
+      <div class="scale-80 origin-top-left" style="width: 100%;">
+        
+      <!-- Latest Articles Section (Page 1 only, no tag filter) -->
+      {(showSections && latestPosts.length > 0) && (
+        <div class="mb-12">
+          <h2 class="font-display text-2xl font-bold text-primary-900 mb-6">Latest Articles</h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            {latestPosts.map((post) => (
               <ArticleCard
                 title={post.data.title}
                 description={post.data.description}
                 pubDate={post.data.pubDate}
                 heroImage={post.data.heroImage}
+                heroImageAlt={post.data.heroImageAlt}
+                cardImage={post.data.cardImage}
+                cardImageAlt={post.data.cardImageAlt}
                 slug={post.slug}
-                author={post.data.author}
                 tags={post.data.tags}
                 collection="whatarel4"
-              />
+              />  
             ))}
           </div>
-        ) : (
+        </div>
+      )}
+      
+      <!-- More Articles Section -->
+      {remainingPosts.length > 0 && (
+        <div class="mb-3">
+          {showSections && <h2 class="font-display text-2xl font-bold text-primary-900 mb-6">More Articles</h2>}
+          <div class="grid md:grid-cols-2 gap-6">
+            {remainingPosts.map((post) => (
+              <ArticleCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                heroImage={post.data.heroImage}
+                heroImageAlt={post.data.heroImageAlt}
+                cardImage={post.data.cardImage}
+                cardImageAlt={post.data.cardImageAlt}
+                slug={post.slug}
+                tags={post.data.tags}
+                collection="whatarel4"
+              />  
+            ))}
+          </div>
+        </div>
+      )}
+      
+    </div>
+        
+        <!-- No Results Message -->
+        {displayPosts.length === 0 && (
           <div class="bg-white rounded-lg p-12 text-center shadow-md">
             <svg class="w-16 h-16 mx-auto text-neutral-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -180,8 +227,8 @@ const pageDescription = activeTag
             )}
             
             {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((pageNum) => (
-              <a
-                href={pageNum === 1 ? '/whatarel4' : `/whatarel4/${pageNum}`}
+  
+              <a href={pageNum === 1 ? '/whatarel4' : `/whatarel4/${pageNum}`}
                 class:list={[
                   "px-4 py-2 rounded-lg font-semibold transition-colors",
                   pageNum === page.currentPage
@@ -211,8 +258,9 @@ const pageDescription = activeTag
       <div class="lg:col-span-1">
         <Sidebar 
           popularArticles={popularPosts}
-          tags={allTags.slice(0, 15).map(t => t.tag)}
+          tags={allTags}
           collection="whatarel4"
+          archiveYears={archiveYears}
         />
       </div>
       

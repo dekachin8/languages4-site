@@ -8,6 +8,8 @@ import SocialShare from '../../components/SocialShare.astro';
 import ReadingTime from '../../components/ReadingTime.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
+import ArticleGallery from '../../components/ArticleGallery.astro';
+import { getAllTagsWithCounts } from '../../utils/tagFilter';
 
 export async function getStaticPaths() {
   const collectionPosts = await getCollection('signature-collections', ({ data }) => {
@@ -38,7 +40,7 @@ const popularPosts = allPosts
     collection: 'signature-collections' as const,
   }));
 
-const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
+const allTagsWithCounts = getAllTagsWithCounts(allPosts);
 
 const formattedDate = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
@@ -119,6 +121,11 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
             <Content />
           </div>
           
+          <!-- Article Gallery -->
+          {post.data.galleryImages && post.data.galleryImages.length >= 3 && (
+            <ArticleGallery images={post.data.galleryImages} />
+          )}
+          
           <!-- Social Sharing -->
           <div class="mt-12 pt-8 border-t border-neutral-200">
             <SocialShare 
@@ -177,7 +184,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
         <Sidebar 
           popularArticles={popularPosts}
-          tags={allTags}
+          tags={allTagsWithCounts}
           collection="signature-collections"
         />
       </div>

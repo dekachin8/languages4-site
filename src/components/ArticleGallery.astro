@@ -1,0 +1,45 @@
+---
+// Article Gallery Component - Displays optional image gallery at bottom of articles
+// Only renders if galleryImages array exists and has items
+
+interface GalleryImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  images?: GalleryImage[];
+}
+
+const { images } = Astro.props;
+
+// Only render gallery if there are 3 or more images
+if (!images || images.length < 3) {
+  return null;
+}
+---
+
+<div class="mt-12 pt-8 border-t border-neutral-200">
+  <h3 class="font-display text-2xl font-bold text-primary-900 mb-6">Image Gallery</h3>
+  
+  <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    {images.map((image) => (
+      <figure class="group">
+        <div class="relative overflow-hidden rounded-lg bg-neutral-100 aspect-square">
+          <img 
+            src={image.src}
+            alt={image.alt}
+            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+        {image.caption && (
+          <figcaption class="mt-2 text-sm text-neutral-600 text-center">
+            {image.caption}
+          </figcaption>
+        )}
+      </figure>
+    ))}
+  </div>
+</div>

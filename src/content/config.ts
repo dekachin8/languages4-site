@@ -11,10 +11,22 @@ const whatarel4Collection = defineCollection({
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
+    cardImage: z.string().optional(),
+    cardImageAlt: z.string().optional(),
     author: z.string().default("Languages 4 Team"),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
+    // Optional image gallery at bottom of article
+    galleryImages: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string().optional(),
+        })
+      )
+      .optional(),
   }),
 });
 
@@ -28,12 +40,24 @@ const signatureCollectionsCollection = defineCollection({
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
-    seriesTitle: z.string(), // e.g., "Land Is Our Teacher"
-    seriesOrder: z.number().optional(), // Part 1, Part 2, etc.
+    cardImage: z.string().optional(),
+    cardImageAlt: z.string().optional(),
+    seriesTitle: z.string(),
+    seriesOrder: z.number().optional(),
     author: z.string().default("Languages 4 Team"),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
+    // Add this:
+    galleryImages: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string().optional(),
+        })
+      )
+      .optional(),
   }),
 });
 
@@ -47,13 +71,25 @@ const ancestorsCollection = defineCollection({
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
-    ancestorName: z.string(), // Full name of ancestor/leader
-    tribe: z.string().optional(), // Tribal affiliation
-    lifespan: z.string().optional(), // e.g., "1840-1909"
+    cardImage: z.string().optional(),
+    cardImageAlt: z.string().optional(),
+    ancestorName: z.string(),
+    tribe: z.string().optional(),
+    lifespan: z.string().optional(),
     author: z.string().default("Languages 4 Team"),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
+    // Add this:
+    galleryImages: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string().optional(),
+        })
+      )
+      .optional(),
   }),
 });
 

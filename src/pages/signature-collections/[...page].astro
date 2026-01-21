@@ -120,14 +120,6 @@ const pageDescription = activeTag
       <!-- Main Content (2 columns) -->
       <div class="lg:col-span-2">
         
-        <!-- Tag Filter -->
-        <TagFilter 
-          tags={allTags}
-          currentTag={activeTag}
-          collection="signature-collections"
-          showCounts={true}
-        />
-        
         <!-- Results Count -->
         {activeTag && (
           <div class="mb-6 text-neutral-600">
@@ -146,6 +138,9 @@ const pageDescription = activeTag
                 description={post.data.description}
                 pubDate={post.data.pubDate}
                 heroImage={post.data.heroImage}
+                heroImageAlt={post.data.heroImageAlt}
+                cardImage={post.data.cardImage}
+                cardImageAlt={post.data.cardImageAlt}
                 slug={post.slug}
                 author={post.data.author}
                 tags={post.data.tags}
@@ -217,7 +212,7 @@ const pageDescription = activeTag
       <div class="lg:col-span-1">
         <Sidebar 
           popularArticles={popularCollections}
-          tags={allTags.slice(0, 15).map(t => t.tag)}
+          tags={allTags}
           collection="signature-collections"
         />
       </div>

@@ -128,9 +128,20 @@
     });
   }
 
-  // Run on initial page load
-  document.addEventListener('DOMContentLoaded', initShowcaseAnimation);
-  
-  // Re-run after View Transitions (when navigating back to homepage)
-  document.addEventListener('astro:after-swap', initShowcaseAnimation);
+// Initialize function
+function init() {
+  initShowcaseAnimation();
+}
+
+// Run on initial page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  // DOM already loaded
+  init();
+}
+
+// Re-run after View Transitions
+document.addEventListener('astro:after-swap', init);
+document.addEventListener('astro:page-load', init);
 </script>

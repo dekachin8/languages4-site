@@ -8,6 +8,8 @@ import SocialShare from '../../components/SocialShare.astro';
 import ReadingTime from '../../components/ReadingTime.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
+import ArticleGallery from '../../components/ArticleGallery.astro';
+import { getAllTagsWithCounts } from '../../utils/tagFilter';
 
 // Generate static paths for all blog posts
 export async function getStaticPaths() {
@@ -28,10 +30,30 @@ type Props = {
 const { post } = Astro.props;
 const { Content } = await post.render();
 
+// Build complete gallery: card image + any additional gallery images
+const allGalleryImages = [];
+
+// Add card image first (if it exists and isn't a video)
+if (post.data.cardImage) {
+  allGalleryImages.push({
+    src: post.data.cardImage,
+    alt: post.data.cardImageAlt || post.data.title,
+  });
+}
+
+// Add any additional gallery images from frontmatter
+if (post.data.galleryImages && post.data.galleryImages.length > 0) {
+  allGalleryImages.push(...post.data.galleryImages);
+} 
+
 // Get all posts for sidebar
+// Get all posts for sidebar (random selection)
 const allPosts = await getCollection('whatarel4', ({ data }) => data.draft !== true);
-const popularPosts = allPosts
-  .filter(p => p.data.featured)
+
+// Shuffle array for random selection
+const shuffled = [...allPosts].sort(() => Math.random() - 0.5);
+
+const popularPosts = shuffled
   .slice(0, 3)
   .map(p => ({
     title: p.data.title,
@@ -40,7 +62,8 @@ const popularPosts = allPosts
     collection: 'whatarel4' as const,
   }));
 
-const allTags = [...new Set(allPosts.flatMap(p => p.data.tags))].sort();
+// Get tags with counts
+const allTagsWithCounts = getAllTagsWithCounts(allPosts);
 
 // Format date
 const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -107,17 +130,12 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
           </p>
           
           <!-- Article Body -->
-          <div class="prose prose-lg max-w-none
-            prose-headings:font-display prose-headings:text-primary-900
-            prose-p:text-neutral-700 prose-p:leading-relaxed
-            prose-a:text-accent-600 prose-a:font-semibold hover:prose-a:text-accent-700
-            prose-strong:text-primary-900 prose-strong:font-bold
-            prose-ul:text-neutral-700 prose-ol:text-neutral-700
-            prose-blockquote:border-l-4 prose-blockquote:border-accent-600 prose-blockquote:bg-accent-50 prose-blockquote:py-2
-            prose-img:rounded-xl prose-img:shadow-lg
-          ">
+          <div class="prose prose-lg max-w-full">
             <Content />
           </div>
+
+          <!-- Image Gallery (shows if 3+ images total) -->
+          <ArticleGallery images={allGalleryImages} />
           
           <!-- Social Sharing -->
           <div class="mt-12 pt-8 border-t border-neutral-200">
@@ -181,7 +199,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
         <Sidebar 
           popularArticles={popularPosts}
-          tags={allTags}
+          tags={allTagsWithCounts}
           collection="whatarel4"
         />
       </div>

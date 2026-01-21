@@ -6,12 +6,14 @@ interface Props {
   pubDate: Date;
   heroImage?: string;
   heroImageAlt?: string;
+  cardImage?: string;        // NEW
+  cardImageAlt?: string;     // NEW
   slug: string;
   collection: 'whatarel4' | 'signature-collections' | 'ancestors';
   tags?: string[];
 }
 
-const { title, description, pubDate, heroImage, heroImageAlt, slug, collection, tags = [] } = Astro.props;
+const { title, description, pubDate, heroImage, heroImageAlt, cardImage, cardImageAlt, slug, collection, tags = [] } = Astro.props;
 
 // Format date
 const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -22,16 +24,20 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 
 // Build URL based on collection
 const articleUrl = `/${collection}/${slug}`;
+
+// Use cardImage if available, otherwise fallback to heroImage
+const displayImage = cardImage || heroImage;
+const displayImageAlt = cardImageAlt || heroImageAlt || title;
 ---
 
 <article class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-brand border border-neutral-200">
   
-  <!-- Hero Image -->
-  {heroImage && (
+  <!-- Hero/Card Image -->
+  {displayImage && (
     <a href={articleUrl} class="block">
       <img 
-        src={heroImage} 
-        alt={heroImageAlt || title}
+        src={displayImage} 
+        alt={displayImageAlt}
         class="w-full h-48 object-cover hover:opacity-90 transition-opacity"
       />
     </a>

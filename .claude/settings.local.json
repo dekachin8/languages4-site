@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(node fix-metadata.js:*)",
+      "Bash(node fix-metadata-local.js:*)"
+    ]
+  }
+}

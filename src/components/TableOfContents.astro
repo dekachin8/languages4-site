@@ -14,7 +14,7 @@ interface Heading {
 }
 
 function extractHeadings(markdown: string): Heading[] {
-  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headingRegex = /^(#{2})\s+(.+)$/gm; // Only H2 headings
   const headings: Heading[] = [];
   let match;
   
@@ -42,12 +42,10 @@ const headings = extractHeadings(content);
       Table of Contents
     </h2>
     
-    <nav>
+    <nav class="max-h-96 overflow-y-auto pr-2">
       <ul class="space-y-3">
         {headings.map(heading => (
-          <li 
-            class={heading.level === 3 ? 'ml-4' : ''}
-          >
+          <li>
             <a 
               href={`#${heading.id}`}
               class="text-accent-600 hover:text-accent-700 hover:underline transition-colors leading-snug block text-sm font-medium"

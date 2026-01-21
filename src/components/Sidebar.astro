@@ -9,11 +9,17 @@ interface Props {
     heroImage?: string;
     collection: 'whatarel4' | 'signature-collections' | 'ancestors';
   }>;
-  tags?: string[];
+  tags?: Array<{ tag: string; count: number }>;
   collection: 'whatarel4' | 'signature-collections' | 'ancestors';
+  archiveYears?: Array<{ year: number; count: number }>;
 }
 
-const { popularArticles = [], tags = [], collection } = Astro.props;
+const { popularArticles = [], tags = [], collection, archiveYears = [] } = Astro.props;
+
+// Split tags into initial and hidden
+const initialTags = tags.slice(0, 15);
+const hiddenTags = tags.slice(15);
+const hasMoreTags = hiddenTags.length > 0;
 ---
 
 <aside class="space-y-8">
@@ -47,27 +53,74 @@ const { popularArticles = [], tags = [], collection } = Astro.props;
     </div>
   )}
   
+  <!-- Archive -->
+  {archiveYears.length > 0 && (
+    <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
+      <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
+        Archive
+      </h2>
+      
+      <ul class="space-y-2">
+        {archiveYears.map(({ year, count }) => (
+          <li>
+            <a 
+              href={`/${collection}/archive/${year}`}
+              class="flex justify-between items-center text-accent-600 hover:text-accent-700 hover:underline transition-colors py-1"
+            >
+              <span class="font-semibold">{year}</span>
+              <span class="text-sm text-neutral-500">({count})</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+  
   <!-- Tags -->
   {tags.length > 0 && (
     <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
       <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
-        Tags
+        Browse by Topic
       </h2>
       
-      <div class="flex flex-wrap gap-3">
-        {tags.map(tag => (
+      <div class="flex flex-wrap gap-2">
+        {initialTags.map(({ tag, count }) => (
           <a 
             href={`/${collection}?tag=${encodeURIComponent(tag)}`}
-            class="px-4 py-2 border-2 border-neutral-300 text-neutral-700 rounded-md hover:border-accent-600 hover:text-accent-600 transition-colors font-medium text-sm uppercase tracking-wide"
+            class="px-3 py-1 text-xs bg-neutral-100 text-neutral-700 rounded-full hover:bg-accent-600 hover:text-white transition-colors font-medium uppercase"
           >
-            {tag}
+            {tag} <span class="text-[10px] opacity-70">({count})</span>
           </a>
         ))}
+        
+        {/* Hidden tags - shown when expanded */}
+        {hasMoreTags && (
+          <div id="hidden-tags" class="hidden flex-wrap gap-2 w-full">
+            {hiddenTags.map(({ tag, count }) => (
+              <a 
+                href={`/${collection}?tag=${encodeURIComponent(tag)}`}
+                class="px-3 py-1 text-xs bg-neutral-100 text-neutral-700 rounded-full hover:bg-accent-600 hover:text-white transition-colors font-medium uppercase"
+              >
+                {tag} <span class="text-[10px] opacity-70">({count})</span>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
+      
+      {/* Show More / Show Less Button */}
+      {hasMoreTags && (
+        <button
+          id="toggle-tags"
+          class="mt-4 w-full px-4 py-2 text-sm font-semibold text-accent-600 hover:text-accent-700 hover:bg-accent-50 rounded-lg transition-colors border border-accent-200"
+        >
+          Show More Tags (+{hiddenTags.length})
+        </button>
+      )}
     </div>
   )}
   
-  <!-- Past Newsletter Issues (NOW ON ALL PAGES) -->
+  <!-- Past Newsletter Issues -->
   <div class="bg-white rounded-lg p-6 shadow-md border border-neutral-200">
     <h2 class="font-display text-2xl font-bold text-primary-900 mb-6 pb-3 border-b-2 border-primary-900">
       Past Newsletter Issues
@@ -83,3 +136,35 @@ const { popularArticles = [], tags = [], collection } = Astro.props;
   </div>
   
 </aside>
+
+<script>
+  function initTagToggle() {
+    const toggleButton = document.getElementById('toggle-tags');
+    const hiddenTags = document.getElementById('hidden-tags');
+    
+    if (!toggleButton || !hiddenTags) return;
+    
+    let isExpanded = false;
+    
+    toggleButton.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      
+      if (isExpanded) {
+        hiddenTags.classList.remove('hidden');
+        hiddenTags.classList.add('flex');
+        toggleButton.textContent = 'Show Less Tags';
+      } else {
+        hiddenTags.classList.add('hidden');
+        hiddenTags.classList.remove('flex');
+        const count = hiddenTags.querySelectorAll('a').length;
+        toggleButton.textContent = `Show More Tags (+${count})`;
+      }
+    });
+  }
+  
+  // Initialize on page load
+  initTagToggle();
+  
+  // Re-initialize after View Transitions
+  document.addEventListener('astro:after-swap', initTagToggle);
+</script>
