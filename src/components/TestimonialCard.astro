@@ -1,0 +1,82 @@
+---
+// TestimonialCard.astro - Versatile testimonial card component
+// Can be used standalone or grouped together
+import type { Testimonial } from '../utils/testimonials.ts';
+import { getInitials, categoryColors } from '../utils/testimonials.ts';
+
+interface Props {
+  testimonial: Testimonial;
+  variant?: 'default' | 'compact' | 'minimal';
+  showAvatar?: boolean;
+}
+
+const { 
+  testimonial, 
+  variant = 'default',
+  showAvatar = true 
+} = Astro.props;
+
+const { quote, author, role, organization, category } = testimonial;
+const initials = getInitials(author);
+const avatarColor = category ? categoryColors[category] : categoryColors.community;
+---
+
+<div class={`testimonial-card group relative bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_15px_50px_rgba(0,0,0,0.12)] hover:-translate-y-1 overflow-hidden ${variant === 'compact' ? 'p-6' : 'p-8'}`}>
+  
+  <!-- Decorative quote mark -->
+  <div class="absolute top-4 right-4 text-accent-600/10 transition-all duration-300 group-hover:text-accent-600/20">
+    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+    </svg>
+  </div>
+
+  <div class="relative z-10">
+    <!-- Quote -->
+    <blockquote class={`text-neutral-700 leading-relaxed mb-6 ${variant === 'compact' ? 'text-base' : 'text-lg'}`}>
+      "{quote}"
+    </blockquote>
+
+    <!-- Author Info -->
+    <div class="flex items-center gap-4 pt-4 border-t border-neutral-200">
+      {showAvatar && (
+        <div class="flex-shrink-0">
+          <div class={`w-14 h-14 ${avatarColor} rounded-full flex items-center justify-center text-white font-bold text-lg shadow-brand`}>
+            {initials}
+          </div>
+        </div>
+      )}
+      
+      <div class="flex-1">
+        <div class="font-semibold text-primary-900">{author}</div>
+        <div class="text-sm text-neutral-600">{role}</div>
+        {organization && (
+          <div class="text-xs text-neutral-500 mt-0.5">{organization}</div>
+        )}
+      </div>
+
+      <!-- Accent decoration -->
+      <div class="w-8 h-8 bg-accent-600 rounded-lg flex items-center justify-center flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .testimonial-card {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

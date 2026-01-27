@@ -1,6 +1,17 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import ShowcaseLoader from '../components/ShowcaseLoader.astro';
+import FeaturedStoriesCarousel from '../components/FeaturedStoriesCarousel.astro';
+import WhatWeDoSection from '../components/WhatWeDoSection.astro';
+import WhyLanguages4Section from '../components/WhyLanguages4Section.astro';
+import TestimonialPullQuote from '../components/TestimonialPullQuote.astro';
+import TestimonialSlider from '../components/TestimonialSlider.astro';     // ← ADD THIS
+import TestimonialCard from '../components/TestimonialCard.astro';         // ← ADD THIS (if using grid)
+import { testimonials, getFeaturedTestimonials } from '../utils/testimonials.ts';
+const allTestimonials = testimonials;
+const featured = getFeaturedTestimonials();
+// Fallback: if no featured testimonials exist, use first 3
+const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0, 3);
 ---
 
 <MainLayout 
@@ -9,7 +20,7 @@ import ShowcaseLoader from '../components/ShowcaseLoader.astro';
   image="/images/hero-social-share.jpg"
 >
 
-<section class="relative min-h-screen bg-white flex items-start justify-start overflow-hidden px-4 md:px-8 pt-28 pb-4 md:py-16">
+<section class="relative min-h-screen bg-white flex items-center justify-start overflow-hidden px-4 md:px-8 pt-20 pb-4 md:py-16">
   <div class="relative max-w-full w-full flex items-start justify-start z-10">
     
     <!-- Hero Text Box - MOBILE OPTIMIZED -->
@@ -163,15 +174,14 @@ import ShowcaseLoader from '../components/ShowcaseLoader.astro';
   </div>
 </section>
 
-<!-- Mission Section -->
-<section style="background: white; padding: 4rem 0;">
-  <div class="container">
-    <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 2rem; font-family: 'Neue Kabel', sans-serif; color: var(--color-primary);">Our Approach</h2>
-    <p style="text-align: center; font-size: 1.25rem; max-width: 800px; margin: 0 auto; color: #666; line-height: 1.8;">
-      Languages 4 respects language sovereignty and builds partnerships with Tribal Nations to develop affordable, effective language learning platforms.
-    </p>
-  </div>
-</section>
+<!-- ✨ NEW: Featured Stories Carousel -->
+<FeaturedStoriesCarousel />
+
+<!-- ✨ NEW: What We Do Section -->
+<WhatWeDoSection />
+
+<!-- ✨ NEW: Why Languages 4 - Core Values Section -->
+<WhyLanguages4Section />
 
 <!-- Load the random image script -->
 <ShowcaseLoader />
@@ -195,5 +205,63 @@ import ShowcaseLoader from '../components/ShowcaseLoader.astro';
   // Cycle every 8 seconds (slower, more time to appreciate each image)
   setInterval(cycleImages, 8000);
 </script>
+
+
+<!-- OPTION C: COMBO (Slider + Grid) -->
+<!-- ========================================== -->
+<section class="py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50">
+  <div class="container mx-auto px-4 lg:pr-24">
+    
+    <!-- Top: Featured Testimonials Slider -->
+    <div class="mb-20">
+      <div class="text-center mb-12">
+        <span class="inline-block text-xs md:text-sm font-bold tracking-[2px] text-white bg-neutral-600 px-4 py-2 mb-4 rounded">FEATURED VOICES</span>
+        <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+          What Our Partners Say
+        </h2>
+        <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+          Trusted by Indigenous communities, educators, and language keepers
+        </p>
+      </div>
+
+      <TestimonialSlider 
+        testimonials={featuredToShow}
+        autoplay={true}
+        interval={6000}
+      />
+    </div>
+
+    <!-- Bottom: Grid of More Testimonials -->
+    <div>
+      <h3 class="font-display text-3xl font-medium text-primary-900 text-center mb-12">
+        More from Our Community
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        {allTestimonials.filter(t => !t.featured).slice(0, 6).map(testimonial => (
+          <TestimonialCard 
+            testimonial={testimonial}
+            variant="compact"
+            showAvatar={true}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-16">
+      <p class="text-neutral-700 text-lg mb-6">
+        Ready to join these communities in language reclamation?
+      </p>
+      <a 
+        href="/contact"
+        class="inline-block py-4 px-10 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:-translate-y-1 hover:shadow-brand-orange"
+      >
+        Schedule Your Demonstration
+      </a>
+    </div>
+
+  </div>
+</section>
 
 </MainLayout>

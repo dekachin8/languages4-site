@@ -1,0 +1,76 @@
+---
+// TestimonialPullQuote.astro - Large pull quote to break up sections
+// Minimal design, maximum impact
+import type { Testimonial } from '../utils/testimonials.ts';
+import { getInitials, categoryColors } from '../utils/testimonials.ts';
+
+interface Props {
+  testimonial: Testimonial;
+  alignment?: 'left' | 'center' | 'right';
+  showAvatar?: boolean;
+}
+
+const { 
+  testimonial, 
+  alignment = 'center',
+  showAvatar = false 
+} = Astro.props;
+
+const { quote, author, role, organization, category } = testimonial;
+const initials = getInitials(author);
+const avatarColor = category ? categoryColors[category] : categoryColors.community;
+
+const alignmentClasses = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right'
+};
+---
+
+<div class={`testimonial-pull-quote relative py-12 md:py-16 ${alignmentClasses[alignment]}`}>
+  <div class="max-w-4xl mx-auto px-4">
+    
+    <!-- Large Quote Mark -->
+    <div class={`text-accent-600/20 mb-4 ${alignment === 'center' ? 'flex justify-center' : alignment === 'right' ? 'flex justify-end' : ''}`}>
+      <svg class="w-12 h-12 md:w-16 md:h-16" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+      </svg>
+    </div>
+
+    <!-- Quote Text -->
+    <blockquote class="text-2xl md:text-3xl lg:text-4xl font-light text-neutral-800 leading-relaxed mb-6 md:mb-8">
+      "{quote}"
+    </blockquote>
+
+    <!-- Author Attribution -->
+    <div class={`flex items-center gap-4 ${alignment === 'center' ? 'justify-center' : alignment === 'right' ? 'justify-end' : ''}`}>
+      {showAvatar && (
+        <div class={`w-16 h-16 ${avatarColor} rounded-full flex items-center justify-center text-white font-bold text-xl shadow-brand`}>
+          {initials}
+        </div>
+      )}
+      
+      <div class={alignment === 'center' || alignment === 'left' ? 'text-left' : 'text-right'}>
+        <div class="font-bold text-primary-900 text-lg">{author}</div>
+        <div class="text-neutral-600">{role}</div>
+        {organization && (
+          <div class="text-sm text-neutral-500">{organization}</div>
+        )}
+      </div>
+    </div>
+
+    <!-- Decorative accent line -->
+    <div class={`mt-8 h-1 w-24 bg-gradient-to-r from-accent-600 to-primary-600 ${alignment === 'center' ? 'mx-auto' : alignment === 'right' ? 'ml-auto' : ''}`}></div>
+  </div>
+</div>
+
+<style>
+  .testimonial-pull-quote {
+    animation: fadeIn 1s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>

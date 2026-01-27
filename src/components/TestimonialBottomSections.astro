@@ -1,0 +1,146 @@
+---
+// TestimonialBottomSections.astro - Three different approaches for bottom of homepage
+// Choose which one you like best, or use the combo!
+
+import TestimonialCard from '../components/TestimonialCard.astro';
+import TestimonialSlider from '../components/TestimonialSlider.astro';
+import { testimonials, getFeaturedTestimonials, getTestimonialsByCategory } from '../utils/testimonials.ts';
+
+const featured = getFeaturedTestimonials();
+const teachers = getTestimonialsByCategory('teacher');
+const allTestimonials = testimonials;
+---
+
+<!-- ========================================== -->
+<!-- OPTION A: SLIDER ONLY (Auto-rotating) -->
+<!-- ========================================== -->
+<section class="py-16 md:py-24 bg-white">
+  <div class="container mx-auto px-4 lg:pr-24">
+    <div class="text-center mb-12">
+      <span class="inline-block text-xs md:text-sm font-bold tracking-[2px] text-white bg-neutral-600 px-4 py-2 mb-4 rounded">TESTIMONIALS</span>
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+        What Our Partners Say
+      </h2>
+      <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+        Trusted by Indigenous communities, educators, and language keepers across North America
+      </p>
+    </div>
+
+    <TestimonialSlider 
+      testimonials={featured}
+      autoplay={true}
+      interval={6000}
+    />
+  </div>
+</section>
+
+
+<!-- ========================================== -->
+<!-- OPTION B: GRID ONLY (Static display) -->
+<!-- ========================================== -->
+<section class="py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50">
+  <div class="container mx-auto px-4 lg:pr-24">
+    <div class="text-center mb-12">
+      <span class="inline-block text-xs md:text-sm font-bold tracking-[2px] text-white bg-neutral-600 px-4 py-2 mb-4 rounded">TESTIMONIALS</span>
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+        Voices from Our Community
+      </h2>
+      <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+        Hear from educators, language keepers, and community members using Languages 4
+      </p>
+    </div>
+
+    <!-- Grid of 3 cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      {featured.slice(0, 3).map(testimonial => (
+        <TestimonialCard 
+          testimonial={testimonial}
+          showAvatar={true}
+        />
+      ))}
+    </div>
+
+    <!-- Optional: Show more button if you have lots of testimonials -->
+    <!-- <div class="text-center mt-12">
+      <a 
+        href="/testimonials" 
+        class="inline-block py-3 px-8 border-2 border-primary-900 text-primary-900 rounded-lg font-semibold text-lg transition-all duration-300 hover:bg-primary-900 hover:text-white hover:-translate-y-0.5 hover:shadow-brand"
+      >
+        View All Testimonials
+      </a>
+    </div> -->
+  </div>
+</section>
+
+
+<!-- ========================================== -->
+<!-- OPTION C: COMBO (Slider + Grid) -->
+<!-- ========================================== -->
+<section class="py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50">
+  <div class="container mx-auto px-4 lg:pr-24">
+    
+    <!-- Top: Featured Testimonials Slider -->
+    <div class="mb-20">
+      <div class="text-center mb-12">
+        <span class="inline-block text-xs md:text-sm font-bold tracking-[2px] text-white bg-neutral-600 px-4 py-2 mb-4 rounded">FEATURED VOICES</span>
+        <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+          What Our Partners Say
+        </h2>
+        <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+          Trusted by Indigenous communities, educators, and language keepers
+        </p>
+      </div>
+
+      <TestimonialSlider 
+        testimonials={featured}
+        autoplay={true}
+        interval={6000}
+      />
+    </div>
+
+    <!-- Bottom: Grid of More Testimonials -->
+    <div>
+      <h3 class="font-display text-3xl font-medium text-primary-900 text-center mb-12">
+        More from Our Community
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        {allTestimonials.filter(t => !t.featured).slice(0, 6).map(testimonial => (
+          <TestimonialCard 
+            testimonial={testimonial}
+            variant="compact"
+            showAvatar={true}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-16">
+      <p class="text-neutral-700 text-lg mb-6">
+        Ready to join these communities in language reclamation?
+      </p>
+      <a 
+        href="/contact"
+        class="inline-block py-4 px-10 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:-translate-y-1 hover:shadow-brand-orange"
+      >
+        Schedule Your Demonstration
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- 
+USAGE INSTRUCTIONS:
+1. Copy ONE of the three options above (A, B, or C)
+2. Paste it at the bottom of your index.astro before </MainLayout>
+3. Delete the other two options from this file
+4. Adjust spacing/styling as needed
+
+RECOMMENDATIONS:
+- Option A: Simple, clean, focuses attention on each testimonial
+- Option B: Shows more social proof at once, good if you have 3-6 strong testimonials
+- Option C: Best of both - featured testimonials get spotlight, plus more social proof below
+-->
