@@ -25,40 +25,45 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto mb-16">
       
       <!-- Left: Venn Diagram Visual -->
-      <div class="relative flex items-center justify-center lg:order-1">
-        <!-- Venn Diagram SVG Container -->
-        <div class="relative w-full max-w-md aspect-square">
-          
-          <!-- Top Circle: Language Sovereignty (Primary/Teal) -->
-          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-primary-600/20 border-4 border-primary-600 flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-primary-600/30 hover:scale-105 z-10">
-            <div class="text-center px-6">
-              <div class="text-white font-display text-2xl font-bold mb-2">Language<br/>Sovereignty</div>
+<div class="relative flex items-center justify-center lg:order-1">
+  <!-- Venn Diagram SVG Container -->
+  <div class="relative w-full max-w-md aspect-square px-4 sm:px-0">
+    
+            <!-- Top Circle: Language Sovereignty (Primary/Teal) -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full bg-primary-600/20 border-2 sm:border-4 border-primary-600 flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-primary-600/30 hover:scale-105 z-10">
+            <div class="text-center px-3 sm:px-6">
+                <div class="text-white font-display text-lg sm:text-xl md:text-2xl font-bold mb-0 sm:mb-2 leading-tight">
+                Language<br/>Sovereignty
+                </div>
             </div>
-          </div>
-
-          <!-- Bottom Left Circle: Trustworthy (Green) -->
-          <div class="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#74a892]/20 border-4 border-[#74a892] flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-[#74a892]/30 hover:scale-105 z-10">
-            <div class="text-center px-6">
-              <div class="text-[#74a892] font-display text-2xl font-bold">Trustworthy</div>
             </div>
-          </div>
 
-          <!-- Bottom Right Circle: Innovative (Orange/Accent) -->
-          <div class="absolute bottom-0 right-0 w-64 h-64 rounded-full bg-accent-600/20 border-4 border-accent-600 flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-accent-600/30 hover:scale-105 z-10">
-            <div class="text-center px-6">
-              <div class="text-accent-600 font-display text-2xl font-bold">Innovative</div>
+            <!-- Bottom Left Circle: Trustworthy (Green) -->
+            <div class="absolute bottom-0 left-0 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full bg-[#74a892]/20 border-2 sm:border-4 border-[#74a892] flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-[#74a892]/30 hover:scale-105 z-10">
+            <div class="text-center px-3 sm:px-6">
+                <div class="text-[#74a892] font-display text-lg sm:text-xl md:text-2xl font-bold leading-tight">
+                Trustworthy
+                </div>
             </div>
-          </div>
+            </div>
 
-          <!-- Center overlap area -->
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-gradient-to-br from-primary-600/30 via-[#74a892]/30 to-accent-600/30 border-2 border-white/50 flex items-center justify-center backdrop-blur-md z-20">
-            <svg class="w-16 h-16 text-primary-900" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+            <!-- Bottom Right Circle: Innovative (Orange/Accent) -->
+            <div class="absolute bottom-0 right-0 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full bg-accent-600/20 border-2 sm:border-4 border-accent-600 flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-accent-600/30 hover:scale-105 z-10">
+            <div class="text-center px-3 sm:px-6">
+                <div class="text-accent-600 font-display text-lg sm:text-xl md:text-2xl font-bold leading-tight">
+                Innovative
+                </div>
+            </div>
+            </div>
+
+            <!-- Center overlap area -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-primary-600/30 via-[#74a892]/30 to-accent-600/30 border border-white/50 sm:border-2 flex items-center justify-center backdrop-blur-md z-20">
+            <svg class="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 text-primary-900" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
             </svg>
-          </div>
+            </div>
         </div>
-      </div>
-
+        </div>
       <!-- Right: Three Value Cards -->
       <div class="space-y-6 lg:order-2">
         
@@ -179,78 +184,106 @@
 
     <!-- Netlify Form -->
     <form
-      name="core-values-download"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-      id="download-form"
-      class="space-y-4"
+    name="core-values-download"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    id="download-form"
+    class="space-y-4"
     >
-      <!-- Netlify form detection -->
-      <input type="hidden" name="form-name" value="core-values-download" />
-      
-      <!-- Honeypot for spam -->
-      <p class="hidden">
+    <!-- Netlify form detection -->
+    <input type="hidden" name="form-name" value="core-values-download" />
+    
+    <!-- Honeypot for spam -->
+    <p class="hidden">
         <label>
-          Don't fill this out if you're human: <input name="bot-field" />
+        Don't fill this out if you're human: <input name="bot-field" />
         </label>
-      </p>
+    </p>
 
-      <!-- Name field -->
-      <div>
+    <!-- Name field -->
+    <div>
         <label for="download-name" class="block text-sm font-semibold text-neutral-700 mb-2">
-          Name
+        Name *
         </label>
         <input
-          type="text"
-          id="download-name"
-          name="name"
-          required
-          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
-          placeholder="Your name"
+        type="text"
+        id="download-name"
+        name="name"
+        required
+        class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+        placeholder="Your name"
         />
-      </div>
+    </div>
 
-      <!-- Email field -->
-      <div>
+    <!-- Email field -->
+    <div>
         <label for="download-email" class="block text-sm font-semibold text-neutral-700 mb-2">
-          Email Address *
+        Email Address *
         </label>
         <input
-          type="email"
-          id="download-email"
-          name="email"
-          required
-          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
-          placeholder="your@email.com"
+        type="email"
+        id="download-email"
+        name="email"
+        required
+        class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+        placeholder="your@email.com"
         />
-      </div>
+    </div>
 
-      <!-- Organization field (optional) -->
-      <div>
+    <!-- Organization field (optional) -->
+    <div>
         <label for="download-organization" class="block text-sm font-semibold text-neutral-700 mb-2">
-          Organization (Optional)
+        Organization (Optional)
         </label>
         <input
-          type="text"
-          id="download-organization"
-          name="organization"
-          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
-          placeholder="Your organization or community"
+        type="text"
+        id="download-organization"
+        name="organization"
+        class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+        placeholder="Your organization or community"
         />
-      </div>
+    </div>
 
-      <!-- Submit button -->
-      <button
+    <!-- Phone field (optional) -->
+    <div>
+        <label for="download-phone" class="block text-sm font-semibold text-neutral-700 mb-2">
+        Phone Number (Optional)
+        </label>
+        <input
+        type="tel"
+        id="download-phone"
+        name="phone"
+        class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+        placeholder="(555) 123-4567"
+        />
+    </div>
+
+    <!-- Tribal Affiliation field (optional) -->
+    <div>
+        <label for="download-tribal-affiliation" class="block text-sm font-semibold text-neutral-700 mb-2">
+        Tribal Affiliation (Optional)
+        </label>
+        <input
+        type="text"
+        id="download-tribal-affiliation"
+        name="tribal-affiliation"
+        class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+        placeholder="Your tribal nation or community"
+        />
+    </div>
+
+    <!-- Submit button -->
+    <button
         type="submit"
         class="w-full py-4 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:shadow-lg"
-      >
+    >
         Download PDF
-      </button>
+    </button>
 
-      <p class="text-xs text-neutral-500 text-center">
+    <p class="text-xs text-neutral-500 text-center">
         We respect your privacy. Your information will only be used to share language reclamation resources.
-      </p>
+    </p>
     </form>
 
     <!-- Success message (hidden by default) -->
