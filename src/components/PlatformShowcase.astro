@@ -1,0 +1,318 @@
+---
+// PlatformShowcase.astro - Animated film strip of platform activities
+// Desktop: Cinematic horizontal film strip with sprocket holes
+// Mobile: Stacked comic-style panels
+import { getAllActivities, getRandomizedActivities, SHOWCASE_CONFIG } from '../utils/platformShowcase';
+
+// Get activities (randomized or sequential based on config)
+const activities = SHOWCASE_CONFIG.randomize ? getRandomizedActivities() : getAllActivities();
+---
+
+<section class="relative py-16 md:py-24 bg-white overflow-hidden">
+  <!-- Background decoration -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute top-1/4 right-0 w-96 h-96 bg-accent-600 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 left-0 w-96 h-96 bg-primary-600 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <span class="inline-block text-xs md:text-sm font-bold tracking-[2px] text-white bg-neutral-600 px-4 py-2 mb-4 rounded">PLATFORM SHOWCASE</span>
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+        See Language Learning in Action
+      </h2>
+      <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+        Experience the tools and activities that bring Indigenous languages to life
+      </p>
+    </div>
+
+    <!-- DESKTOP: Film Strip (Hidden on mobile) -->
+    <div class="hidden lg:block max-w-6xl mx-auto mb-12">
+      <!-- Film Strip Container with sprocket holes -->
+      <div class="relative bg-neutral-900 rounded-xl p-8 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+        <!-- Sprocket holes (top) -->
+        <div class="absolute top-2 left-0 right-0 flex justify-around">
+          {Array.from({ length: 20 }).map(() => (
+            <div class="w-3 h-3 bg-neutral-950 rounded-full"></div>
+          ))}
+        </div>
+
+        <!-- Sprocket holes (bottom) -->
+        <div class="absolute bottom-2 left-0 right-0 flex justify-around">
+          {Array.from({ length: 20 }).map(() => (
+            <div class="w-3 h-3 bg-neutral-950 rounded-full"></div>
+          ))}
+        </div>
+
+        <!-- Film frames container -->
+        <div id="film-strip" class="relative h-[500px] overflow-hidden">
+          {activities.map((activity, index) => (
+            <div 
+              class="film-frame absolute inset-0 transition-all duration-700 ease-in-out"
+              data-index={index}
+              style={index === 0 ? 'opacity: 1; transform: translateX(0);' : 'opacity: 0; transform: translateX(100%);'}
+            >
+              <div class="relative h-full bg-white rounded-lg overflow-hidden shadow-xl">
+                <!-- Screenshot -->
+                <div class="relative h-[300px] overflow-hidden bg-neutral-100">
+                  <img 
+                    src={activity.image} 
+                    alt={activity.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <!-- Category badge -->
+                  {activity.category && (
+                    <span class="absolute top-4 right-4 bg-primary-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+                      {activity.category}
+                    </span>
+                  )}
+                </div>
+
+                <!-- Caption area -->
+                <div class="p-8 bg-gradient-to-b from-white to-neutral-50">
+                  <h3 class="font-display text-2xl font-bold text-primary-900 mb-3">
+                    {activity.title}
+                  </h3>
+                  <p class="text-neutral-700 text-lg leading-relaxed">
+                    {activity.description}
+                  </p>
+                </div>
+
+                <!-- Frame number badge -->
+                <div class="absolute top-4 left-4 w-10 h-10 bg-neutral-900 text-white rounded-full flex items-center justify-center font-bold shadow-lg">
+                  {index + 1}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Navigation dots -->
+        <div class="flex items-center justify-center gap-3 mt-6">
+          {activities.map((_, index) => (
+            <button
+              class="film-dot w-2.5 h-2.5 rounded-full bg-neutral-500 hover:bg-neutral-300 transition-all duration-300"
+              data-index={index}
+              aria-label={`Go to frame ${index + 1}`}
+            ></button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Manual controls -->
+      <div class="flex items-center justify-center gap-6 mt-8">
+        <button 
+          id="prev-frame-btn"
+          class="w-12 h-12 rounded-full bg-neutral-900 text-white flex items-center justify-center transition-all duration-300 hover:bg-neutral-800 hover:scale-110 shadow-lg"
+          aria-label="Previous frame"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <div class="text-center">
+          <p class="text-sm text-neutral-600 font-semibold">
+            Frame <span id="current-frame">1</span> of {activities.length}
+          </p>
+          <p class="text-xs text-neutral-500 mt-1">Hover to pause</p>
+        </div>
+
+        <button 
+          id="next-frame-btn"
+          class="w-12 h-12 rounded-full bg-neutral-900 text-white flex items-center justify-center transition-all duration-300 hover:bg-neutral-800 hover:scale-110 shadow-lg"
+          aria-label="Next frame"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE: Comic Strip Panels (Hidden on desktop) -->
+    <div class="lg:hidden space-y-8 max-w-2xl mx-auto">
+      {activities.map((activity, index) => (
+        <div class="relative bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] overflow-hidden border-4 border-neutral-900 transform transition-transform duration-300 hover:scale-105">
+          <!-- Panel number -->
+          <div class="absolute top-4 left-4 z-10 w-12 h-12 bg-accent-600 text-white rounded-full flex items-center justify-center font-display text-xl font-bold shadow-lg">
+            {index + 1}
+          </div>
+
+          <!-- Screenshot -->
+          <div class="relative h-64 bg-neutral-100">
+            <img 
+              src={activity.image} 
+              alt={activity.title}
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            {activity.category && (
+              <span class="absolute top-4 right-4 bg-primary-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+                {activity.category}
+              </span>
+            )}
+          </div>
+
+          <!-- Speech bubble style caption -->
+          <div class="relative p-6 bg-gradient-to-b from-white to-neutral-50">
+            <!-- Speech bubble pointer -->
+            <div class="absolute -top-4 left-8 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[20px] border-b-white"></div>
+            
+            <h3 class="font-display text-xl font-bold text-primary-900 mb-2">
+              {activity.title}
+            </h3>
+            <p class="text-neutral-700 leading-relaxed">
+              {activity.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-16">
+      <p class="text-neutral-700 text-lg mb-6">
+        Ready to experience the platform yourself?
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/contact"
+          class="inline-block py-4 px-10 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:-translate-y-1 hover:shadow-brand-orange"
+        >
+          Schedule Your Demonstration
+        </a>
+        <a 
+          href="/trial"
+          class="inline-block py-4 px-10 border-2 border-primary-600 text-primary-600 rounded-lg font-bold text-lg transition-all duration-300 hover:bg-primary-600 hover:text-white hover:-translate-y-1 hover:shadow-brand"
+        >
+          Start Your Free Trial
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ activities, config: SHOWCASE_CONFIG }}>
+  let currentFrame = 0;
+  let autoPlayInterval;
+  const frames = document.querySelectorAll('.film-frame');
+  const dots = document.querySelectorAll('.film-dot');
+  const prevBtn = document.getElementById('prev-frame-btn');
+  const nextBtn = document.getElementById('next-frame-btn');
+  const currentFrameDisplay = document.getElementById('current-frame');
+  const totalFrames = frames.length;
+
+  function updateFilmStrip(newIndex) {
+    // Hide current frame
+    if (frames[currentFrame]) {
+      frames[currentFrame].style.opacity = '0';
+      frames[currentFrame].style.transform = 'translateX(-100%)';
+    }
+
+    // Update index
+    currentFrame = newIndex;
+
+    // Show new frame
+    if (frames[currentFrame]) {
+      frames[currentFrame].style.opacity = '1';
+      frames[currentFrame].style.transform = 'translateX(0)';
+    }
+
+    // Update dots
+    dots.forEach((dot, index) => {
+      if (index === currentFrame) {
+        dot.classList.add('bg-accent-600', 'scale-125');
+        dot.classList.remove('bg-neutral-500');
+      } else {
+        dot.classList.add('bg-neutral-500');
+        dot.classList.remove('bg-accent-600', 'scale-125');
+      }
+    });
+
+    // Update frame counter
+    if (currentFrameDisplay) {
+      currentFrameDisplay.textContent = String(currentFrame + 1);
+    }
+  }
+
+  function nextFrame() {
+    updateFilmStrip((currentFrame + 1) % totalFrames);
+  }
+
+  function prevFrame() {
+    updateFilmStrip((currentFrame - 1 + totalFrames) % totalFrames);
+  }
+
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(nextFrame, config.autoplayDelay);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+    }
+  }
+
+  function resetAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  // Event listeners
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      prevFrame();
+      resetAutoPlay();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      nextFrame();
+      resetAutoPlay();
+    });
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      updateFilmStrip(index);
+      resetAutoPlay();
+    });
+  });
+
+  // Pause on hover
+  const filmStrip = document.getElementById('film-strip');
+  if (filmStrip) {
+    filmStrip.addEventListener('mouseenter', stopAutoPlay);
+    filmStrip.addEventListener('mouseleave', startAutoPlay);
+  }
+
+  // Initialize
+  if (frames.length > 0) {
+    updateFilmStrip(0);
+    startAutoPlay();
+  }
+
+  // Re-initialize after View Transitions
+  document.addEventListener('astro:after-swap', () => {
+    stopAutoPlay();
+    currentFrame = 0;
+    if (frames.length > 0) {
+      updateFilmStrip(0);
+      startAutoPlay();
+    }
+  });
+</script>
+
+<style>
+  .film-frame {
+    transition: opacity 700ms ease-in-out, transform 700ms ease-in-out;
+  }
+
+  .film-dot {
+    transition: all 300ms ease-in-out;
+  }
+</style>

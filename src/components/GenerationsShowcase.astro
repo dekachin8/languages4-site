@@ -1,0 +1,586 @@
+---
+// GenerationsShowcase.astro - Languages 4 Generations interactive showcase
+// Auto-cycles through parallel learning paths with interactive slider
+import { generationsExamples } from '../utils/generationsExamples';
+---
+
+<section class="relative py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50 overflow-hidden">
+  <!-- Background decoration -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute top-1/4 left-0 w-96 h-96 bg-accent-600 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-primary-600 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 relative z-10">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+        Languages 4 Generations
+      </h2>
+      <p class="text-xl md:text-2xl text-neutral-700 max-w-3xl mx-auto mb-2">
+        Parallel Learning Paths for Every Generation, Every Project
+      </p>
+      <p class="text-lg text-neutral-600 max-w-2xl mx-auto">
+        Grow Together, Learn Apart
+      </p>
+    </div>
+
+    <!-- Interactive Split-Screen Showcase -->
+    <div class="max-w-6xl mx-auto mb-12">
+      <!-- Category Indicator (shows current example) -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-brand">
+          <span id="category-icon" class="text-3xl transition-all duration-500">🎒</span>
+          <span id="category-name" class="font-display text-xl font-bold text-primary-900 transition-all duration-500">Vocabulary</span>
+        </div>
+      </div>
+
+      <!-- Split-Screen Container -->
+      <div id="split-container" class="relative bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden">
+        <!-- Progress Dots -->
+        <div class="absolute top-6 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+          {generationsExamples.map((_, index) => (
+            <button
+              class="progress-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/80 transition-all duration-300"
+              data-index={index}
+              aria-label={`Go to example ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        <!-- Main Content Grid - Changed to Flex for slider -->
+        <div class="flex flex-col lg:flex-row min-h-[500px] relative">
+        <!-- LEFT: Children's Side (Light & Playful) -->
+        <div id="child-content" class="relative p-8 md:p-12 bg-gradient-to-br from-accent-100 via-primary-100 to-[#fbf2c4] transition-all duration-300 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-1/2">
+            <!-- Age Label -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm mb-6">
+            <svg class="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="font-display font-bold text-primary-900">Children (Ages 5-12)</span>
+            </div>
+
+            <!-- Icon -->
+            <div class="mb-6">
+            <div class="w-20 h-20 flex items-center justify-center text-5xl" id="child-icon">
+                🎒
+            </div>
+            </div>
+
+            <!-- Content -->
+            <h3 id="child-title" class="font-display text-3xl md:text-4xl font-bold text-primary-900 mb-4 transition-all duration-500">
+            School Words
+            </h3>
+            <p id="child-description" class="text-lg text-neutral-800 leading-relaxed transition-all duration-500">
+            Desk, pencil, teacher, classroom - essential vocabulary for young learners
+            </p>
+
+            <!-- Decorative Element -->
+            <div class="absolute bottom-8 right-8 w-32 h-32 bg-accent-400/10 rounded-full blur-2xl"></div>
+        </div>
+
+        <!-- CENTER: Interactive Draggable Divider -->
+        <div 
+            id="divider"
+            class="absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 bg-gradient-to-b from-accent-400 via-primary-600 to-[#74a892] z-20 hidden lg:block cursor-ew-resize hover:w-3 transition-all"
+        >
+            <!-- Drag Handle -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white rounded-full shadow-brand flex items-center justify-center cursor-grab active:cursor-grabbing">
+            <span id="connection-icon" class="text-2xl transition-all duration-500">💬</span>
+            </div>
+
+            <!-- Connection Text (below icon) -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-16 w-48 text-center pointer-events-none">
+            <div class="px-4 py-2 bg-white rounded-full shadow-brand backdrop-blur-sm">
+                <p id="connection-text" class="text-sm font-semibold text-primary-900 transition-all duration-500">
+                Daily Life Communication
+                </p>
+            </div>
+            </div>
+
+            <!-- Drag Hint (subtle) -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 opacity-50 pointer-events-none">
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 6L8 8l2 2-2 2 2 2 2-2-2-2 2-2-2-2z"/>
+            </svg>
+            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 6L8 8l2 2-2 2 2 2 2-2-2-2 2-2-2-2z"/>
+            </svg>
+            </div>
+        </div>
+
+        <!-- RIGHT: Adults' Side (Dark & Mature) -->
+        <div id="adult-content" class="relative p-8 md:p-12 bg-gradient-to-br from-primary-900 via-primary-800 to-[#74a892] transition-all duration-300 lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/2">
+            <!-- Age Label -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full shadow-sm mb-6">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span class="font-display font-bold text-white">Adults (Ages 13+)</span>
+            </div>
+
+            <!-- Icon -->
+            <div class="mb-6">
+            <div class="w-20 h-20 flex items-center justify-center text-5xl" id="adult-icon">
+                💼
+            </div>
+            </div>
+
+            <!-- Content -->
+            <h3 id="adult-title" class="font-display text-3xl md:text-4xl font-bold text-white mb-4 transition-all duration-500">
+            Work Words
+            </h3>
+            <p id="adult-description" class="text-lg text-white/90 leading-relaxed transition-all duration-500">
+            Meeting, schedule, project, leadership - professional language skills
+            </p>
+
+            <!-- Decorative Element -->
+            <div class="absolute bottom-8 left-8 w-32 h-32 bg-accent-600/10 rounded-full blur-2xl"></div>
+        </div>
+        </div>
+
+        <!-- Mobile Connection (shows on small screens) -->
+        <div class="lg:hidden px-8 py-6 bg-gradient-to-r from-accent-400 via-primary-600 to-[#74a892] text-center">
+          <div class="flex items-center justify-center gap-3">
+            <span id="connection-icon-mobile" class="text-2xl">💬</span>
+            <p id="connection-text-mobile" class="text-sm font-semibold text-white">
+              Daily Life Communication
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manual Navigation (optional - for power users) -->
+      <div class="flex items-center justify-center gap-4 mt-8">
+        <button
+          id="prev-btn"
+          class="p-3 rounded-full bg-white shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:bg-primary-50 group"
+          aria-label="Previous example"
+        >
+          <svg class="w-6 h-6 text-primary-900 group-hover:text-primary-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <div class="text-center">
+          <p class="text-sm text-neutral-600">
+            <span id="current-index">1</span> of {generationsExamples.length}
+          </p>
+        </div>
+
+        <button
+          id="next-btn"
+          class="p-3 rounded-full bg-white shadow-brand hover:shadow-brand-lg transition-all duration-300 hover:bg-primary-50 group"
+          aria-label="Next example"
+        >
+          <svg class="w-6 h-6 text-primary-900 group-hover:text-primary-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Primary CTA: Free Trial -->
+        
+          <a href="/contact"
+          class="group relative bg-gradient-to-r from-accent-600 to-accent-700 text-white rounded-xl p-8 shadow-brand-orange transition-all duration-300 hover:shadow-[0_20px_60px_rgba(199,82,42,0.3)] hover:-translate-y-1 overflow-hidden"
+        >
+          <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-3">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/>
+              </svg>
+              <span class="font-display text-2xl font-bold">Start Your Free Trial</span>
+            </div>
+            <p class="text-white/90 text-lg mb-4">
+              Experience both learning paths with 30 days of full platform access
+            </p>
+            <div class="flex items-center gap-2 text-white font-semibold group-hover:gap-3 transition-all">
+              Get Started Free
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Secondary CTA: Download Guide -->
+        <button
+          id="download-generations-btn"
+          class="group relative bg-white border-2 border-primary-600 text-primary-900 rounded-xl p-8 shadow-brand transition-all duration-300 hover:shadow-brand-lg hover:-translate-y-1 overflow-hidden text-left"
+        >
+          <div class="absolute top-0 left-0 w-32 h-32 bg-primary-600/5 rounded-full blur-2xl"></div>
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-3">
+              <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <span class="font-display text-2xl font-bold">Download Guide</span>
+            </div>
+            <p class="text-neutral-700 text-lg mb-4">
+              Get the complete Languages 4 Generations overview (PDF)
+            </p>
+            <div class="flex items-center gap-2 text-primary-600 font-semibold group-hover:gap-3 transition-all">
+              Download Now
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Download Modal for Generations Guide -->
+<div id="generations-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-modal">
+    <!-- Close button -->
+    <button
+      id="close-generations-modal-btn"
+      class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 transition-colors"
+      aria-label="Close"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <!-- Modal content -->
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+      <h3 class="font-display text-2xl font-bold text-primary-900 mb-2">
+        Download Generations Guide
+      </h3>
+      <p class="text-neutral-600">
+        Get insights on cross-generational language learning strategies.
+      </p>
+    </div>
+
+    <!-- Simple form (no email capture for this one - just download) -->
+    <form id="generations-download-form" class="space-y-4">
+      <button
+        type="submit"
+        class="w-full py-4 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:shadow-lg"
+      >
+        Download PDF
+      </button>
+
+      <p class="text-xs text-neutral-500 text-center">
+        No email required. Get instant access to the Generations guide.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script define:vars={{ examples: generationsExamples }}>
+  let currentIndex = 0;
+  let autoPlayInterval;
+  const AUTOPLAY_DELAY = 5000; // 5 seconds
+  let isDragging = false;
+
+  // DOM elements
+  const categoryIcon = document.getElementById('category-icon');
+  const categoryName = document.getElementById('category-name');
+  const childIcon = document.getElementById('child-icon');
+  const childTitle = document.getElementById('child-title');
+  const childDescription = document.getElementById('child-description');
+  const adultIcon = document.getElementById('adult-icon');
+  const adultTitle = document.getElementById('adult-title');
+  const adultDescription = document.getElementById('adult-description');
+  const connectionIcon = document.getElementById('connection-icon');
+  const connectionText = document.getElementById('connection-text');
+  const connectionIconMobile = document.getElementById('connection-icon-mobile');
+  const connectionTextMobile = document.getElementById('connection-text-mobile');
+  const currentIndexDisplay = document.getElementById('current-index');
+  const progressDots = document.querySelectorAll('.progress-dot');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const divider = document.getElementById('divider');
+  const splitContainer = document.getElementById('split-container');
+  const childContent = document.getElementById('child-content');
+  const adultContent = document.getElementById('adult-content');
+
+  // Update content function
+  function updateContent(index) {
+    const example = examples[index];
+    if (!example) return;
+
+    // Update category
+    if (categoryIcon) categoryIcon.textContent = example.child.icon;
+    if (categoryName) categoryName.textContent = example.category;
+
+    // Update child content
+    if (childIcon) childIcon.textContent = example.child.icon;
+    if (childTitle) childTitle.textContent = example.child.title;
+    if (childDescription) childDescription.textContent = example.child.description;
+
+    // Update adult content
+    if (adultIcon) adultIcon.textContent = example.adult.icon;
+    if (adultTitle) adultTitle.textContent = example.adult.title;
+    if (adultDescription) adultDescription.textContent = example.adult.description;
+
+    // Update connection
+    if (connectionIcon) connectionIcon.textContent = example.connection.icon;
+    if (connectionText) connectionText.textContent = example.connection.text;
+    if (connectionIconMobile) connectionIconMobile.textContent = example.connection.icon;
+    if (connectionTextMobile) connectionTextMobile.textContent = example.connection.text;
+
+    // Update index display
+    if (currentIndexDisplay) currentIndexDisplay.textContent = String(index + 1);
+
+    // Update progress dots
+    progressDots.forEach((dot, i) => {
+      if (i === index) {
+        dot.classList.add('bg-white', 'scale-125');
+        dot.classList.remove('bg-white/40');
+      } else {
+        dot.classList.remove('bg-white', 'scale-125');
+        dot.classList.add('bg-white/40');
+      }
+    });
+  }
+
+  // Navigation functions
+  function goToNext() {
+    currentIndex = (currentIndex + 1) % examples.length;
+    updateContent(currentIndex);
+    resetAutoPlay();
+  }
+
+  function goToPrev() {
+    currentIndex = (currentIndex - 1 + examples.length) % examples.length;
+    updateContent(currentIndex);
+    resetAutoPlay();
+  }
+
+  function goToIndex(index) {
+    currentIndex = index;
+    updateContent(currentIndex);
+    resetAutoPlay();
+  }
+
+  // Auto-play functions
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(goToNext, AUTOPLAY_DELAY);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+    }
+  }
+
+  function resetAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  // Slider drag functionality - REVEALS CONTENT (SMOOTH VERSION)
+if (divider && splitContainer && childContent && adultContent) {
+  let startX = 0;
+  let currentX = 0;
+
+  function handleDragStart(e) {
+    isDragging = true;
+    startX = e.clientX || e.touches[0].clientX;
+    stopAutoPlay();
+    
+    // Remove transitions for instant feedback
+    childContent.style.transition = 'none';
+    adultContent.style.transition = 'none';
+    divider.style.transition = 'none';
+    
+    // Optimize rendering
+    childContent.style.willChange = 'width';
+    adultContent.style.willChange = 'width';
+    
+    divider.classList.add('w-4'); // Make thicker while dragging
+    document.body.style.cursor = 'ew-resize';
+  }
+
+  function handleDrag(e) {
+    if (!isDragging) return;
+    
+    e.preventDefault();
+    currentX = e.clientX || e.touches[0].clientX;
+    
+    // Calculate percentage position
+    const rect = splitContainer.getBoundingClientRect();
+    const percent = ((currentX - rect.left) / rect.width) * 100;
+    
+    // Constrain between 20% and 80%
+    const constrainedPercent = Math.max(20, Math.min(80, percent));
+    
+    // Update all positions instantly (no transition)
+    divider.style.left = `${constrainedPercent}%`;
+    childContent.style.width = `${constrainedPercent}%`;
+    adultContent.style.width = `${100 - constrainedPercent}%`;
+    adultContent.style.left = `${constrainedPercent}%`;
+  }
+
+  function handleDragEnd() {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    divider.classList.remove('w-4');
+    document.body.style.cursor = '';
+    
+    // Re-enable transitions for smooth reset
+    childContent.style.transition = 'all 0.5s ease-out';
+    adultContent.style.transition = 'all 0.5s ease-out';
+    divider.style.transition = 'left 0.5s ease-out, width 0.2s ease';
+    
+    // Remove will-change
+    childContent.style.willChange = 'auto';
+    adultContent.style.willChange = 'auto';
+    
+    // Reset to center after 2 seconds
+    setTimeout(() => {
+      if (divider && childContent && adultContent) {
+        divider.style.left = '50%';
+        childContent.style.width = '50%';
+        adultContent.style.width = '50%';
+        adultContent.style.left = '50%';
+        
+        // Clear inline styles after animation
+        setTimeout(() => {
+          childContent.style.transition = '';
+          adultContent.style.transition = '';
+          divider.style.transition = '';
+        }, 500);
+        
+        resetAutoPlay();
+      }
+    }, 2000);
+  }
+
+  // Mouse events
+  divider.addEventListener('mousedown', handleDragStart);
+  document.addEventListener('mousemove', handleDrag);
+  document.addEventListener('mouseup', handleDragEnd);
+
+  // Touch events
+  divider.addEventListener('touchstart', handleDragStart, { passive: false });
+  document.addEventListener('touchmove', handleDrag, { passive: false });
+  document.addEventListener('touchend', handleDragEnd);
+}
+
+  // Event listeners
+  if (nextBtn) nextBtn.addEventListener('click', goToNext);
+  if (prevBtn) prevBtn.addEventListener('click', goToPrev);
+
+  progressDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goToIndex(index));
+  });
+
+  // Pause on hover
+  const showcase = document.querySelector('#child-content')?.parentElement?.parentElement;
+  if (showcase) {
+    showcase.addEventListener('mouseenter', stopAutoPlay);
+    showcase.addEventListener('mouseleave', () => {
+      if (!isDragging) startAutoPlay();
+    });
+  }
+
+  // Initialize
+  updateContent(0);
+  startAutoPlay();
+
+  // Modal functionality
+  const generationsModal = document.getElementById('generations-modal');
+  const downloadGenerationsBtn = document.getElementById('download-generations-btn');
+  const closeGenerationsModalBtn = document.getElementById('close-generations-modal-btn');
+  const generationsDownloadForm = document.getElementById('generations-download-form');
+
+  if (downloadGenerationsBtn) {
+    downloadGenerationsBtn.addEventListener('click', () => {
+      generationsModal?.classList.remove('hidden');
+      generationsModal?.classList.add('flex');
+    });
+  }
+
+  function closeGenerationsModal() {
+    generationsModal?.classList.add('hidden');
+    generationsModal?.classList.remove('flex');
+  }
+
+  if (closeGenerationsModalBtn) {
+    closeGenerationsModalBtn.addEventListener('click', closeGenerationsModal);
+  }
+
+  if (generationsModal) {
+    generationsModal.addEventListener('click', (e) => {
+      if (e.target === generationsModal) {
+        closeGenerationsModal();
+      }
+    });
+  }
+
+  if (generationsDownloadForm) {
+    generationsDownloadForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Trigger PDF download
+      const link = document.createElement('a');
+      link.href = '/documents/Languages4_Generations.pdf';
+      link.download = 'Languages4_Generations.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Close modal
+      setTimeout(closeGenerationsModal, 500);
+    });
+  }
+
+  // Re-initialize after View Transitions
+  document.addEventListener('astro:after-swap', () => {
+    stopAutoPlay();
+    currentIndex = 0;
+    updateContent(0);
+    startAutoPlay();
+  });
+</script>
+
+<style>
+  @keyframes modal {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .animate-modal {
+    animation: modal 0.3s ease-out;
+  }
+
+  /* Smooth content transitions */
+  #child-title,
+  #child-description,
+  #adult-title,
+  #adult-description,
+  #category-name,
+  #connection-text,
+  #connection-text-mobile {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+
+  /* Divider transitions */
+  #divider {
+    transition: left 0.3s ease-out, width 0.2s ease;
+  }
+</style>

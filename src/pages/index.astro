@@ -8,6 +8,8 @@ import TestimonialPullQuote from '../components/TestimonialPullQuote.astro';
 import TestimonialSlider from '../components/TestimonialSlider.astro';     // ← ADD THIS
 import TestimonialCard from '../components/TestimonialCard.astro';         // ← ADD THIS (if using grid)
 import { testimonials, getFeaturedTestimonials } from '../utils/testimonials.ts';
+import GenerationsShowcase from '../components/GenerationsShowcase.astro';
+import PlatformShowcase from '../components/PlatformShowcase.astro';
 const allTestimonials = testimonials;
 const featured = getFeaturedTestimonials();
 // Fallback: if no featured testimonials exist, use first 3
@@ -179,6 +181,12 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
 
 <!-- ✨ NEW: What We Do Section -->
 <WhatWeDoSection />
+
+<!-- Generations Showcase -->
+<GenerationsShowcase />
+
+<!-- Platform Showcase -->
+<PlatformShowcase />
 
 <!-- ✨ NEW: Why Languages 4 - Core Values Section -->
 <WhyLanguages4Section />

@@ -38,7 +38,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.6.0] - 2026-01-28
+
+### Added - Session 6: Mobile Polish & Generations Showcase
+
+- **Mobile Responsive Fixes**:
+  - Venn diagram now scales properly on mobile (192px → 224px → 256px circles)
+  - Responsive text sizing and borders for small screens
+  - Container padding prevents edge cutoff
+- **Favicon Implementation**:
+  - Languages 4 sparrow logo now appears in browser tabs
+  - SVG format for crisp display at all sizes
+- **Languages 4 Generations Interactive Showcase**:
+  - Split-screen design with inverse shading (light children, dark adults)
+  - Auto-cycling through 5 parallel learning examples (5-second intervals)
+  - **Interactive draggable slider** on center divider (desktop only)
+  - Smooth GPU-accelerated animations with `will-change` optimization
+  - Progress dots and manual navigation (prev/next arrows)
+  - Category indicator showing current example
+  - Two CTAs: "Start Your Free Trial" + "Download Generations Guide"
+  - PDF download modal (no email required)
+  - Mobile responsive (stacks vertically, shows connection banner)
+- **Enhanced Core Values Form**:
+  - Added phone number field (optional)
+  - Added tribal affiliation field (optional)
+  - Implemented honeypot spam protection
+  - Netlify Forms backend configured with email notifications
+
+### Changed
+
+- Navigation menu link sizing now consistent across all items
+- Messaging improved: "Parallel Learning Paths for Every Generation, Every Project"
+- Form detection file created for Netlify Forms recognition
+
+### Fixed
+
+- Missing `<a` tag in GenerationsShowcase CTAs section
+- Mobile navigation text wrapping issues
+- Signature Collections menu link now matches other items (`text-xl md:text-2xl`)
+
+### Technical
+
+- New files:
+  - `src/utils/generationsExamples.ts` - Data structure for generations content
+  - `src/components/GenerationsShowcase.astro` - Main showcase component
+  - `public/forms/core-values-download.html` - Form detection file
+- Slider functionality:
+  - Removes CSS transitions during drag for instant feedback
+  - Uses `will-change` for rendering optimization
+  - Auto-resets to center after 2 seconds of inactivity
+  - Constrained between 20%-80% drag range
+  - Pauses auto-play while dragging
+- Form submissions now trigger email notifications to tim@languages4.com
+
+### Performance
+
+- Generations slider optimized with GPU acceleration
+- Smooth 60fps dragging on desktop and mobile
+- Lightweight implementation (~5KB JavaScript)
+
+## [0.5.0] - 2026-01-26
+
 ### 🟡 High Priority (Pre-Launch Requirements)
+
+- [ ] Responsive breakpoint testing and polish (1024px-1440px range)
+  - Test at common breakpoints: 1024px, 1280px, 1366px, 1440px, 1920px
+  - Adjust hero section left/right ratio for medium screens
+  - Optimize CTA button sizing and spacing
+  - Review image mosaic layout at constrained widths
+  - Ensure proper breathing room for all content sections
+  - File: `src/pages/index.astro` and hero components
 
 **About Page Completion**
 

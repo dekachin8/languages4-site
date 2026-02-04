@@ -1,0 +1,271 @@
+---
+// about.astro - About Languages 4 page
+// Mission-driven page showcasing leadership, values, and company story
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout 
+  title="About Languages 4 - Mission & Leadership"
+  description="Languages 4 is dedicated to Indigenous language reclamation and advancing language sovereignty. Learn about our mission, leadership team, and commitment to community-driven language revitalization."
+  image="/images/about-social-share.jpg"
+>
+
+<!-- Hero: Mission Statement -->
+<section class="relative min-h-[60vh] bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 flex items-center justify-center overflow-hidden px-4 py-20">
+  <!-- Background decoration -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-accent-600 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-[#74a892] rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto max-w-5xl relative z-10 text-center">
+    <span class="inline-block text-xs md:text-sm font-bold tracking-[2px] text-white/80 bg-white/10 backdrop-blur-sm px-4 py-2 mb-6 rounded">OUR MISSION</span>
+    
+    <h1 class="font-display text-3xl md:text-5xl lg:text-6xl font-medium text-white mb-8 leading-tight">
+      Indigenous Language Reclamation<br/>& Language Sovereignty
+    </h1>
+    
+    <div class="prose prose-lg md:prose-xl prose-invert mx-auto">
+      <p class="text-white/90 text-lg md:text-xl leading-relaxed mb-6">
+        Languages 4 is dedicated to Indigenous language reclamation and advancing language sovereignty by <strong>following the lead of communities</strong> to revitalize, protect, and sustain their ancestral languages. Language is more than words—it is knowledge, identity, and cultural continuity.
+      </p>
+      
+      <p class="text-white/90 text-lg md:text-xl leading-relaxed mb-6">
+        We stand in solidarity with global movements for language rights and land back, recognizing the historical injustices that led to language loss. <strong>Indigenous peoples must be at the forefront</strong> of their own language reclamation efforts, determining how their languages are taught, shared, and preserved.
+      </p>
+      
+      <p class="text-white/90 text-lg md:text-xl leading-relaxed">
+        Languages 4 provides scalable, accessible, and community-driven educational tools and technologies, ensuring that all language materials remain <strong>fully owned and controlled by the communities we serve</strong>. Our role is not to lead but to support, strengthen, and amplify Indigenous language revitalization.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Our Story -->
+<section class="relative py-16 md:py-24 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 max-w-6xl">
+    <div class="text-center mb-12">
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-6">
+        Our Story
+      </h2>
+    </div>
+
+    <div class="prose prose-lg md:prose-xl mx-auto">
+      <p class="text-neutral-700 text-lg leading-relaxed mb-6">
+        Languages 4 was founded on the principle that <strong>Indigenous peoples must lead their own language reclamation</strong>. Our work began with the Wahta Mohawks in Ontario and has since expanded, always ensuring communities retain full ownership of their language resources.
+      </p>
+
+      <p class="text-neutral-700 text-lg leading-relaxed mb-6">
+        Founder Tim O'Hagan transitioned from teaching English in Japan to working on educational software creation, landing on Indigenous language project development with the Chickasaw, Navajo, and Ojibwe Nations at Rosetta Stone, before launching Languages 4 to make language learning more <strong>affordable, scalable, and community driven</strong>.
+      </p>
+
+      <p class="text-neutral-700 text-lg leading-relaxed mb-6">
+        Tim's sister, Lorelei, Director of Community Engagement, brings two decades of experience in relationship management and community organizing, along with a deep personal connection to language learning and their shared Indigenous heritage. Their great-great aunts were survivors of the Carlisle Indian Boarding School, and their grandmother, Bettie, was a registered member of the Sisseton Wahpeton Oyate Dakota Tribe. <strong>Their family's journey of reconnection fuels the mission of Languages 4.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Leadership Team -->
+<section class="relative py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50 overflow-hidden">
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 max-w-7xl">
+    <div class="text-center mb-16">
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-4">
+        Leadership Team
+      </h2>
+      <p class="text-xl text-neutral-700 max-w-3xl mx-auto">
+        Dedicated professionals committed to Indigenous language sovereignty
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      
+      <!-- Tim O'Hagan -->
+      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+        <div class="flex flex-col items-center text-center">
+          <!-- Photo placeholder -->
+          <div class="w-32 h-32 bg-gradient-to-br from-primary-600 to-primary-800 rounded-full mb-6 flex items-center justify-center shadow-brand">
+            <span class="text-white font-display text-4xl font-bold">TO</span>
+          </div>
+          
+          <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
+            Tim O'Hagan
+          </h3>
+          <p class="text-accent-600 font-semibold mb-4">Founder & President</p>
+          
+          <p class="text-neutral-700 leading-relaxed text-left">
+            Tim transitioned from teaching English in Japan to educational software development, working with the Chickasaw, Navajo, and Ojibwe Nations at Rosetta Stone before founding Languages 4. His vision: make Indigenous language learning more affordable, scalable, and community-driven. Tim's Indigenous heritage and family's journey of reconnection drive his commitment to language sovereignty.
+          </p>
+        </div>
+      </div>
+
+      <!-- Lorelei O'Hagan -->
+      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+        <div class="flex flex-col items-center text-center">
+          <!-- Photo placeholder -->
+          <div class="w-32 h-32 bg-gradient-to-br from-accent-600 to-accent-700 rounded-full mb-6 flex items-center justify-center shadow-brand-orange">
+            <span class="text-white font-display text-4xl font-bold">LO</span>
+          </div>
+          
+          <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
+            Lorelei O'Hagan
+          </h3>
+          <p class="text-accent-600 font-semibold mb-4">Director of Community Engagement</p>
+          
+          <p class="text-neutral-700 leading-relaxed text-left">
+            Lorelei brings two decades of experience in relationship management and community organizing. Her deep personal connection to language learning stems from her shared Indigenous heritage—their great-great aunts were Carlisle Indian Boarding School survivors, and their grandmother, Bettie, was a registered member of the Sisseton Wahpeton Oyate Dakota Tribe. Her family's reconnection journey fuels her dedication to community-led revitalization.
+          </p>
+        </div>
+      </div>
+
+      <!-- Jennie Korneychuk -->
+      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+        <div class="flex flex-col items-center text-center">
+          <!-- Photo placeholder -->
+          <div class="w-32 h-32 bg-gradient-to-br from-[#74a892] to-[#5a8875] rounded-full mb-6 flex items-center justify-center shadow-brand">
+            <span class="text-white font-display text-4xl font-bold">JK</span>
+          </div>
+          
+          <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
+            Jennie Korneychuk
+          </h3>
+          <p class="text-accent-600 font-semibold mb-4">Media Consultant & Strategist</p>
+          
+          <p class="text-neutral-700 leading-relaxed text-left">
+            Emmy-winning television executive with specialized experience in newsmagazine, morning news, and live special events. Jennie's focus at Languages 4 is bringing her award-winning production skills to create exceptional and vibrant language learning content. Her expertise in video production, storytelling, and media strategy helps Indigenous communities showcase their languages and cultures with professional quality and authentic voice.
+          </p>
+        </div>
+      </div>
+
+      <!-- Abraham Bravo -->
+      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+        <div class="flex flex-col items-center text-center">
+          <!-- Photo placeholder -->
+          <div class="w-32 h-32 bg-gradient-to-br from-[#005485] to-[#003d63] rounded-full mb-6 flex items-center justify-center shadow-brand">
+            <span class="text-white font-display text-4xl font-bold">AB</span>
+          </div>
+          
+          <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
+            Abraham Bravo
+          </h3>
+          <p class="text-accent-600 font-semibold mb-4">CEO, SMASH Education (Platform Partner)</p>
+          
+          <p class="text-neutral-700 leading-relaxed text-left">
+            CEO of SMASH Education and Languages 4's essential platform partner. With 20+ years in language education technology, Abraham brings proven expertise in program implementation across Canada, the U.S., Mexico, and France. As a former teacher and trilingual professional, he ensures every Languages 4 project benefits from effective onboarding, strategic implementation, and educator empowerment.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Core Values Callout -->
+<section class="relative py-16 md:py-24 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 max-w-6xl">
+    <div class="bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 rounded-2xl p-8 md:p-12 shadow-brand-teal">
+      <div class="text-center mb-8">
+        <h2 class="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+          Our Work is Guided by Three Core Values
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Language Sovereignty -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2">Language Sovereignty</h3>
+          <p class="text-white/90 text-sm">Indigenous peoples control their languages, knowledge, and teaching methods.</p>
+        </div>
+
+        <!-- Trustworthiness -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2">Trustworthiness</h3>
+          <p class="text-white/90 text-sm">We prioritize transparency, long-term partnerships, and delivering on our promises.</p>
+        </div>
+
+        <!-- Innovation -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-white mb-2">Innovation</h3>
+          <p class="text-white/90 text-sm">We use advanced speech recognition, augmented reality, and cross-platform learning to support language reclamation.</p>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a 
+          href="/#why-languages-4"
+          class="inline-flex items-center gap-2 text-white font-semibold text-lg transition-all duration-300 hover:gap-3"
+        >
+          Learn More About Our Core Values
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Global Movement -->
+<section class="relative py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50 overflow-hidden">
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 max-w-5xl">
+    <div class="text-center mb-8">
+      <h2 class="font-display text-4xl md:text-5xl font-medium text-primary-900 mb-6">
+        Part of a Global Movement
+      </h2>
+    </div>
+
+    <div class="prose prose-lg md:prose-xl mx-auto text-center">
+      <p class="text-neutral-700 text-lg leading-relaxed mb-6">
+        Inspired by the <strong>UN Declaration on the Rights of Indigenous Peoples</strong>, we are committed to honoring and amplifying Indigenous knowledge. Languages 4 is one small part of a powerful movement, working alongside communities on their journey toward <strong>linguistic and cultural resurgence</strong>.
+      </p>
+
+      <p class="text-neutral-700 text-lg leading-relaxed">
+        We stand in solidarity with global movements for <strong>language rights and land back</strong>, recognizing that language reclamation is inseparable from broader struggles for Indigenous sovereignty and justice.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="relative py-16 md:py-24 bg-white overflow-hidden">
+  <div class="container mx-auto px-4 md:px-8 lg:pr-24 max-w-4xl text-center">
+    <h2 class="font-display text-3xl md:text-4xl font-semibold text-primary-900 mb-6">
+      Ready to Start Your Language Reclamation Journey?
+    </h2>
+    <p class="text-xl text-neutral-700 mb-10 max-w-2xl mx-auto">
+      Let's discuss how Languages 4 can support your community's vision for language revitalization.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a 
+        href="/contact"
+        class="inline-block py-4 px-10 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:-translate-y-1 hover:shadow-brand-orange"
+      >
+        Schedule Your Demonstration
+      </a>
+      <a 
+        href="/trial"
+        class="inline-block py-4 px-10 border-2 border-primary-600 text-primary-600 rounded-lg font-bold text-lg transition-all duration-300 hover:bg-primary-600 hover:text-white hover:-translate-y-1 hover:shadow-brand"
+      >
+        Start Your Free Trial
+      </a>
+    </div>
+  </div>
+</section>
+
+</MainLayout>
