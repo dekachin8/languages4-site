@@ -1,0 +1,251 @@
+---
+// PDFDownloadModal.astro - Reusable PDF download modal with Netlify Forms email capture
+// Props allow customization for different PDFs and forms
+
+interface Props {
+  modalId: string;
+  formName: string;
+  pdfPath: string;
+  pdfFilename: string;
+  title: string;
+  description: string;
+}
+
+const { modalId, formName, pdfPath, pdfFilename, title, description } = Astro.props;
+---
+
+<!-- Download Modal -->
+<div id={modalId} class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-modal">
+    <!-- Close button -->
+    <button
+      class="modal-close absolute top-4 right-4 text-neutral-400 hover:text-neutral-600 transition-colors"
+      aria-label="Close"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <!-- Modal content -->
+    <div class="text-center mb-6">
+      <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+      </div>
+      <h3 class="font-display text-2xl font-bold text-primary-900 mb-2">
+        {title}
+      </h3>
+      <p class="text-neutral-600">
+        {description}
+      </p>
+    </div>
+
+    <!-- Netlify Form -->
+    <form
+      name={formName}
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="pdf-form space-y-4"
+    >
+      <!-- Netlify form detection -->
+      <input type="hidden" name="form-name" value={formName} />
+      
+      <!-- Honeypot for spam -->
+      <p class="hidden">
+        <label>
+          Don't fill this out if you're human: <input name="bot-field" />
+        </label>
+      </p>
+
+      <!-- Name field -->
+      <div>
+        <label class="block text-sm font-semibold text-neutral-700 mb-2">
+          Name *
+        </label>
+        <input
+          type="text"
+          name="name"
+          required
+          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+          placeholder="Your name"
+        />
+      </div>
+
+      <!-- Email field -->
+      <div>
+        <label class="block text-sm font-semibold text-neutral-700 mb-2">
+          Email Address *
+        </label>
+        <input
+          type="email"
+          name="email"
+          required
+          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+          placeholder="your@email.com"
+        />
+      </div>
+
+      <!-- Organization field (optional) -->
+      <div>
+        <label class="block text-sm font-semibold text-neutral-700 mb-2">
+          Organization (Optional)
+        </label>
+        <input
+          type="text"
+          name="organization"
+          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+          placeholder="Your organization or community"
+        />
+      </div>
+
+      <!-- Phone field (optional) -->
+      <div>
+        <label class="block text-sm font-semibold text-neutral-700 mb-2">
+          Phone Number (Optional)
+        </label>
+        <input
+          type="tel"
+          name="phone"
+          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+          placeholder="(555) 123-4567"
+        />
+      </div>
+
+      <!-- Tribal Affiliation field (optional) -->
+      <div>
+        <label class="block text-sm font-semibold text-neutral-700 mb-2">
+          Tribal Affiliation (Optional)
+        </label>
+        <input
+          type="text"
+          name="tribal-affiliation"
+          class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none transition-colors"
+          placeholder="Your tribal nation or community"
+        />
+      </div>
+
+      <!-- Submit button -->
+      <button
+        type="submit"
+        class="w-full py-4 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:shadow-lg"
+      >
+        Download PDF
+      </button>
+
+      <p class="text-xs text-neutral-500 text-center">
+        We respect your privacy. Your information will only be used to share language reclamation resources.
+      </p>
+    </form>
+
+    <!-- Success message (hidden by default) -->
+    <div class="success-message hidden text-center">
+      <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h3 class="font-display text-2xl font-bold text-primary-900 mb-2">
+        Download Started!
+      </h3>
+      <p class="text-neutral-600 mb-6">
+        Your PDF is downloading now. Check your email for future updates on language reclamation resources.
+      </p>
+      <button
+        class="close-success py-3 px-8 bg-primary-600 text-white rounded-lg font-semibold transition-all duration-300 hover:bg-primary-700"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ modalId, pdfPath, pdfFilename }}>
+  const modal = document.getElementById(modalId);
+  const form = modal?.querySelector('.pdf-form');
+  const successDiv = modal?.querySelector('.success-message');
+  const closeBtns = modal?.querySelectorAll('.modal-close, .close-success');
+
+  // Open modal on trigger click
+  document.addEventListener('click', (e) => {
+    if (e.target.closest(`[data-modal-trigger="${modalId}"]`)) {
+      e.preventDefault();
+      modal?.classList.remove('hidden');
+      modal?.classList.add('flex');
+    }
+  });
+
+  // Close modal function
+  function closeModal() {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+    form?.reset();
+    form?.classList.remove('hidden');
+    successDiv?.classList.add('hidden');
+  }
+
+  // Close button handlers
+  closeBtns?.forEach(btn => {
+    btn.addEventListener('click', closeModal);
+  });
+
+  // Close on background click
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Handle form submission
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+      // Submit to Netlify
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      });
+
+      // Hide form, show success
+      form.classList.add('hidden');
+      successDiv?.classList.remove('hidden');
+
+      // Trigger PDF download
+      const link = document.createElement('a');
+      link.href = pdfPath;
+      link.download = pdfFilename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Auto-close after 3 seconds
+      setTimeout(closeModal, 3000);
+
+    } catch (error) {
+      console.error('Form submission error:', error);
+      alert('There was an error. Please try again or contact us directly.');
+    }
+  });
+</script>
+
+<style>
+  @keyframes modal {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .animate-modal {
+    animation: modal 0.3s ease-out;
+  }
+</style>
