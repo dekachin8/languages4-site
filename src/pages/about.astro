@@ -3,6 +3,7 @@
 // Mission-driven page showcasing leadership, values, and company story
 import MainLayout from '../layouts/MainLayout.astro';
 import PDFDownloadModal from '../components/PDFDownloadModal.astro';
+import TeamMemberModal from '../components/TeamMemberModal.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -10,9 +11,9 @@ import { getCollection } from 'astro:content';
 const allArticles = await getCollection('whatarel4');
 
 const coreValuesArticles = [
-  allArticles.find(a => a.slug === 'pillar-3-innovative-tech-in-indigenous-language-revitalization'),
-  allArticles.find(a => a.slug === 'core-value-language-sovereignty-first-pillar'),
-  allArticles.find(a => a.slug === 'how-language-sovereignty-trustworthiness-innovation-define-languages4')
+  allArticles.find(a => a.slug === 'pillar-3-innovative-tech-in-indigenous-language-revitalization-at-languages-4'),
+  allArticles.find(a => a.slug === 'languages-4-core-value-language-sovereignty-the-first-piller-of-languages-4'),
+  allArticles.find(a => a.slug === 'how-language-sovereignty-trustworthiness-and-innovation-define-languages-4')
 ].filter(Boolean); // Remove any undefined articles
 ---
 
@@ -93,78 +94,122 @@ const coreValuesArticles = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
       
       <!-- Tim O'Hagan -->
-      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+      <div 
+        data-modal-open="tim-modal"
+        class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2 cursor-pointer"
+      >
         <div class="flex flex-col items-center text-center">
-          <!-- Photo placeholder -->
-          <div class="w-32 h-32 bg-gradient-to-br from-primary-600 to-primary-800 rounded-full mb-6 flex items-center justify-center shadow-brand">
-            <span class="text-white font-display text-4xl font-bold">TO</span>
+          <!-- Large Photo placeholder (70% of card) -->
+          <div class="w-48 h-48 bg-gradient-to-br from-primary-600 to-primary-800 rounded-full mb-6 flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform duration-300">
+            <span class="text-white font-display text-6xl font-bold">TO</span>
           </div>
           
           <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
             Tim O'Hagan
           </h3>
-          <p class="text-accent-600 font-semibold mb-4">Founder & President</p>
+          <p class="text-accent-600 font-semibold mb-3">Founder & President</p>
           
-          <p class="text-neutral-700 leading-relaxed text-left">
-            Tim transitioned from teaching English in Japan to educational software development, working with the Chickasaw, Navajo, and Ojibwe Nations at Rosetta Stone before founding Languages 4. His vision: make Indigenous language learning more affordable, scalable, and community-driven. Tim's Indigenous heritage and family's journey of reconnection drive his commitment to language sovereignty.
+          <p class="text-neutral-600 text-sm mb-4 line-clamp-1">
+            Making Indigenous language learning affordable and community-driven
           </p>
+          
+          <!-- Read More Button -->
+          <button class="inline-flex items-center gap-2 text-primary-600 font-semibold text-sm transition-all duration-300 hover:gap-3 group-hover:text-accent-600">
+            Read More
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
         </div>
       </div>
 
       <!-- Lorelei O'Hagan -->
-      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+      <div 
+        data-modal-open="lorelei-modal"
+        class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2 cursor-pointer"
+      >
         <div class="flex flex-col items-center text-center">
-          <!-- Photo placeholder -->
-          <div class="w-32 h-32 bg-gradient-to-br from-accent-600 to-accent-700 rounded-full mb-6 flex items-center justify-center shadow-brand-orange">
-            <span class="text-white font-display text-4xl font-bold">LO</span>
+          <!-- Large Photo placeholder (70% of card) -->
+          <div class="w-48 h-48 bg-gradient-to-br from-accent-600 to-accent-700 rounded-full mb-6 flex items-center justify-center shadow-brand-orange group-hover:scale-105 transition-transform duration-300">
+            <span class="text-white font-display text-6xl font-bold">LO</span>
           </div>
           
           <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
             Lorelei O'Hagan
           </h3>
-          <p class="text-accent-600 font-semibold mb-4">Director of Community Engagement</p>
+          <p class="text-accent-600 font-semibold mb-3">Director of Community Engagement</p>
           
-          <p class="text-neutral-700 leading-relaxed text-left">
-            Lorelei brings two decades of experience in relationship management and community organizing. Her deep personal connection to language learning stems from her shared Indigenous heritage—their great-great aunts were Carlisle Indian Boarding School survivors, and their grandmother, Bettie, was a registered member of the Sisseton Wahpeton Oyate Dakota Tribe. Her family's reconnection journey fuels her dedication to community-led revitalization.
+          <p class="text-neutral-600 text-sm mb-4 line-clamp-1">
+            Building authentic partnerships with Indigenous communities
           </p>
+          
+          <!-- Read More Button -->
+          <button class="inline-flex items-center gap-2 text-primary-600 font-semibold text-sm transition-all duration-300 hover:gap-3 group-hover:text-accent-600">
+            Read More
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
         </div>
       </div>
 
       <!-- Jennie Korneychuk -->
-      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+      <div 
+        data-modal-open="jennie-modal"
+        class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2 cursor-pointer"
+      >
         <div class="flex flex-col items-center text-center">
-          <!-- Photo placeholder -->
-          <div class="w-32 h-32 bg-gradient-to-br from-[#74a892] to-[#5a8875] rounded-full mb-6 flex items-center justify-center shadow-brand">
-            <span class="text-white font-display text-4xl font-bold">JK</span>
+          <!-- Large Photo placeholder (70% of card) -->
+          <div class="w-48 h-48 bg-gradient-to-br from-[#74a892] to-[#5a8875] rounded-full mb-6 flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform duration-300">
+            <span class="text-white font-display text-6xl font-bold">JK</span>
           </div>
           
           <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
             Jennie Korneychuk
           </h3>
-          <p class="text-accent-600 font-semibold mb-4">Media Consultant & Strategist</p>
+          <p class="text-accent-600 font-semibold mb-3">Media Consultant & Strategist</p>
           
-          <p class="text-neutral-700 leading-relaxed text-left">
-            Emmy-winning television executive with specialized experience in newsmagazine, morning news, and live special events. Jennie's focus at Languages 4 is bringing her award-winning production skills to create exceptional and vibrant language learning content. Her expertise in video production, storytelling, and media strategy helps Indigenous communities showcase their languages and cultures with professional quality and authentic voice.
+          <p class="text-neutral-600 text-sm mb-4 line-clamp-1">
+            Emmy-winning producer creating vibrant language learning content
           </p>
+          
+          <!-- Read More Button -->
+          <button class="inline-flex items-center gap-2 text-primary-600 font-semibold text-sm transition-all duration-300 hover:gap-3 group-hover:text-accent-600">
+            Read More
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
         </div>
       </div>
 
       <!-- Abraham Bravo -->
-      <div class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2">
+      <div 
+        data-modal-open="abraham-modal"
+        class="group relative bg-white rounded-2xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] hover:-translate-y-2 cursor-pointer"
+      >
         <div class="flex flex-col items-center text-center">
-          <!-- Photo placeholder -->
-          <div class="w-32 h-32 bg-gradient-to-br from-[#005485] to-[#003d63] rounded-full mb-6 flex items-center justify-center shadow-brand">
-            <span class="text-white font-display text-4xl font-bold">AB</span>
+          <!-- Large Photo placeholder (70% of card) -->
+          <div class="w-48 h-48 bg-gradient-to-br from-[#005485] to-[#003d63] rounded-full mb-6 flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform duration-300">
+            <span class="text-white font-display text-6xl font-bold">AB</span>
           </div>
           
           <h3 class="font-display text-2xl font-bold text-primary-900 mb-1">
             Abraham Bravo
           </h3>
-          <p class="text-accent-600 font-semibold mb-4">CEO, SMASH Education (Platform Partner)</p>
+          <p class="text-accent-600 font-semibold mb-3">CEO, SMASH Education (Platform Partner)</p>
           
-          <p class="text-neutral-700 leading-relaxed text-left">
-            CEO of SMASH Education and Languages 4's essential platform partner. With 20+ years in language education technology, Abraham brings proven expertise in program implementation across Canada, the U.S., Mexico, and France. As a former teacher and trilingual professional, he ensures every Languages 4 project benefits from effective onboarding, strategic implementation, and educator empowerment.
+          <p class="text-neutral-600 text-sm mb-4 line-clamp-1">
+            20+ years delivering language education technology worldwide
           </p>
+          
+          <!-- Read More Button -->
+          <button class="inline-flex items-center gap-2 text-primary-600 font-semibold text-sm transition-all duration-300 hover:gap-3 group-hover:text-accent-600">
+            Read More
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -220,12 +265,12 @@ const coreValuesArticles = [
       <div class="text-center">
         <button
           data-modal-trigger="core-values-modal"
-          class="inline-flex items-center gap-2 text-white font-semibold text-lg transition-all duration-300 hover:gap-3 cursor-pointer bg-transparent border-none"
+          class="inline-flex items-center gap-3 py-4 px-8 bg-white text-primary-900 rounded-lg font-bold text-lg transition-all duration-300 hover:bg-neutral-100 hover:-translate-y-1 hover:shadow-xl cursor-pointer"
         >
-          Learn More About Our Core Values
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
+          Download Our Core Values Guide
         </button>
       </div>
     </div>
@@ -247,7 +292,18 @@ const coreValuesArticles = [
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {coreValuesArticles.map((article) => (
-          <ArticleCard article={article} collection="whatarel4" />
+          <ArticleCard 
+            title={article.data.title}
+            description={article.data.description}
+            pubDate={article.data.pubDate}
+            heroImage={article.data.heroImage}
+            heroImageAlt={article.data.heroImageAlt}
+            cardImage={article.data.cardImage}
+            cardImageAlt={article.data.cardImageAlt}
+            slug={article.slug}
+            collection="whatarel4"
+            tags={article.data.tags}
+          />
         ))}
       </div>
 
@@ -322,6 +378,43 @@ const coreValuesArticles = [
   pdfFilename="Languages4_Core_Values.pdf"
   title="Download Core Values Guide"
   description="Enter your email to receive the PDF and stay updated on language reclamation resources."
+/>
+
+<!-- Team Member Modals -->
+<TeamMemberModal
+  id="tim-modal"
+  name="Tim O'Hagan"
+  title="Founder & President"
+  initials="TO"
+  colorClass="bg-gradient-to-br from-primary-600 to-primary-800"
+  bio="Tim transitioned from teaching English in Japan to educational software development, working with the Chickasaw, Navajo, and Ojibwe Nations at Rosetta Stone before founding Languages 4. His vision: make Indigenous language learning more affordable, scalable, and community-driven.\n\nTim's Indigenous heritage runs deep—his great-great aunts were survivors of the Carlisle Indian Boarding School, and his grandmother, Bettie, was a registered member of the Sisseton Wahpeton Oyate Dakota Tribe. This family history of resilience and reconnection drives his commitment to language sovereignty and ensuring Indigenous peoples lead their own language reclamation efforts.\n\nBefore his career in language technology, Tim spent years teaching English as a foreign language in Japan, where he developed a deep appreciation for how language shapes identity and culture. This experience, combined with his family's journey of reconnection to their Indigenous heritage, inspired him to dedicate his career to Indigenous language revitalization.\n\nTim holds a degree in International Relations and has spent over 15 years working at the intersection of technology, education, and Indigenous rights. He believes that language reclamation is inseparable from broader movements for Indigenous sovereignty and justice."
+/>
+
+<TeamMemberModal
+  id="lorelei-modal"
+  name="Lorelei O'Hagan"
+  title="Director of Community Engagement"
+  initials="LO"
+  colorClass="bg-gradient-to-br from-accent-600 to-accent-700"
+  bio="Lorelei brings two decades of experience in relationship management and community organizing to Languages 4. Her deep personal connection to language learning stems from her shared Indigenous heritage—their great-great aunts were Carlisle Indian Boarding School survivors, and their grandmother, Bettie, was a registered member of the Sisseton Wahpeton Oyate Dakota Tribe.\n\nHer family's reconnection journey fuels her dedication to community-led revitalization. Lorelei understands firsthand the challenges and opportunities that come with reclaiming language and cultural identity, and she brings this lived experience to every partnership Languages 4 forms.\n\nWith a background in nonprofit management and community development, Lorelei has spent her career building bridges between organizations and the communities they serve. She specializes in creating authentic partnerships based on trust, transparency, and mutual respect—values that are essential when working with Indigenous communities on language revitalization.\n\nLorelei is passionate about ensuring that Indigenous voices lead every aspect of Languages 4's work. She coordinates closely with community leaders, educators, and language keepers to ensure that each project reflects the unique needs, goals, and cultural protocols of the communities we serve."
+/>
+
+<TeamMemberModal
+  id="jennie-modal"
+  name="Jennie Korneychuk"
+  title="Media Consultant & Strategist"
+  initials="JK"
+  colorClass="bg-gradient-to-br from-[#74a892] to-[#5a8875]"
+  bio="Emmy-winning television executive with specialized experience in newsmagazine, morning news, and live special events. Jennie's focus at Languages 4 is bringing her award-winning production skills to create exceptional and vibrant language learning content.\n\nWith over 20 years in broadcast journalism and media production, Jennie has produced content for major networks and has led teams through complex, high-stakes productions. Her expertise spans video production, storytelling, live event coverage, and media strategy—all skills that translate powerfully to language learning content creation.\n\nAt Languages 4, Jennie helps Indigenous communities showcase their languages and cultures with professional quality and authentic voice. She works closely with community members to develop video content, audio recordings, and multimedia resources that bring languages to life in engaging, culturally appropriate ways.\n\nJennie understands that effective language learning content must do more than teach vocabulary—it must tell stories, preserve cultural knowledge, and inspire learners. She brings this philosophy to every project, ensuring that Languages 4's media content honors the depth and richness of Indigenous languages and cultures.\n\nHer award-winning work has been recognized with multiple Emmy nominations and wins, but what drives her most is the opportunity to use her skills in service of language revitalization and Indigenous sovereignty."
+/>
+
+<TeamMemberModal
+  id="abraham-modal"
+  name="Abraham Bravo"
+  title="CEO, SMASH Education (Platform Partner)"
+  initials="AB"
+  colorClass="bg-gradient-to-br from-[#005485] to-[#003d63]"
+  bio="CEO of SMASH Education and Languages 4's essential platform partner. With 20+ years in language education technology, Abraham brings proven expertise in program implementation across Canada, the U.S., Mexico, and France.\n\nAs a former teacher and trilingual professional (English, Spanish, French), Abraham understands both the pedagogical challenges of language learning and the technical requirements of effective educational software. This dual perspective makes him an invaluable partner in developing and deploying Languages 4's language learning platforms.\n\nAbraham's company, SMASH Education, provides the technological backbone for Languages 4's custom learning platforms. But his contribution goes far beyond software—he ensures every Languages 4 project benefits from effective onboarding, strategic implementation, and educator empowerment.\n\nWith implementations spanning multiple countries and language contexts, Abraham has developed deep expertise in adapting educational technology to diverse cultural and linguistic settings. He brings this experience to Indigenous language revitalization, ensuring that each platform is culturally appropriate, technically robust, and pedagogically sound.\n\nAbraham is committed to the principle that Indigenous communities should own and control their language materials. All platforms developed through the Languages 4-SMASH partnership are designed to ensure full community ownership and sovereignty over their linguistic and cultural resources.\n\nHis work has supported language programs serving thousands of learners worldwide, but he's most proud of the partnerships with Indigenous communities where language revitalization is not just education—it's an act of cultural survival and resurgence."
 />
 
 </MainLayout>

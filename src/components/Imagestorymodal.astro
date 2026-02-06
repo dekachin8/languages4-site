@@ -1,0 +1,190 @@
+---
+/**
+ * ImageStoryModal Component
+ * 
+ * Modal overlay that displays an image with its story when clicked.
+ * Used on homepage mosaic to provide context and link to articles.
+ */
+
+interface Props {
+  id: string;
+  imageUrl: string;
+  imageAlt: string;
+  title: string;
+  category: string;
+  description: string;
+  link?: string; // Optional article link
+}
+
+const { id, imageUrl, imageAlt, title, category, description, link } = Astro.props;
+
+// Determine CTA text and URL
+const ctaText = link ? "Read Full Story" : "Learn More About Our Work";
+const ctaUrl = link || "/contact";
+---
+
+<!-- Modal Backdrop -->
+<div
+  id={id}
+  class="image-story-modal fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`${id}-title`}
+  aria-hidden="true"
+>
+  <!-- Modal Container -->
+  <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full relative animate-modal max-h-[90vh] overflow-y-auto">
+    
+    <!-- Close Button -->
+    <button
+      class="modal-close-btn absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-neutral-600 hover:text-primary-900 transition-all duration-300 shadow-lg hover:shadow-xl"
+      aria-label="Close modal"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <!-- Image (Full Bleed at Top) -->
+    <div class="relative h-64 md:h-80 overflow-hidden rounded-t-2xl bg-neutral-100">
+      <img 
+        src={imageUrl}
+        alt={imageAlt}
+        class="w-full h-full object-contain"
+      />
+      
+      <!-- Category Badge (Overlaid on Image) -->
+      <div class="absolute top-4 left-4">
+        <span class="inline-block bg-accent-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+          {category}
+        </span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-8 md:p-12">
+      <!-- Title -->
+      <h3 
+        id={`${id}-title`}
+        class="font-display text-2xl md:text-3xl font-bold text-primary-900 mb-4 leading-tight"
+      >
+        {title}
+      </h3>
+
+      <!-- Description -->
+      <p class="text-neutral-700 text-base md:text-lg leading-relaxed mb-8">
+        {description}
+      </p>
+
+      <!-- CTA Button -->
+      
+        href={ctaUrl}
+        class="inline-flex items-center gap-2 py-4 px-8 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:-translate-y-1 hover:shadow-brand-orange group"
+      >
+        {ctaText}
+        <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Modal animation */
+  .animate-modal {
+    animation: modalFadeIn 0.3s ease-out;
+  }
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Custom scrollbar for modal content */
+  .image-story-modal::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .image-story-modal::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+
+  .image-story-modal::-webkit-scrollbar-thumb {
+    background: #c7522a;
+    border-radius: 4px;
+  }
+
+  .image-story-modal::-webkit-scrollbar-thumb:hover {
+    background: #a03d1f;
+  }
+</style>
+
+<script is:inline define:vars={{ id }}>
+  // Each modal gets uniquely scoped variables
+  (function(uniqueModalId) {
+    'use strict';
+    
+    function initModal() {
+      const modalElement = document.getElementById(uniqueModalId);
+      if (!modalElement) {
+        console.error('Modal not found:', uniqueModalId);
+        return;
+      }
+
+      const closeBtnElement = modalElement.querySelector('.modal-close-btn');
+
+      // Open function
+      function openThisModal() {
+        modalElement.classList.remove('hidden');
+        modalElement.classList.add('flex');
+        modalElement.setAttribute('aria-hidden', 'false');
+        modalElement.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      // Close function
+      function closeThisModal() {
+        modalElement.classList.add('hidden');
+        modalElement.classList.remove('flex');
+        modalElement.setAttribute('aria-hidden', 'true');
+        modalElement.style.display = '';
+        document.body.style.overflow = '';
+      }
+
+      // Event listeners
+      if (closeBtnElement) {
+        closeBtnElement.addEventListener('click', closeThisModal);
+      }
+
+      modalElement.addEventListener('click', (e) => {
+        if (e.target === modalElement) {
+          closeThisModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modalElement.classList.contains('hidden')) {
+          closeThisModal();
+        }
+      });
+
+      // Expose globally with unique name
+      window[`open_${uniqueModalId}`] = openThisModal;
+    }
+
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initModal);
+    } else {
+      initModal();
+    }
+  })(id);
+</script>

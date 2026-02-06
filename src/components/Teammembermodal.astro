@@ -1,0 +1,166 @@
+---
+// TeamMemberModal.astro - Modal overlay for team member bios
+// Click team cards to open, smooth animations, mobile-optimized
+interface Props {
+  id: string;           // Unique modal ID (e.g., "tim-modal")
+  name: string;         // Team member name
+  title: string;        // Job title
+  bio: string;          // Full biography (can be long)
+  initials: string;     // For placeholder circle (e.g., "TO")
+  colorClass: string;   // Gradient color for placeholder
+  photoUrl?: string;    // Optional: Real photo path
+}
+
+const { id, name, title, bio, initials, colorClass, photoUrl } = Astro.props;
+---
+
+<!-- Modal Backdrop + Container -->
+<div 
+  id={id}
+  class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-300"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`${id}-title`}
+>
+  <!-- Backdrop with blur -->
+  <div 
+    class="modal-backdrop absolute inset-0 bg-primary-900/80 backdrop-blur-sm"
+    data-modal-close={id}
+  ></div>
+  
+  <!-- Modal Content -->
+  <div class="relative flex items-center justify-center min-h-screen p-4 md:p-8">
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden transform transition-transform duration-300 scale-95">
+      
+      <!-- Close Button -->
+      <button
+        data-modal-close={id}
+        class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-primary-900 transition-all duration-200 hover:scale-110 shadow-lg"
+        aria-label="Close modal"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      
+      <!-- Modal Content Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-5 max-h-[90vh]">
+        
+        <!-- Left Side: Photo (40% on desktop, full width on mobile) -->
+        <div class="md:col-span-2 bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center p-8 md:p-12">
+          {photoUrl ? (
+            <img 
+              src={photoUrl} 
+              alt={name}
+              class="w-full h-full object-cover rounded-xl shadow-brand"
+            />
+          ) : (
+            <!-- Placeholder Circle -->
+            <div class={`w-48 h-48 md:w-64 md:h-64 ${colorClass} rounded-full flex items-center justify-center shadow-brand`}>
+              <span class="text-white font-display text-6xl md:text-7xl font-bold">{initials}</span>
+            </div>
+          )}
+        </div>
+        
+        <!-- Right Side: Bio (60% on desktop, full width on mobile) -->
+        <div class="md:col-span-3 p-8 md:p-12 overflow-y-auto">
+          
+          <!-- Name & Title -->
+          <h2 id={`${id}-title`} class="font-display text-3xl md:text-4xl font-bold text-primary-900 mb-2">
+            {name}
+          </h2>
+          <p class="text-accent-600 font-semibold text-lg md:text-xl mb-6">
+            {title}
+          </p>
+          
+          <!-- Divider -->
+          <div class="w-16 h-1 bg-accent-600 mb-6"></div>
+          
+          <!-- Biography -->
+          <div class="prose prose-lg max-w-none text-neutral-700 leading-relaxed">
+            <p set:html={bio.replace(/\n/g, '</p><p class="mb-4">')} class="mb-4" />
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ id }}>
+  // Modal open/close functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById(id);
+    const openButtons = document.querySelectorAll(`[data-modal-open="${id}"]`);
+    const closeButtons = document.querySelectorAll(`[data-modal-close="${id}"]`);
+    
+    // Open modal
+    openButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        // Trigger reflow for animation
+        setTimeout(() => {
+          modal.classList.remove('opacity-0');
+          modal.querySelector('.transform').classList.remove('scale-95');
+          modal.querySelector('.transform').classList.add('scale-100');
+        }, 10);
+        // Lock body scroll
+        document.body.style.overflow = 'hidden';
+      });
+    });
+    
+    // Close modal
+    const closeModal = () => {
+      modal.classList.add('opacity-0');
+      modal.querySelector('.transform').classList.remove('scale-100');
+      modal.querySelector('.transform').classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+      }, 300);
+      // Unlock body scroll
+      document.body.style.overflow = '';
+    };
+    
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', closeModal);
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Smooth scrolling for bio content */
+  .overflow-y-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #c7522a #f5f5f5;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 4px;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #c7522a;
+    border-radius: 4px;
+  }
+  
+  .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #a84322;
+  }
+</style>

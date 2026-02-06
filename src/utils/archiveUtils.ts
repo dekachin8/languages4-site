@@ -1,11 +1,18 @@
 // archiveUtils.ts - Utility functions for archive pages
 import type { CollectionEntry } from "astro:content";
 
+// Type constraint to ensure posts have a pubDate
+type PostWithDate = {
+  data: {
+    pubDate: Date;
+  };
+};
+
 /**
  * Group posts by year
  */
-export function groupByYear<T extends CollectionEntry<any>>(
-  posts: T[]
+export function groupByYear<T extends PostWithDate>(
+  posts: T[],
 ): Map<number, T[]> {
   const grouped = new Map<number, T[]>();
 
@@ -23,8 +30,8 @@ export function groupByYear<T extends CollectionEntry<any>>(
 /**
  * Group posts by year and month
  */
-export function groupByYearMonth<T extends CollectionEntry<any>>(
-  posts: T[]
+export function groupByYearMonth<T extends PostWithDate>(
+  posts: T[],
 ): Map<string, T[]> {
   const grouped = new Map<string, T[]>();
 
@@ -45,7 +52,7 @@ export function groupByYearMonth<T extends CollectionEntry<any>>(
 /**
  * Get all unique years from posts (sorted descending)
  */
-export function getYears<T extends CollectionEntry<any>>(posts: T[]): number[] {
+export function getYears<T extends PostWithDate>(posts: T[]): number[] {
   const years = new Set<number>();
   posts.forEach((post) => {
     years.add(post.data.pubDate.getFullYear());
@@ -56,9 +63,9 @@ export function getYears<T extends CollectionEntry<any>>(posts: T[]): number[] {
 /**
  * Get all months in a year that have posts
  */
-export function getMonthsInYear<T extends CollectionEntry<any>>(
+export function getMonthsInYear<T extends PostWithDate>(
   posts: T[],
-  year: number
+  year: number,
 ): number[] {
   const months = new Set<number>();
   posts.forEach((post) => {
@@ -72,9 +79,9 @@ export function getMonthsInYear<T extends CollectionEntry<any>>(
 /**
  * Filter posts by year
  */
-export function filterByYear<T extends CollectionEntry<any>>(
+export function filterByYear<T extends PostWithDate>(
   posts: T[],
-  year: number
+  year: number,
 ): T[] {
   return posts.filter((post) => post.data.pubDate.getFullYear() === year);
 }
@@ -82,10 +89,10 @@ export function filterByYear<T extends CollectionEntry<any>>(
 /**
  * Filter posts by year and month
  */
-export function filterByYearMonth<T extends CollectionEntry<any>>(
+export function filterByYearMonth<T extends PostWithDate>(
   posts: T[],
   year: number,
-  month: number
+  month: number,
 ): T[] {
   return posts.filter((post) => {
     return (
@@ -119,8 +126,8 @@ export function getMonthName(month: number): string {
 /**
  * Get archive stats (years with post counts)
  */
-export function getArchiveStats<T extends CollectionEntry<any>>(
-  posts: T[]
+export function getArchiveStats<T extends PostWithDate>(
+  posts: T[],
 ): Array<{
   year: number;
   count: number;
