@@ -29,7 +29,7 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
   <div class="relative max-w-full w-full flex items-start justify-start z-10">
     
     <!-- Hero Text Box - MOBILE OPTIMIZED -->
-    <div class="bg-white/95 backdrop-blur-lg p-6 md:p-12 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] max-w-full md:max-w-3xl w-full relative z-[100]">
+    <div class="bg-white/95 backdrop-blur-lg p-6 md:p-10 lg:p-9 xl:p-11 2xl:p-14 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] max-w-full md:max-w-2xl lg:max-w-2xl xl:max-w-[42rem] 2xl:max-w-4xl w-full relative z-[100]">
       
       <!-- MOBILE ONLY: Cycling Hero Image -->
       <div class="lg:hidden mb-6 -mx-6 -mt-6 rounded-t-xl overflow-hidden relative h-64">
@@ -66,11 +66,7 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
       <p class="text-base md:text-xl text-neutral-800 mb-8 md:mb-16 leading-relaxed">
         We craft custom software & land-based curriculum with <strong class="text-primary-900 font-bold">Indigenous Communities</strong> to sustain language vitality
       </p>
-      
-<p class="text-base md:text-xl text-neutral-800 mb-10 md:mb-12 leading-relaxed">
-        We craft custom software & land-based curriculum with <strong class="text-primary-900 font-bold">Indigenous Communities</strong> to sustain language vitality
-      </p>
-      
+            
       <!-- Primary CTA -->
       <div class="mb-6">
         <a 
@@ -138,7 +134,14 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
     <!-- End Hero Text Box -->
 
     <!-- Device Showcase - Hidden on mobile, visible on large screens -->
-    <div class="hidden lg:flex absolute -top-[40%] -right-[17%] w-[73%] max-w-[1750px] h-[125%] flex-col justify-around gap-6 p-8 rotate-[20deg] origin-center z-[1] xl:-top-[65%] xl:gap-4">
+    <div class="hidden lg:flex absolute 
+        lg:-top-[50%] lg:-right-[15%] lg:w-[90%] lg:h-[150%] 
+        xl:-top-[50%] xl:-right-[10%] xl:w-[90%] xl:h-[135%] 
+        2xl:-top-[70%] 2xl:-right-[8%] 2xl:w-[75%] 2xl:h-[120%] 
+        max-w-[1850px] flex-col justify-around 
+        gap-6 lg:gap-8 xl:gap-7 2xl:gap-8 
+        p-8 lg:p-6 xl:p-7 2xl:p-6 
+        rotate-[20deg] origin-center z-[1]">
       
       <!-- ROW 1 -->
       <div class="flex gap-6 items-stretch w-full">
