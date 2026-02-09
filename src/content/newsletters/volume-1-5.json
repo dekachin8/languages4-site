@@ -1,0 +1,32 @@
+{
+  "volumeNumber": 1.5,
+  "title": "What are Languages 4? 4 Generations™",
+  "summary": "Introducing Languages 4 Generations™, a framework designed to foster cross-generational communication and connection through Indigenous language learning.",
+  "pubDate": "2023-05-09T00:00:00.000Z",
+  "theme": "Generational Communication",
+  "newsletterUrl": "https://conta.cc/3BDU5V3",
+  "articles": [
+    {
+      "title": "Introducing Languages 4 Generations™",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "The Challenge of Cross-Generational Communication",
+      "author": "Tim O'Hagan"
+    },
+    {
+      "title": "Our Solution: Building Bridges",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Mohawk Project: Oral Fluency Development",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Founder's Corner",
+      "author": "Tim O'Hagan"
+    }
+  ],
+  "featured": false,
+  "draft": false
+}

@@ -1,0 +1,34 @@
+{
+  "volumeNumber": 1,
+  "title": "What are Languages 4? First and Foremost, For All Ages!!",
+  "summary": "Introducing Languages 4's comprehensive curriculum designed for learners of all ages, from young children to elders, featuring our work with the Mohawk language project.",
+  "pubDate": "2023-04-28T00:00:00.000Z",
+  "theme": "Curriculum for All Ages",
+  "newsletterUrl": "https://myemail.constantcontact.com/subject.html?soid=1140081593716&aid=bsJDI2KTe0Y",
+  "coverImage": "/images/newsletters/volume-1-cover.webp",
+  "coverImageAlt": "Languages 4 Newsletter Volume 1",
+  "articles": [
+    {
+      "title": "Welcome to What are Languages 4?",
+      "author": "Languages 4 Staff"
+    },
+    {
+      "title": "The Primary Challenge in Language Reclamation",
+      "author": "Tim O'Hagan"
+    },
+    {
+      "title": "Our Approach to Curriculum",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Mohawk Project Spotlight",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Founder's Corner",
+      "author": "Tim O'Hagan"
+    }
+  ],
+  "featured": true,
+  "draft": false
+}

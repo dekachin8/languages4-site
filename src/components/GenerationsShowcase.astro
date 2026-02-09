@@ -1,6 +1,6 @@
 ---
 // GenerationsShowcase.astro - Languages 4 Generations interactive showcase
-// Auto-cycles through parallel learning paths with interactive slider
+// Auto-cycles through parallel learning paths
 import { generationsExamples } from '../utils/generationsExamples';
 ---
 
@@ -48,95 +48,108 @@ import { generationsExamples } from '../utils/generationsExamples';
           ))}
         </div>
 
-        <!-- Main Content Grid - Changed to Flex for slider -->
-        <div class="flex flex-col lg:flex-row min-h-[500px] relative">
-        <!-- LEFT: Children's Side (Light & Playful) -->
-        <div id="child-content" class="relative p-8 md:p-12 bg-gradient-to-br from-accent-100 via-primary-100 to-[#fbf2c4] transition-all duration-300 lg:absolute lg:left-0 lg:top-0 lg:bottom-0 lg:w-1/2">
-            <!-- Age Label -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm mb-6">
-            <svg class="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="font-display font-bold text-primary-900">Children (Ages 5-12)</span>
-            </div>
-
-            <!-- Icon -->
-            <div class="mb-6">
-            <div class="w-20 h-20 flex items-center justify-center text-5xl" id="child-icon">
-                🎒
-            </div>
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[500px]">
+          <!-- LEFT: Children's Side (Light & Playful) -->
+          <div class="relative p-8 md:p-12 bg-gradient-to-br from-accent-100 via-primary-100 to-[#fbf2c4] overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+              <img 
+                id="child-bg-image"
+                src="/images/generations/vocabulary-children.webp" 
+                alt="" 
+                class="w-full h-full object-cover opacity-30 transition-all duration-700"
+              />
             </div>
 
             <!-- Content -->
-            <h3 id="child-title" class="font-display text-3xl md:text-4xl font-bold text-primary-900 mb-4 transition-all duration-500">
-            School Words
-            </h3>
-            <p id="child-description" class="text-lg text-neutral-800 leading-relaxed transition-all duration-500">
-            Desk, pencil, teacher, classroom - essential vocabulary for young learners
-            </p>
+            <div class="relative z-10">
+              <!-- Age Label -->
+              <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm mb-6">
+                <svg class="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-display font-bold text-primary-900">Children (Ages 5-12)</span>
+              </div>
 
-            <!-- Decorative Element -->
-            <div class="absolute bottom-8 right-8 w-32 h-32 bg-accent-400/10 rounded-full blur-2xl"></div>
-        </div>
+              <!-- Icon -->
+              <div class="mb-6">
+                <div class="w-20 h-20 flex items-center justify-center text-5xl" id="child-icon">
+                  🎒
+                </div>
+              </div>
 
-        <!-- CENTER: Interactive Draggable Divider -->
-        <div 
-            id="divider"
-            class="absolute left-1/2 top-0 bottom-0 w-2 -translate-x-1/2 bg-gradient-to-b from-accent-400 via-primary-600 to-[#74a892] z-20 hidden lg:block cursor-ew-resize hover:w-3 transition-all"
-        >
-            <!-- Drag Handle -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white rounded-full shadow-brand flex items-center justify-center cursor-grab active:cursor-grabbing">
-            <span id="connection-icon" class="text-2xl transition-all duration-500">💬</span>
+              <!-- Content -->
+              <h3 id="child-title" class="font-display text-3xl md:text-4xl font-bold text-primary-900 mb-4 transition-all duration-500">
+                School Words
+              </h3>
+              <p id="child-description" class="text-lg text-neutral-800 leading-relaxed transition-all duration-500">
+                Desk, pencil, teacher, classroom - essential vocabulary for young learners
+              </p>
+
+              <!-- Decorative Element -->
+              <div class="absolute bottom-8 right-8 w-32 h-32 bg-accent-400/10 rounded-full blur-2xl"></div>
+            </div>
+          </div>
+
+          <!-- CENTER: Divider (Static, Visual Only) -->
+          <div class="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 bg-gradient-to-b from-accent-400 via-primary-600 to-[#74a892] z-20 hidden lg:block">
+            <!-- Connection Icon -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white rounded-full shadow-brand flex items-center justify-center">
+              <span id="connection-icon" class="text-2xl transition-all duration-500">💬</span>
             </div>
 
             <!-- Connection Text (below icon) -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-16 w-48 text-center pointer-events-none">
-            <div class="px-4 py-2 bg-white rounded-full shadow-brand backdrop-blur-sm">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-16 w-48 text-center">
+              <div class="px-4 py-2 bg-white rounded-full shadow-brand backdrop-blur-sm">
                 <p id="connection-text" class="text-sm font-semibold text-primary-900 transition-all duration-500">
-                Daily Life Communication
+                  Daily Life Communication
                 </p>
+              </div>
             </div>
-            </div>
+          </div>
 
-            <!-- Drag Hint (subtle) -->
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 opacity-50 pointer-events-none">
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 6L8 8l2 2-2 2 2 2 2-2-2-2 2-2-2-2z"/>
-            </svg>
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 6L8 8l2 2-2 2 2 2 2-2-2-2 2-2-2-2z"/>
-            </svg>
-            </div>
-        </div>
-
-        <!-- RIGHT: Adults' Side (Dark & Mature) -->
-        <div id="adult-content" class="relative p-8 md:p-12 bg-gradient-to-br from-primary-900 via-primary-800 to-[#74a892] transition-all duration-300 lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/2">
-            <!-- Age Label -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full shadow-sm mb-6">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
-            <span class="font-display font-bold text-white">Adults (Ages 13+)</span>
-            </div>
-
-            <!-- Icon -->
-            <div class="mb-6">
-            <div class="w-20 h-20 flex items-center justify-center text-5xl" id="adult-icon">
-                💼
-            </div>
+          <!-- RIGHT: Adults' Side (Dark & Mature) -->
+          <div class="relative p-8 md:p-12 bg-gradient-to-br from-primary-900 via-primary-800 to-[#74a892] text-white overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+              <img 
+                id="adult-bg-image"
+                src="/images/generations/vocabulary-adults.webp" 
+                alt="" 
+                class="w-full h-full object-cover opacity-20 transition-all duration-700"
+              />
             </div>
 
             <!-- Content -->
-            <h3 id="adult-title" class="font-display text-3xl md:text-4xl font-bold text-white mb-4 transition-all duration-500">
-            Work Words
-            </h3>
-            <p id="adult-description" class="text-lg text-white/90 leading-relaxed transition-all duration-500">
-            Meeting, schedule, project, leadership - professional language skills
-            </p>
+            <div class="relative z-10">
+              <!-- Age Label -->
+              <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full shadow-sm mb-6 border border-white/20">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                <span class="font-display font-bold text-white">Adults (Ages 13+)</span>
+              </div>
 
-            <!-- Decorative Element -->
-            <div class="absolute bottom-8 left-8 w-32 h-32 bg-accent-600/10 rounded-full blur-2xl"></div>
-        </div>
+              <!-- Icon -->
+              <div class="mb-6">
+                <div class="w-20 h-20 flex items-center justify-center text-5xl" id="adult-icon">
+                  💼
+                </div>
+              </div>
+
+              <!-- Content -->
+              <h3 id="adult-title" class="font-display text-3xl md:text-4xl font-bold text-white mb-4 transition-all duration-500">
+                Work Words
+              </h3>
+              <p id="adult-description" class="text-lg text-white/90 leading-relaxed transition-all duration-500">
+                Meeting, schedule, project, leadership - professional language skills
+              </p>
+
+              <!-- Decorative Element -->
+              <div class="absolute bottom-8 left-8 w-32 h-32 bg-accent-600/10 rounded-full blur-2xl"></div>
+            </div>
+          </div>
         </div>
 
         <!-- Mobile Connection (shows on small screens) -->
@@ -150,7 +163,7 @@ import { generationsExamples } from '../utils/generationsExamples';
         </div>
       </div>
 
-      <!-- Manual Navigation (optional - for power users) -->
+      <!-- Manual Navigation -->
       <div class="flex items-center justify-center gap-4 mt-8">
         <button
           id="prev-btn"
@@ -184,8 +197,7 @@ import { generationsExamples } from '../utils/generationsExamples';
     <div class="max-w-4xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Primary CTA: Free Trial -->
-        
-          <a href="/contact"
+        <a href="/contact"
           class="group relative bg-gradient-to-r from-accent-600 to-accent-700 text-white rounded-xl p-8 shadow-brand-orange transition-all duration-300 hover:shadow-[0_20px_60px_rgba(199,82,42,0.3)] hover:-translate-y-1 overflow-hidden"
         >
           <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
@@ -286,7 +298,6 @@ import { generationsExamples } from '../utils/generationsExamples';
   let currentIndex = 0;
   let autoPlayInterval;
   const AUTOPLAY_DELAY = 5000; // 5 seconds
-  let isDragging = false;
 
   // DOM elements
   const categoryIcon = document.getElementById('category-icon');
@@ -305,10 +316,34 @@ import { generationsExamples } from '../utils/generationsExamples';
   const progressDots = document.querySelectorAll('.progress-dot');
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
-  const divider = document.getElementById('divider');
-  const splitContainer = document.getElementById('split-container');
-  const childContent = document.getElementById('child-content');
-  const adultContent = document.getElementById('adult-content');
+
+  // Image mapping for dynamic backgrounds
+  const imageMap = {
+    'Vocabulary': { 
+      child: 'vocabulary-children.webp', 
+      adult: 'vocabulary-adults.webp' 
+    },
+    'Activities': { 
+      child: 'nature-children.webp',      // Activities = outdoor/nature
+      adult: 'nature-adults.webp' 
+    },
+    'Stories': { 
+      child: 'stories-children.webp', 
+      adult: 'stories-adults.webp' 
+    },
+    'Community': { 
+      child: 'daily-life-children.webp',  // Community = daily life
+      adult: 'daily-life-adults.webp' 
+    },
+    'Cultural Practices': { 
+      child: 'heritage-children.webp',    // Cultural Practices = heritage
+      adult: 'heritage-adults.webp' 
+    }
+  };
+
+  // Get background image elements
+  const childBgImage = document.getElementById('child-bg-image');
+  const adultBgImage = document.getElementById('adult-bg-image');
 
   // Update content function
   function updateContent(index) {
@@ -335,6 +370,12 @@ import { generationsExamples } from '../utils/generationsExamples';
     if (connectionIconMobile) connectionIconMobile.textContent = example.connection.icon;
     if (connectionTextMobile) connectionTextMobile.textContent = example.connection.text;
 
+    // Update background images
+    if (childBgImage && adultBgImage && imageMap[example.category]) {
+      childBgImage.src = `/images/generations/${imageMap[example.category].child}`;
+      adultBgImage.src = `/images/generations/${imageMap[example.category].adult}`;
+    }
+
     // Update index display
     if (currentIndexDisplay) currentIndexDisplay.textContent = String(index + 1);
 
@@ -348,6 +389,22 @@ import { generationsExamples } from '../utils/generationsExamples';
         dot.classList.add('bg-white/40');
       }
     });
+
+    // Preload next images for smooth transitions
+    preloadNextImages(index);
+  }
+
+  // Preload next images for smooth transitions
+  function preloadNextImages(currentIdx) {
+    const nextIndex = (currentIdx + 1) % examples.length;
+    const nextExample = examples[nextIndex];
+    
+    if (nextExample && imageMap[nextExample.category]) {
+      const childImg = new Image();
+      const adultImg = new Image();
+      childImg.src = `/images/generations/${imageMap[nextExample.category].child}`;
+      adultImg.src = `/images/generations/${imageMap[nextExample.category].adult}`;
+    }
   }
 
   // Navigation functions
@@ -385,96 +442,6 @@ import { generationsExamples } from '../utils/generationsExamples';
     startAutoPlay();
   }
 
-  // Slider drag functionality - REVEALS CONTENT (SMOOTH VERSION)
-if (divider && splitContainer && childContent && adultContent) {
-  let startX = 0;
-  let currentX = 0;
-
-  function handleDragStart(e) {
-    isDragging = true;
-    startX = e.clientX || e.touches[0].clientX;
-    stopAutoPlay();
-    
-    // Remove transitions for instant feedback
-    childContent.style.transition = 'none';
-    adultContent.style.transition = 'none';
-    divider.style.transition = 'none';
-    
-    // Optimize rendering
-    childContent.style.willChange = 'width';
-    adultContent.style.willChange = 'width';
-    
-    divider.classList.add('w-4'); // Make thicker while dragging
-    document.body.style.cursor = 'ew-resize';
-  }
-
-  function handleDrag(e) {
-    if (!isDragging) return;
-    
-    e.preventDefault();
-    currentX = e.clientX || e.touches[0].clientX;
-    
-    // Calculate percentage position
-    const rect = splitContainer.getBoundingClientRect();
-    const percent = ((currentX - rect.left) / rect.width) * 100;
-    
-    // Constrain between 20% and 80%
-    const constrainedPercent = Math.max(20, Math.min(80, percent));
-    
-    // Update all positions instantly (no transition)
-    divider.style.left = `${constrainedPercent}%`;
-    childContent.style.width = `${constrainedPercent}%`;
-    adultContent.style.width = `${100 - constrainedPercent}%`;
-    adultContent.style.left = `${constrainedPercent}%`;
-  }
-
-  function handleDragEnd() {
-    if (!isDragging) return;
-    
-    isDragging = false;
-    divider.classList.remove('w-4');
-    document.body.style.cursor = '';
-    
-    // Re-enable transitions for smooth reset
-    childContent.style.transition = 'all 0.5s ease-out';
-    adultContent.style.transition = 'all 0.5s ease-out';
-    divider.style.transition = 'left 0.5s ease-out, width 0.2s ease';
-    
-    // Remove will-change
-    childContent.style.willChange = 'auto';
-    adultContent.style.willChange = 'auto';
-    
-    // Reset to center after 2 seconds
-    setTimeout(() => {
-      if (divider && childContent && adultContent) {
-        divider.style.left = '50%';
-        childContent.style.width = '50%';
-        adultContent.style.width = '50%';
-        adultContent.style.left = '50%';
-        
-        // Clear inline styles after animation
-        setTimeout(() => {
-          childContent.style.transition = '';
-          adultContent.style.transition = '';
-          divider.style.transition = '';
-        }, 500);
-        
-        resetAutoPlay();
-      }
-    }, 2000);
-  }
-
-  // Mouse events
-  divider.addEventListener('mousedown', handleDragStart);
-  document.addEventListener('mousemove', handleDrag);
-  document.addEventListener('mouseup', handleDragEnd);
-
-  // Touch events
-  divider.addEventListener('touchstart', handleDragStart, { passive: false });
-  document.addEventListener('touchmove', handleDrag, { passive: false });
-  document.addEventListener('touchend', handleDragEnd);
-}
-
   // Event listeners
   if (nextBtn) nextBtn.addEventListener('click', goToNext);
   if (prevBtn) prevBtn.addEventListener('click', goToPrev);
@@ -484,12 +451,10 @@ if (divider && splitContainer && childContent && adultContent) {
   });
 
   // Pause on hover
-  const showcase = document.querySelector('#child-content')?.parentElement?.parentElement;
+  const showcase = document.getElementById('split-container');
   if (showcase) {
     showcase.addEventListener('mouseenter', stopAutoPlay);
-    showcase.addEventListener('mouseleave', () => {
-      if (!isDragging) startAutoPlay();
-    });
+    showcase.addEventListener('mouseleave', startAutoPlay);
   }
 
   // Initialize
@@ -577,10 +542,5 @@ if (divider && splitContainer && childContent && adultContent) {
   #connection-text,
   #connection-text-mobile {
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  }
-
-  /* Divider transitions */
-  #divider {
-    transition: left 0.3s ease-out, width 0.2s ease;
   }
 </style>

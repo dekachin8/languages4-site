@@ -1,0 +1,24 @@
+{
+  "volumeNumber": 15,
+  "title": "[TO BE FILLED] Volume 15 Title",
+  "summary": "[TO BE FILLED] One or two sentences summarizing this edition.",
+  "pubDate": "2023-09-01T00:00:00.000Z",
+  "theme": "Theme Name",
+  "newsletterUrl": "https://conta.cc/PLACEHOLDER",
+  "articles": [
+    {
+      "title": "[Article 1 Title]",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "[Article 2 Title]",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Founder's Corner",
+      "author": "Tim O'Hagan"
+    }
+  ],
+  "featured": false,
+  "draft": true
+}

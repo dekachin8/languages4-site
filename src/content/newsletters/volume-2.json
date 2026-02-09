@@ -1,0 +1,32 @@
+{
+  "volumeNumber": 2,
+  "title": "What are Languages 4? Amplifying Indigenous Voices",
+  "summary": "Exploring how technology can scale Indigenous language instruction and transform shy learners into confident storytellers while maintaining language sovereignty.",
+  "pubDate": "2023-05-17T00:00:00.000Z",
+  "theme": "Technology & Scalability",
+  "newsletterUrl": "https://conta.cc/3psPPeb",
+  "articles": [
+    {
+      "title": "Amplifying Indigenous Voices Through Technology",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "From Shy Learner to Storyteller",
+      "author": "Tim O'Hagan"
+    },
+    {
+      "title": "Language Sovereignty: A Core Value",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Mohawk Project Update",
+      "author": "Languages 4 Team"
+    },
+    {
+      "title": "Founder's Corner: My Mother's 75th Birthday",
+      "author": "Tim O'Hagan"
+    }
+  ],
+  "featured": false,
+  "draft": false
+}

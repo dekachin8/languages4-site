@@ -1,187 +1,163 @@
 ---
-// src/pages/newsletters/[slug].astro - Single newsletter volume page
 import { getCollection } from 'astro:content';
-import type { GetStaticPaths } from 'astro';
-import MainLayout from '../../layouts/MainLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
 import SocialShare from '../../components/SocialShare.astro';
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const volumes = await getCollection('newsletters');
-  return volumes.map((volume) => ({
-    params: { slug: volume.slug },
-    props: { volume },
+export async function getStaticPaths() {
+  const newsletters = await getCollection('newsletters', ({ data }) => !data.draft);
+  
+  return newsletters.map((newsletter) => ({
+    params: { slug: `volume-${newsletter.data.volumeNumber.toString().replace('.', '-')}` },
+    props: { newsletter },
   }));
-};
+}
 
-const { volume } = Astro.props;
-const { Content } = await volume.render();
+const { newsletter } = Astro.props;
+const { volumeNumber, title, summary, pubDate, theme, newsletterUrl, coverImage, articles } = newsletter.data;
 
-// Get all articles for this volume
-const allArticles = await getCollection('newsletter-articles', ({ data }) => {
-  return data.volumeNumber === volume.data.volumeNumber && data.draft !== true;
+const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
 });
 
-// Sort articles by section order
-const sortedArticles = allArticles.sort((a, b) => {
-  const orderA = a.data.sectionOrder || 999;
-  const orderB = b.data.sectionOrder || 999;
-  return orderA - orderB;
-});
-
-// Group articles by section
-const articlesBySection = sortedArticles.reduce((acc, article) => {
-  const section = article.data.section;
-  if (!acc[section]) acc[section] = [];
-  acc[section].push(article);
-  return acc;
-}, {} as Record<string, typeof sortedArticles>);
-
-// Get prev/next volumes for navigation
-const allVolumes = await getCollection('newsletters', ({ data }) => data.draft !== true);
+// Get all volumes for navigation
+const allVolumes = await getCollection('newsletters', ({ data }) => !data.draft);
 const sortedVolumes = allVolumes.sort((a, b) => a.data.volumeNumber - b.data.volumeNumber);
-const currentIndex = sortedVolumes.findIndex(v => v.slug === volume.slug);
+
+const currentIndex = sortedVolumes.findIndex(v => v.data.volumeNumber === volumeNumber);
 const prevVolume = currentIndex > 0 ? sortedVolumes[currentIndex - 1] : null;
 const nextVolume = currentIndex < sortedVolumes.length - 1 ? sortedVolumes[currentIndex + 1] : null;
 
-// Format date
-const formattedDate = volume.data.pubDate.toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
-
-// Generate canonical URL for sharing
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const shareUrl = `${Astro.site}newsletters/volume-${volumeNumber.toString().replace('.', '-')}`;
+const shareTitle = `${title} - Languages 4 Newsletter`;
 ---
 
-<MainLayout 
-  title={volume.data.title}
-  description={volume.data.description}
-  image={volume.data.coverImage}
-  type="article"
-  publishedTime={volume.data.pubDate.toISOString()}
->
+<BaseLayout title={`${title} | Languages 4 Newsletter`} description={summary}>
+  <!-- Hero Section -->
+  <ArticleHero
+    title={title}
+    subtitle={`Volume ${volumeNumber} • ${formattedDate}`}
+    backgroundImage={coverImage}
+  />
 
-<!-- Hero Section -->
-<ArticleHero 
-  title={volume.data.title}
-  subtitle={`Volume ${volume.data.volumeNumber} • ${formattedDate}`}
-  backgroundImage={volume.data.coverImage || '/images/newsletters/newsletters-hero.webp'}
-  backgroundAlt={volume.data.coverImageAlt || `${volume.data.title} cover`}
-/>
-
-<!-- Main Content -->
-<article class="bg-neutral-50 py-12 lg:pr-20 xl:pr-24">
-  <div class="max-w-4xl mx-auto px-8">
-    
-    <!-- Volume Introduction -->
-    <div class="bg-white rounded-lg shadow-brand p-8 mb-8">
-      {volume.data.theme && (
-        <div class="inline-block bg-accent-100 text-accent-700 text-sm font-semibold px-4 py-2 rounded-full mb-4">
-          {volume.data.theme}
+  <!-- Newsletter Content -->
+  <section class="py-12 md:py-16">
+    <div class="container max-w-4xl">
+      <!-- Theme Badge -->
+      {theme && (
+        <div class="mb-6">
+          <span class="inline-block px-4 py-2 bg-accent-100 text-accent-700 rounded-full text-sm font-semibold">
+            {theme}
+          </span>
         </div>
       )}
-      
-      <div class="prose prose-lg max-w-none mb-6">
-        <Content />
+
+      <!-- Summary Card -->
+      <div class="bg-white rounded-lg shadow-brand p-8 mb-8">
+        <p class="text-lg text-neutral-700 leading-relaxed">
+          {summary}
+        </p>
       </div>
-      
-      <!-- Social Share -->
-      <SocialShare 
-        title={volume.data.title}
-        url={canonicalURL.toString()}
-        description={volume.data.description}
-      />
-    </div>
-    
-    <!-- Table of Contents -->
-    <div class="bg-white rounded-lg shadow-brand p-8 mb-8">
-      <h2 class="text-2xl font-display font-bold text-primary-900 mb-6 flex items-center gap-3">
-        <svg class="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
-        </svg>
-        In This Issue
-      </h2>
-      
-      {sortedArticles.length === 0 ? (
-        <p class="text-neutral-600 italic">Articles coming soon...</p>
-      ) : (
-        <div class="space-y-6">
-          {Object.entries(articlesBySection).map(([section, articles]) => (
-            <div>
-              <h3 class="text-lg font-display font-bold text-accent-600 mb-3 uppercase tracking-wide">
-                {section}
-              </h3>
-              <ul class="space-y-3">
-                {articles.map(article => (
-                  <li class="border-l-4 border-primary-200 pl-4 hover:border-accent-600 transition-colors duration-brand">
-                    <a 
-                      href={`/newsletters/volume-${volume.data.volumeNumber}/${article.slug}`}
-                      class="block group"
-                    >
-                      <h4 class="font-semibold text-primary-900 group-hover:text-accent-600 transition-colors duration-brand mb-1">
-                        {article.data.title}
-                      </h4>
-                      <p class="text-sm text-neutral-600 line-clamp-2">
-                        {article.data.description}
-                      </p>
-                      {article.data.author && (
-                        <p class="text-xs text-neutral-500 mt-1">
-                          by {article.data.author}
-                        </p>
-                      )}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-    
-    <!-- Volume Navigation -->
-    <nav class="flex justify-between items-center gap-4" aria-label="Volume navigation">
-      {prevVolume ? (
-        <a 
-          href={`/newsletters/${prevVolume.slug}`}
-          class="flex items-center gap-2 px-6 py-3 bg-primary-900 text-white font-semibold rounded-lg hover:bg-primary-800 transition-colors duration-brand"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-          <span class="hidden sm:inline">Volume {prevVolume.data.volumeNumber}</span>
-          <span class="sm:hidden">Prev</span>
-        </a>
-      ) : (
-        <div></div>
-      )}
-      
-      <a 
-        href="/newsletters"
-        class="px-6 py-3 bg-neutral-200 text-primary-900 font-semibold rounded-lg hover:bg-neutral-300 transition-colors duration-brand"
-      >
-        All Volumes
-      </a>
-      
-      {nextVolume ? (
-        <a 
-          href={`/newsletters/${nextVolume.slug}`}
-          class="flex items-center gap-2 px-6 py-3 bg-primary-900 text-white font-semibold rounded-lg hover:bg-primary-800 transition-colors duration-brand"
-        >
-          <span class="hidden sm:inline">Volume {nextVolume.data.volumeNumber}</span>
-          <span class="sm:hidden">Next</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </a>
-      ) : (
-        <div></div>
-      )}
-    </nav>
-    
-  </div>
-</article>
 
-</MainLayout>
+      <!-- Articles Index -->
+      <div class="bg-white rounded-lg shadow-brand p-8 mb-8">
+        <h2 class="text-2xl font-display font-bold text-primary-900 mb-6 flex items-center gap-3">
+          <svg class="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+          In This Issue
+        </h2>
+        
+        <ul class="space-y-4">
+          {articles.map((article) => (
+            <li class="border-l-4 border-primary-200 pl-4 py-2 hover:border-accent-600 transition-colors">
+              <h3 class="font-semibold text-neutral-900 mb-1">{article.title}</h3>
+              <p class="text-sm text-neutral-600">by {article.author}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- CTA to Read Newsletter -->
+      <div class="text-center mb-12">
+        <a 
+          href={newsletterUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          Read Full Newsletter
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+          </svg>
+        </a>
+        <p class="text-sm text-neutral-600 mt-3">Opens in new window</p>
+      </div>
+
+      <!-- Social Share -->
+      <div class="mb-12">
+        <SocialShare 
+          url={shareUrl}
+          title={shareTitle}
+        />
+      </div>
+
+      <!-- Volume Navigation -->
+      <nav class="flex items-center justify-between gap-4 pt-8 border-t border-neutral-200">
+        <!-- Previous Volume -->
+        <div class="flex-1">
+          {prevVolume ? (
+            <a 
+              href={`/newsletters/volume-${prevVolume.data.volumeNumber}`}
+              class="inline-flex items-center gap-2 text-primary-700 hover:text-accent-600 transition-colors group"
+            >
+              <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+              <span class="hidden sm:inline">Volume {prevVolume.data.volumeNumber}</span>
+              <span class="sm:hidden">Prev</span>
+            </a>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
+        <!-- All Volumes -->
+        <div class="flex-shrink-0">
+          <a 
+            href="/newsletters"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 text-primary-700 rounded-lg hover:bg-primary-100 transition-colors font-semibold"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+            </svg>
+            All Volumes
+          </a>
+        </div>
+
+        <!-- Next Volume -->
+        <div class="flex-1 flex justify-end">
+          {nextVolume ? (
+            <a 
+              href={`/newsletters/volume-${nextVolume.data.volumeNumber}`}
+              class="inline-flex items-center gap-2 text-primary-700 hover:text-accent-600 transition-colors group"
+            >
+              <span class="hidden sm:inline">Volume {nextVolume.data.volumeNumber}</span>
+              <span class="sm:hidden">Next</span>
+              <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

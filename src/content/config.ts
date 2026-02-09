@@ -7,7 +7,7 @@ const whatarel4Collection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.date(),
+    pubDate: z.coerce.date(), // ← ADD .coerce
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
@@ -24,7 +24,7 @@ const whatarel4Collection = defineCollection({
           src: z.string(),
           alt: z.string(),
           caption: z.string().optional(),
-        })
+        }),
       )
       .optional(),
   }),
@@ -36,7 +36,7 @@ const signatureCollectionsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.date(),
+    pubDate: z.coerce.date(), // ← ADD .coerce
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
@@ -55,7 +55,7 @@ const signatureCollectionsCollection = defineCollection({
           src: z.string(),
           alt: z.string(),
           caption: z.string().optional(),
-        })
+        }),
       )
       .optional(),
   }),
@@ -67,7 +67,7 @@ const ancestorsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.date(),
+    pubDate: z.coerce.date(), // ← ADD .coerce
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
@@ -87,24 +87,32 @@ const ancestorsCollection = defineCollection({
           src: z.string(),
           alt: z.string(),
           caption: z.string().optional(),
-        })
+        }),
       )
       .optional(),
   }),
 });
 
-// Schema for Newsletter Volumes (containers for issues)
+// Schema for Newsletter Volumes - simplified link-based approach
 const newslettersCollection = defineCollection({
-  type: "content",
+  type: "data", // ← CHANGED from "content"
   schema: z.object({
-    volumeNumber: z.number(), // 1, 2, 3... 19
-    title: z.string(), // "Volume 19: Innovation & Tradition"
-    description: z.string(), // Summary of what's in this issue
-    pubDate: z.date(), // When this volume was published
-    coverImage: z.string().optional(), // Volume cover/hero image
+    volumeNumber: z.number(),
+    title: z.string(),
+    summary: z.string(), // ← CHANGED from "description"
+    pubDate: z.coerce.date(), // ← ADD .coerce
+    theme: z.string().optional(),
+    newsletterUrl: z.string(), // ← NEW: Link to Constant Contact
+    coverImage: z.string().optional(),
     coverImageAlt: z.string().optional(),
-    theme: z.string().optional(), // Optional theme for this volume
-    featured: z.boolean().default(false), // Highlight on archive page
+    articles: z.array(
+      z.object({
+        // ← NEW: Article index
+        title: z.string(),
+        author: z.string(),
+      }),
+    ),
+    featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),
 });
@@ -117,7 +125,7 @@ const newsletterArticlesCollection = defineCollection({
     volumeNumber: z.number(), // Links to parent volume (e.g., 19)
     title: z.string(), // Article title
     description: z.string(), // Article summary
-    pubDate: z.date(), // ADD THIS LINE
+    pubDate: z.coerce.date(), // ← ADD .coerce // ADD THIS LINE
     section: z.enum([
       "Feature",
       "Community",
