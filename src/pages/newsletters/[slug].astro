@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import MainLayout from '../../layouts/MainLayout.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
 import SocialShare from '../../components/SocialShare.astro';
 
@@ -34,7 +34,7 @@ const shareUrl = `${Astro.site}newsletters/volume-${volumeNumber.toString().repl
 const shareTitle = `${title} - Languages 4 Newsletter`;
 ---
 
-<BaseLayout title={`${title} | Languages 4 Newsletter`} description={summary}>
+<MainLayout title={`${title} | Languages 4 Newsletter`} description={summary}>
   <!-- Hero Section -->
   <ArticleHero
     title={title}
@@ -160,4 +160,4 @@ const shareTitle = `${title} - Languages 4 Newsletter`;
       </nav>
     </div>
   </section>
-</BaseLayout>
+</MainLayout>
