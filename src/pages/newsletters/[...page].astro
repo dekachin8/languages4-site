@@ -75,11 +75,11 @@ const totalVolumes = allVolumes.length;
         <VolumeCard 
           volumeNumber={volume.data.volumeNumber}
           title={volume.data.title}
-          description={volume.data.description}
+          description={volume.data.summary}
           pubDate={volume.data.pubDate}
           coverImage={volume.data.coverImage}
           coverImageAlt={volume.data.coverImageAlt}
-          slug={volume.slug}
+          slug={`volume-${volume.data.volumeNumber.toString().replace('.', '-')}`}
           theme={volume.data.theme}
           featured={volume.data.featured}
         />
