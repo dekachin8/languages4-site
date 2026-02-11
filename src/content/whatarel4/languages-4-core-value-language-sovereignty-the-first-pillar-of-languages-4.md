@@ -1,12 +1,12 @@
 ---
-title: "Languages 4 Core Value - Language Sovereignty |  The First Piller of Languages 4"
+title: "Languages 4 Core Value - Language Sovereignty |  The First Pillar of Languages 4"
 description: "Discover the essence of language sovereignty in Indigenous communities. Languages 4™ champions their rights, emphasizing collaboration and respect in revitalization. Dive into our mission and learn..."
 pubDate: 2023-06-15
 updatedDate: 2023-06-15
 heroImage: "/images/whatarel4/coreValues.gif"
-heroImageAlt: "Languages 4 Core Value - Language Sovereignty |  The First Piller of Languages 4"
+heroImageAlt: "Languages 4 Core Value - Language Sovereignty |  The First Pillar of Languages 4"
 cardImage: "/images/whatarel4/coreValues.gif"
-cardImageAlt: "Languages 4 Core Value - Language Sovereignty |  The First Piller of Languages 4"
+cardImageAlt: "Languages 4 Core Value - Language Sovereignty |  The First Pillar of Languages 4"
 author: "Tim O'Hagan"
 tags:
   - "Trademark"
@@ -30,7 +30,7 @@ Therefore, efforts to reclaim, preserve, or revitalize a heritage language shoul
 
 That's why promoting language sovereignty is one of the fundamental principles of Languages 4, a cornerstone in the foundation of our business model and practices. Clarity and transparency, as well as all things financial, have been informed with this core value. We believe that our Indigenous partners have the right to determine the protection and use of their ancestral languages while we help guide and develop resources together to reclaim and preserve and or revitalize them.
 
-* * *
+---
 
 ## Tim O'Hagan - Founder and President, Languages 4
 
