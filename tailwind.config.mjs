@@ -120,7 +120,7 @@ export default {
       },
       fontFamily: {
         // Display font for headings - Neue Kabel (loaded via Adobe Typekit)
-        display: ['"Neue Kabel"', "system-ui", "sans-serif"],
+        display: ['"neue-kabel"', "system-ui", "sans-serif"],
         // Body font - Modern system font stack for performance
         sans: [
           "Bahnschrift",
