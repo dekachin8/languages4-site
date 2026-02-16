@@ -33,6 +33,35 @@
 /blog/l4_blog_8.29.24_speech_engines.php            /whatarel4/platform-specific-speech-recognition-engines-for-language-learning/ 301
 /blog/l4_blog_8.30.24_speech_recognition.php        /whatarel4/harnessing-speech-recognition-for-language-revitalization-a-key-element-in-languages-4-projects/ 301
 /blog/l4_blog_10.30.24_thepowerofsre.php            /whatarel4/the-power-of-speech-recognition-building-confidence-in-speaking-and-listening/ 301
+/blog/l4_blog_9.21.23_EmpoweringElders.php          /whatarel4/empowering-elders-and-keepers-of-indigenous-language-languages-4-instruction-strategies-and-support/ 301
+/blog/l4_blog_5.8.23_Languages4Generations.php      /whatarel4/introducing-languages-4-generations-cross-generational-communication-must-be-a-top-priority/ 301
+
+# HTML versions of blog posts (old site also served .html)
+/blog/l4_blog_5.4.24_StarwarsDay.html               /whatarel4/celebrating-star-wars-day-with-the-din-dub-preserving-indigenous-language-and-culture/ 301
+/blog/l4_blog_5.8.24_WhatIsL4-IntroVideo.html       /whatarel4/revitalizing-indigenous-languages-with-languages-4-a-video-introduction/ 301
+/blog/l4_blog_1.23.24_Moose_Etymology.html          /whatarel4/from-moosh-to-moose-the-algonquian-legacy-in-north-american-english-lexicon/ 301
+/blog/l4_blog_2.29.24_Year1_in_reflection.html      /whatarel4/voices-heard-lessons-learned-one-year-into-the-languages-4-journey/ 301
+/blog/l4_blog_3.20.24_SmashPedagogy.html            /whatarel4/the-scaffolded-immersion-pedagogy/ 301
+/blog/l4_blog_4.15.24_LandBased.html                /whatarel4/land-based-education-integrating-indigenous-knowledge-and-language-revitalization/ 301
+/blog/l4_blog_4.15.24_CareRespect.html              /whatarel4/embracing-ethics-of-care-and-respect-in-indigenous-language-education/ 301
+/blog/l4_blog_4.15.24_EcosystemStewards.html        /whatarel4/ecosystems-and-stewardship-integrating-indigenous-ecological-wisdom-into-language-education/ 301
+/blog/l4_blog_4.15.24_StoriesCeremonies.html        /whatarel4/revitalizing-indigenous-languages-through-storytelling-and-ceremonial-practices/ 301
+/blog/l4_blog_4.16.24_NavajoPeaches.html            /whatarel4/the-integration-of-traditional-navajo-horticulture-into-language-and-cultural-education/ 301
+/blog/l4_blog_4.28.24_CultureIdentity.html          /whatarel4/languages-4-embracing-culture-in-language-the-role-of-indigenous-representation-in-language-revitalization/ 301
+/blog/l4_blog_5.1.24_wellbeing.html                 /whatarel4/the-language-of-well-being-exploring-mental-health-benefits-of-indigenous-language-revitalization/ 301
+/blog/l4_blog_5.2.24_harnessing_language.html       /whatarel4/harnessing-indigenous-language-revitalization-for-pride-health-and-cultural-enrichment/ 301
+/blog/l4_blog_5.13.24_lacrosse.html                 /whatarel4/celebrating-the-spirit-of-the-creator-s-game-the-indigenous-roots-and-olympic-future-of-lacrosse/ 301
+/blog/l4_blog_7.23.24_kwetlal_cultivation.html      /whatarel4/revitalizing-kwetlal-integrating-traditional-lekwungen-agricultural-practices-through-language-and-cultural-education/ 301
+/blog/l4_blog_7.24.24_forest_regeneration.html      /whatarel4/the-xaxli-p-forest-regeneration-incorporates-community-values-and-language/ 301
+/blog/l4_blog_7.25.24_hawaiian_fishing.html         /whatarel4/restoring-reciprocity-in-hawaiian-fishing-practices/ 301
+/blog/l4_blog_8.27.24_scaffolded_confidence.html    /whatarel4/a-10-000-foot-introduction-to-scaffolded-immersion-and-confidence-building-in-language-learning/ 301
+/blog/l4_blog_8.29.24_speech_engines.html           /whatarel4/platform-specific-speech-recognition-engines-for-language-learning/ 301
+/blog/l4_blog_8.30.24_speech_recognition.html       /whatarel4/harnessing-speech-recognition-for-language-revitalization-a-key-element-in-languages-4-projects/ 301
+/blog/l4_blog_10.30.24_thepowerofsre.html           /whatarel4/the-power-of-speech-recognition-building-confidence-in-speaking-and-listening/ 301
+/blog/l4_blog_9.21.23_EmpoweringElders.html         /whatarel4/empowering-elders-and-keepers-of-indigenous-language-languages-4-instruction-strategies-and-support/ 301
+/blog/l4_blog_5.8.23_Languages4Generations.html     /whatarel4/introducing-languages-4-generations-cross-generational-communication-must-be-a-top-priority/ 301
+
+# Fix typo redirect (piller -> pillar)
 /whatarel4/languages-4-core-value-language-sovereignty-the-first-piller-of-languages-4/  /whatarel4/languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4/ 301
 
 # ---------------------------------------------------------------------------
@@ -42,6 +71,10 @@
 
 /ancestors/l4_gen_5.15.24_ancestors_buffalohump.php     /ancestors/languages-4-generations-indigenous-ancestors-buffalo-hump-comanche-chief-of-resilience-and-resistance/ 301
 /ancestors/l4_gen_3.16.25_ancestors_chiefjoseph.php     /ancestors/chief-joseph-of-the-nez-perce-a-leader-for-his-people-an-example-for-all/ 301
+
+# HTML versions
+/ancestors/l4_gen_5.15.24_ancestors_buffalohump.html    /ancestors/languages-4-generations-indigenous-ancestors-buffalo-hump-comanche-chief-of-resilience-and-resistance/ 301
+/ancestors/l4_gen_3.16.25_ancestors_chiefjoseph.html    /ancestors/chief-joseph-of-the-nez-perce-a-leader-for-his-people-an-example-for-all/ 301
 
 # ---------------------------------------------------------------------------
 # Signature Collections
@@ -58,11 +91,22 @@
 /collections/l4_signature_4.9.25_land_back1-3.php       /signature-collections/land-as-the-first-classroom-how-language-and-ecology-are-one/ 301
 /collections/l4_signature_4.16.25_land_back1-4.php      /signature-collections/building-the-future-indigenous-led-land-back-success-stories/ 301
 
+# HTML versions
+/blog/l4_blog_2.20.25_hawaiian_success.html             /signature-collections/hawaiian-language-revitalization-how-ina-based-education-is-reconnecting-language-land-and-culture/ 301
+/collections/l4_signature_2.28.25_aina_education.html   /signature-collections/ina-based-education-revitalizing-indigenous-languages-through-land-culture/ 301
+/collections/l4_signature_3.5.25_scalable_aina.html     /signature-collections/ina-based-education-scaling-indigenous-language-revival/ 301
+/collections/l4_signature_3.14.25_funding_reclamation.html  /signature-collections/strengthening-indigenous-and-ina-based-language-revitalization-funding-education-and-sustainability/ 301
+/collections/l4_signature_3.24.25_land_back1-1.html     /signature-collections/land-back-indigenous-language-revitalization-reclaiming-culture-identity/ 301
+/collections/l4_signature_4.2.25_land_back1-2.html      /signature-collections/land-back-and-reclamation-language-sovereignty/ 301
+/collections/l4_signature_4.9.25_land_back1-3.html      /signature-collections/land-as-the-first-classroom-how-language-and-ecology-are-one/ 301
+/collections/l4_signature_4.16.25_land_back1-4.html     /signature-collections/building-the-future-indigenous-led-land-back-success-stories/ 301
+
 # ---------------------------------------------------------------------------
 # Old site pages → New equivalents
 # ---------------------------------------------------------------------------
 
 /index.php              / 301
+/index.html             / 301
 /contact/               /contact/ 301
 /Contact_Us/            /contact/ 301
 

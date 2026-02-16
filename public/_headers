@@ -1,0 +1,35 @@
+# =============================================================================
+# Languages 4 — Netlify Headers
+# Canonical tags and SEO directives
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Block DESIGN_SYSTEM from search engines
+# ---------------------------------------------------------------------------
+/DESIGN_SYSTEM/*
+  X-Robots-Tag: noindex, nofollow
+
+# ---------------------------------------------------------------------------
+# Tag query strings should redirect to main blog
+# These generate duplicate content warnings in Google Search Console
+# ---------------------------------------------------------------------------
+/whatarel4?tag=*
+  Link: <https://www.languages4.com/whatarel4/>; rel="canonical"
+  X-Robots-Tag: noindex, follow
+
+# ---------------------------------------------------------------------------
+# Pagination canonical tags
+# Page 2, 3, etc should point back to page 1
+# ---------------------------------------------------------------------------
+/whatarel4/2/
+  Link: <https://www.languages4.com/whatarel4/>; rel="canonical"
+  
+/whatarel4/3/
+  Link: <https://www.languages4.com/whatarel4/>; rel="canonical"
+
+# ---------------------------------------------------------------------------
+# Archive pages - prevent thin content indexing issues
+# Google discovered these but won't index them
+# ---------------------------------------------------------------------------
+/whatarel4/archive/*
+  X-Robots-Tag: noindex, follow
