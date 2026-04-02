@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.7.0] - 2026-04-01
+
+### Site Audit: Bug Fixes, SEO, Performance & Redirects
+
+#### Fixed — Critical
+- **Broken hero modal CTAs** — missing `<a` opening tag in `ImageStoryModal.astro` caused all 4 homepage modal buttons to do nothing
+- **Performance regression (PageSpeed 85→47)** — `<link rel="preconnect" crossorigin>` on Typekit caused browser to open a CORS connection, forcing a second non-CORS connection for the stylesheet, delaying font load and spiking CLS to 1.0; fixed by removing `crossorigin`
+- **Modals outside `</MainLayout>`** in `index.astro` — 4 `<ImageStoryModal>` components were orphaned outside the layout, causing hydration issues; moved inside layout with `transition:persist`
+
+#### Fixed — High
+- **Core Values article missing on About page** — slug typo `piller` → `pillar` in `about.astro` lookup prevented 3rd article from appearing
+- **Event listener leak** on homepage modals — replaced bare `addEventListener` calls with AbortController pattern, preventing duplicate handlers across Astro View Transitions
+- **Date field mismatch** in `FeaturedStoriesCarousel.astro` — `publishDate`/`date` corrected to `pubDate` (matches content collection schema); carousel was silently failing to sort articles
+- **LinkedIn URL** corrected from `linkedin.com/companies/` → `linkedin.com/company/` in Navigation, Footer, SchemaOrg, and 9 blog posts
+- **Syntax errors**: double `>>` in `search.astro`, unclosed class attribute in `SocialShare.astro`
+
+#### Fixed — Medium
+- **OG image paths** — `/images/hero-social-share.jpg` and `/images/about-social-share.jpg` didn't exist; both now fall back to `og-default.jpg`
+- **`/trial` links** updated to `/contact` in `about.astro` and `PlatformShowcase.astro`
+- **Broken `/smash` nav link** removed from Navigation (page not yet built)
+- **Dev comments** removed from `src/content/config.ts` (migration notes left in production code)
+- **Stale sitemap filter** removed from `astro.config.mjs` (referenced deleted DESIGN_SYSTEM page)
+
+#### Added
+- **Security headers** in `public/_headers`: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security`
+- **`/forms/*` noindex** — prevents old Netlify form confirmation pages from being indexed
+- **`/privacy` and `/terms` placeholder pages** — live at those URLs with "coming soon" messaging
+- **16 missing redirects** in `public/_redirects` for early 2023 blog posts appearing as 404s in Google Search Console
+
+#### SEO
+- **www canonical redirect** (`https://languages4.com/* → https://www.languages4.com/:splat 301!`) — eliminates 19 "Duplicate without canonical" entries in Search Console
+- **`/trial` and `/smash` redirects** added to `_redirects`
+- **`/whatarel4?tag=*` canonical + noindex** headers added to `_headers`
+- **Tag query string pages** marked noindex to prevent duplicate content
+- **DESIGN_SYSTEM.md** moved from `src/pages/` to project root — was being deployed as a public page and indexed
+
+#### Pending (user action required)
+- Enable `font-display: swap` in Adobe Typekit kit settings (fonts.adobe.com)
+- Supply OG social share images: `public/images/hero-social-share.jpg` and `about-social-share.jpg` (1200×630px)
+- Provide legal copy for `/privacy` and `/terms` pages
+- Build out `/smash` Smash Education partnership page when ready
+
+---
+
 ## [Unreleased]
 
 ### 🔴 Critical Priorities (Session 6)
@@ -498,6 +542,8 @@ _Print Styles Refinement_
 
 ## Version History Summary
 
+- **0.7.0** (Apr 1): Site audit — bug fixes, SEO, performance, redirects
+- **0.6.0** (Jan 28): Mobile polish, Generations showcase, Netlify Forms
 - **0.5.0** (Jan 26): Homepage rebuild, testimonials, email capture
 - **0.4.0** (Jan 20): Content migration (46 articles), gallery system
 - **0.3.0** (Jan 19): Search, tags, archives, print styles
