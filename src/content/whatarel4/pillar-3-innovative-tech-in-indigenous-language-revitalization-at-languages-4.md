@@ -51,7 +51,7 @@ Ready to embark on this transformative linguistic journey? Dive in and experienc
 
 [](https://instagram.com/l4_languages4)
 
-[](https://linkedin.com/companies/languages4)
+[](https://linkedin.com/company/languages4)
 
 [](https://www.facebook.com/profile.php?id=100090258725077)
 

@@ -1,12 +1,22 @@
 # =============================================================================
 # Languages 4 — Netlify Headers
-# Canonical tags and SEO directives
+# Security headers and SEO directives
 # =============================================================================
 
 # ---------------------------------------------------------------------------
-# Block DESIGN_SYSTEM from search engines
+# Security headers (applied globally)
 # ---------------------------------------------------------------------------
-/DESIGN_SYSTEM/*
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# ---------------------------------------------------------------------------
+# Block old form confirmation pages from search engines
+# ---------------------------------------------------------------------------
+/forms/*
   X-Robots-Tag: noindex, nofollow
 
 # ---------------------------------------------------------------------------

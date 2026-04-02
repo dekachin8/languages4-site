@@ -6,6 +6,20 @@
 # =============================================================================
 
 # ---------------------------------------------------------------------------
+# Force www (canonical domain per astro.config.mjs site: https://www.languages4.com)
+# Must be first — Netlify evaluates redirects top-to-bottom
+# ---------------------------------------------------------------------------
+https://languages4.com/*  https://www.languages4.com/:splat  301!
+
+# ---------------------------------------------------------------------------
+# Pages that were linked internally but don't have content yet
+# ---------------------------------------------------------------------------
+/trial    /contact/   301
+/trial/   /contact/   301
+/smash    /about/     301
+/smash/   /about/     301
+
+# ---------------------------------------------------------------------------
 # Blog / What Are L4 Articles
 # Old: /blog/l4_blog_*.php → New: /whatarel4/[slug]/
 # ---------------------------------------------------------------------------
@@ -36,6 +50,17 @@
 /blog/l4_blog_9.21.23_EmpoweringElders.php          /whatarel4/empowering-elders-and-keepers-of-indigenous-language-languages-4-instruction-strategies-and-support/ 301
 /blog/l4_blog_5.8.23_Languages4Generations.php      /whatarel4/introducing-languages-4-generations-cross-generational-communication-must-be-a-top-priority/ 301
 
+# Early 2023 blog posts (missing from original redirect list)
+/blog/l4_blog_6.15.23_lang.sovereignty.php          /whatarel4/languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4/ 301
+/blog/l4_blog_6.15.23_Trustworthiness.php           /whatarel4/how-language-sovereignty-trustworthiness-and-innovation-define-languages-4/ 301
+/blog/l4_blog_7.13.23_QAwFounder.php                /whatarel4/languages-4-founder-tim-o-hagan-on-revitalizing-indigenous-languages/ 301
+/blog/l4_blog_10.4.23_WhyElephants.php              /whatarel4/ 301
+/blog/l4_blog_2.28.24_Mission_Affirmation.php       /whatarel4/ 301
+/blog/l4_blog_home2.php                             /whatarel4/ 301
+
+# Generations Buffalo Hump — was under /blog/ path on old site
+/blog/l4_blog_5.15.24_generations_buffalohump.php   /ancestors/languages-4-generations-indigenous-ancestors-buffalo-hump-comanche-chief-of-resilience-and-resistance/ 301
+
 # HTML versions of blog posts (old site also served .html)
 /blog/l4_blog_5.4.24_StarwarsDay.html               /whatarel4/celebrating-star-wars-day-with-the-din-dub-preserving-indigenous-language-and-culture/ 301
 /blog/l4_blog_5.8.24_WhatIsL4-IntroVideo.html       /whatarel4/revitalizing-indigenous-languages-with-languages-4-a-video-introduction/ 301
@@ -60,6 +85,17 @@
 /blog/l4_blog_10.30.24_thepowerofsre.html           /whatarel4/the-power-of-speech-recognition-building-confidence-in-speaking-and-listening/ 301
 /blog/l4_blog_9.21.23_EmpoweringElders.html         /whatarel4/empowering-elders-and-keepers-of-indigenous-language-languages-4-instruction-strategies-and-support/ 301
 /blog/l4_blog_5.8.23_Languages4Generations.html     /whatarel4/introducing-languages-4-generations-cross-generational-communication-must-be-a-top-priority/ 301
+
+# Early 2023 blog posts — HTML versions
+/blog/l4_blog_6.15.23_lang.sovereignty.html         /whatarel4/languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4/ 301
+/blog/l4_blog_6.15.23_Trustworthiness.html          /whatarel4/how-language-sovereignty-trustworthiness-and-innovation-define-languages-4/ 301
+/blog/l4_blog_7.13.23_QAwFounder.html               /whatarel4/languages-4-founder-tim-o-hagan-on-revitalizing-indigenous-languages/ 301
+/blog/l4_blog_10.4.23_WhyElephants.html             /whatarel4/ 301
+/blog/l4_blog_2.28.24_Mission_Affirmation.html      /whatarel4/ 301
+/blog/l4_blog_home2.html                            /whatarel4/ 301
+
+# Generations Buffalo Hump HTML version
+/blog/l4_blog_5.15.24_generations_buffalohump.html  /ancestors/languages-4-generations-indigenous-ancestors-buffalo-hump-comanche-chief-of-resilience-and-resistance/ 301
 
 # Fix typo redirect (piller -> pillar)
 /whatarel4/languages-4-core-value-language-sovereignty-the-first-piller-of-languages-4/  /whatarel4/languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4/ 301

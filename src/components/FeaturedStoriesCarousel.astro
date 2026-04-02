@@ -16,8 +16,8 @@ const allPosts = [
 
 // Sort by date (newest first)
 const sortedPosts = allPosts.sort((a, b) => {
-  const dateA = new Date(a.data.publishDate || a.data.date || 0);
-  const dateB = new Date(b.data.publishDate || b.data.date || 0);
+  const dateA = new Date(a.data.pubDate || 0);
+  const dateB = new Date(b.data.pubDate || 0);
   return dateB.getTime() - dateA.getTime();
 });
 
@@ -27,12 +27,12 @@ function getRecentAndLegacyPosts(months: number) {
   cutoffDate.setMonth(cutoffDate.getMonth() - months);
   
   const recent = sortedPosts.filter(post => {
-    const postDate = new Date(post.data.publishDate || post.data.date || 0);
+    const postDate = new Date(post.data.pubDate || 0);
     return postDate >= cutoffDate;
   });
   
   const legacy = sortedPosts.filter(post => {
-    const postDate = new Date(post.data.publishDate || post.data.date || 0);
+    const postDate = new Date(post.data.pubDate || 0);
     return postDate < cutoffDate;
   });
   

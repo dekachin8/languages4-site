@@ -8,10 +8,7 @@ import rehypeSlug from "rehype-slug";
 export default defineConfig({
   site: "https://www.languages4.com",
   integrations: [
-    sitemap({
-      // Exclude development/internal pages from sitemap
-      filter: (page) => !page.includes("/DESIGN_SYSTEM/"),
-    }),
+    sitemap(),
     tailwind(),
   ],
   markdown: {

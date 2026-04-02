@@ -12,7 +12,7 @@ const allArticles = await getCollection('whatarel4');
 
 const coreValuesArticles = [
   allArticles.find(a => a.slug === 'pillar-3-innovative-tech-in-indigenous-language-revitalization-at-languages-4'),
-  allArticles.find(a => a.slug === 'languages-4-core-value-language-sovereignty-the-first-piller-of-languages-4'),
+  allArticles.find(a => a.slug === 'languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4'),
   allArticles.find(a => a.slug === 'how-language-sovereignty-trustworthiness-and-innovation-define-languages-4')
 ].filter(Boolean); // Remove any undefined articles
 ---
@@ -20,7 +20,7 @@ const coreValuesArticles = [
 <MainLayout 
   title="About Languages 4 - Mission & Leadership"
   description="Languages 4 is dedicated to Indigenous language reclamation and advancing language sovereignty. Learn about our mission, leadership team, and commitment to community-driven language revitalization."
-  image="/images/about-social-share.jpg"
+  image="/images/og-default.jpg"
 >
 
 <!-- Hero: Mission Statement -->
@@ -356,8 +356,8 @@ const coreValuesArticles = [
       >
         Schedule Your Demonstration
       </a>
-      <a 
-        href="/trial"
+      <a
+        href="/contact"
         class="inline-block py-4 px-10 border-2 border-primary-600 text-primary-600 rounded-lg font-bold text-lg transition-all duration-300 hover:bg-primary-600 hover:text-white hover:-translate-y-1 hover:shadow-brand"
       >
         Start Your Free Trial

@@ -7,7 +7,7 @@ const whatarel4Collection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.coerce.date(), // ← ADD .coerce
+    pubDate: z.coerce.date(),
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
@@ -36,7 +36,7 @@ const signatureCollectionsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.coerce.date(), // ← ADD .coerce
+    pubDate: z.coerce.date(),
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
@@ -67,7 +67,7 @@ const ancestorsCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.coerce.date(), // ← ADD .coerce
+    pubDate: z.coerce.date(),
     updatedDate: z.date().optional(),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
@@ -95,19 +95,18 @@ const ancestorsCollection = defineCollection({
 
 // Schema for Newsletter Volumes - simplified link-based approach
 const newslettersCollection = defineCollection({
-  type: "data", // ← CHANGED from "content"
+  type: "data",
   schema: z.object({
     volumeNumber: z.number(),
     title: z.string(),
-    summary: z.string(), // ← CHANGED from "description"
-    pubDate: z.coerce.date(), // ← ADD .coerce
+    summary: z.string(),
+    pubDate: z.coerce.date(),
     theme: z.string().optional(),
-    newsletterUrl: z.string(), // ← NEW: Link to Constant Contact
+    newsletterUrl: z.string(),
     coverImage: z.string().optional(),
     coverImageAlt: z.string().optional(),
     articles: z.array(
       z.object({
-        // ← NEW: Article index
         title: z.string(),
         author: z.string(),
       }),
@@ -125,7 +124,7 @@ const newsletterArticlesCollection = defineCollection({
     volumeNumber: z.number(), // Links to parent volume (e.g., 19)
     title: z.string(), // Article title
     description: z.string(), // Article summary
-    pubDate: z.coerce.date(), // ← ADD .coerce // ADD THIS LINE
+    pubDate: z.coerce.date(),
     section: z.enum([
       "Feature",
       "Community",
