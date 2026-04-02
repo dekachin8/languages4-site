@@ -80,7 +80,7 @@ export default {
           400: "#ced4da",
           500: "#b1c0c9", // L4 Lt. Gray (base)
           600: "#8b9ba6",
-          700: "#7b7c7f", // L4 Dk Gray (body text)
+          700: "#636466", // L4 Dk Gray (body text) — darkened from #7b7c7f for WCAG AA contrast
           800: "#495057",
           900: "#343a40",
           950: "#1a1d20",
@@ -113,7 +113,7 @@ export default {
           950: "#381e0f",
         },
         // Semantic Aliases for Easy Use
-        body: "#7b7c7f", // Default body text color
+        body: "#636466", // Default body text color
         heading: "#183e4b", // Default heading color
         border: "#b1c0c9", // Default border color
         background: "#ffffff", // Default background
@@ -249,7 +249,7 @@ export default {
         DEFAULT: {
           css: {
             maxWidth: "75ch",
-            color: "#7b7c7f",
+            color: "#636466",
             h1: {
               color: "#183e4b",
               fontWeight: "900",
@@ -281,7 +281,7 @@ export default {
               marginTop: "0",
               marginBottom: "1.75rem",
               lineHeight: "1.85",
-              color: "#7b7c7f",
+              color: "#636466",
             },
             blockquote: {
               backgroundColor: "#f9fafb",
