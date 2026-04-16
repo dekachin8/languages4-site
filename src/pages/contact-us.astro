@@ -1,8 +1,5 @@
 ---
-// Redirect /contact-us to /contact
 import { redirect } from 'astro';
 
-export const prerender = false;
-
-return redirect('/contact', 301);
+redirect('/contact', 301);
 ---
