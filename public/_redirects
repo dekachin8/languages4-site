@@ -154,7 +154,12 @@ https://languages4.com/*  https://www.languages4.com/:splat  301!
 # ---------------------------------------------------------------------------
 
 /blog/*                 /whatarel4/ 301
+/articles/founder-tim-ohagan-revitalizing-indigenous-languages  /whatarel4/languages-4-founder-tim-o-hagan-on-revitalizing-indigenous-languages/ 301
 /collections/*          /signature-collections/ 301
 /ancestors/*            /ancestors/ 301
 /activity_portfolio/*   / 301
 /pages/*                / 301
+/articles/*             /whatarel4/ 301
+/Contact_Us/*           /contact/ 301
+/tags/*                 /whatarel4/ 301
+/contact/www.languages4.com  /contact/ 301

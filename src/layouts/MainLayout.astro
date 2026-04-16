@@ -52,9 +52,11 @@ const {
   <!-- RSS Feed -->
   <link rel="alternate" type="application/rss+xml" title="Languages 4 RSS Feed" href="/rss.xml" />
 
-  <!-- Adobe Fonts - Neue Kabel (your brand font) -->
-  <link rel="preconnect" href="https://use.typekit.net" />
-  <link rel="stylesheet" href="https://use.typekit.net/zrh5nnx.css">
+  <!-- Adobe Fonts - Neue Kabel (non-render-blocking async load) -->
+  <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+  <link rel="preconnect" href="https://p.typekit.net" crossorigin />
+  <link rel="preload" href="https://use.typekit.net/zrh5nnx.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://use.typekit.net/zrh5nnx.css" /></noscript>
 
   <!-- Structured Data for Rich Snippets -->
   <SchemaOrg />
