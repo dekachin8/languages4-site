@@ -41,7 +41,7 @@ type Props = {
   allTags: Array<{ tag: string; count: number }>;
 };
 
-const { page, allTags } = Astro.props;
+const { page, allTags } = Astro.props as Props;
 
 // Get tag from URL query parameter
 const activeTag = Astro.url.searchParams.get('tag');

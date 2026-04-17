@@ -313,7 +313,7 @@
   const modal = document.getElementById('download-modal');
   const downloadBtn = document.getElementById('download-values-btn');
   const closeBtn = document.getElementById('close-modal-btn');
-  const downloadForm = document.getElementById('download-form');
+  const downloadForm = document.getElementById('download-form') as HTMLFormElement | null;
   const successDiv = document.getElementById('download-success');
   const closeSuccessBtn = document.getElementById('close-success-btn');
 

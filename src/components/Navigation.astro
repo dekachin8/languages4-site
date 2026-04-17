@@ -155,8 +155,8 @@
 </div>
 
 <script>
-  let navListenerController = null;
-  let lastFocusedBeforeMenu = null;
+  let navListenerController: AbortController | null = null;
+  let lastFocusedBeforeMenu: HTMLElement | null = null;
 
   function initNavigation() {
     if (navListenerController) navListenerController.abort();
@@ -180,13 +180,13 @@
 
     const isOpen = () => mobileMenu?.style.transform === 'translateX(0px)';
 
-    function getFocusables() {
+    function getFocusables(): HTMLElement[] {
       if (!mobileMenu) return [];
-      return Array.from(mobileMenu.querySelectorAll('a[href], button:not([disabled])'))
+      return Array.from(mobileMenu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'))
         .filter(el => !el.hasAttribute('inert'));
     }
 
-    function trapFocus(e) {
+    function trapFocus(e: KeyboardEvent) {
       if (e.key !== 'Tab' || !isOpen()) return;
       const focusables = getFocusables();
       if (focusables.length === 0) return;
@@ -201,9 +201,9 @@
       }
     }
 
-    function openMenu(trigger) {
+    function openMenu(trigger?: HTMLElement | null) {
       if (!mobileMenu) return;
-      lastFocusedBeforeMenu = trigger || document.activeElement;
+      lastFocusedBeforeMenu = (trigger ?? document.activeElement) as HTMLElement | null;
       mobileMenu.style.transform = 'translateX(0)';
       mobileMenu.setAttribute('aria-hidden', 'false');
       mobileMenu.removeAttribute('inert');
@@ -246,9 +246,10 @@
     }, { signal });
 
     document.addEventListener('click', (e) => {
-      if (isOpen() && mobileMenu && !mobileMenu.contains(e.target) &&
-          e.target !== mobileMenuButton && !mobileMenuButton?.contains(e.target) &&
-          e.target !== desktopMenuButton && !desktopMenuButton?.contains(e.target)) {
+      const target = e.target as Node | null;
+      if (isOpen() && mobileMenu && target && !mobileMenu.contains(target) &&
+          target !== mobileMenuButton && !mobileMenuButton?.contains(target) &&
+          target !== desktopMenuButton && !desktopMenuButton?.contains(target)) {
         closeMenu();
       }
     }, { signal });

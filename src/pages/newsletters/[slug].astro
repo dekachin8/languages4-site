@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 import ArticleHero from '../../components/ArticleHero.astro';
 import SocialShare from '../../components/SocialShare.astro';
@@ -13,7 +14,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const { newsletter } = Astro.props;
+type Props = { newsletter: CollectionEntry<'newsletters'> };
+const { newsletter } = Astro.props as Props;
 const { volumeNumber, title, summary, pubDate, theme, newsletterUrl, coverImage, articles } = newsletter.data;
 
 const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {

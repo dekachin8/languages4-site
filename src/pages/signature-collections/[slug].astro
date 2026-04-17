@@ -28,7 +28,7 @@ type Props = {
   post: CollectionEntry<'signature-collections'>;
 };
 
-const { post } = Astro.props;
+const { post } = Astro.props as Props;
 const { Content } = await post.render();
 
 const allPosts = await getCollection('signature-collections', ({ data }) => data.draft !== true);

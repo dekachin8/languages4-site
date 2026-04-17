@@ -17,7 +17,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 };
 
-const { year } = Astro.props;
+type Props = { year: number };
+const { year } = Astro.props as Props;
 
 // Get all articles for this year
 const allArticles = await getCollection('newsletter-articles', ({ data }) => data.draft !== true);

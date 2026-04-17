@@ -28,7 +28,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
-const { year, month } = Astro.props;
+type Props = { year: number; month: number };
+const { year, month } = Astro.props as Props;
 
 // Get all posts for this month
 const allPosts = await getCollection('whatarel4', ({ data }) => data.draft !== true);

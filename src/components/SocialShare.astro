@@ -3,12 +3,13 @@
 interface Props {
   title?: string;
   description?: string;
+  url?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, url } = Astro.props;
 
-// Get current URL
-const currentUrl = Astro.url.href;
+// Get current URL (override if caller provides one)
+const currentUrl = url ?? Astro.url.href;
 
 // Encode for URLs
 const encodedUrl = encodeURIComponent(currentUrl);

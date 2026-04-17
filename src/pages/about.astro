@@ -6,6 +6,7 @@ import PDFDownloadModal from '../components/PDFDownloadModal.astro';
 import TeamMemberModal from '../components/TeamMemberModal.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
 // Fetch specific articles for Core Values showcase
 const allArticles = await getCollection('whatarel4');
@@ -14,7 +15,7 @@ const coreValuesArticles = [
   allArticles.find(a => a.slug === 'pillar-3-innovative-tech-in-indigenous-language-revitalization-at-languages-4'),
   allArticles.find(a => a.slug === 'languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4'),
   allArticles.find(a => a.slug === 'how-language-sovereignty-trustworthiness-and-innovation-define-languages-4')
-].filter(Boolean); // Remove any undefined articles
+].filter((a): a is CollectionEntry<'whatarel4'> => a !== undefined); // Remove any undefined articles
 ---
 
 <MainLayout

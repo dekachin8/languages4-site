@@ -110,7 +110,7 @@ const { placeholder = "Search articles, collections, profiles..." } = Astro.prop
       showImages: false,
       showSubResults: true,
       excerptLength: 15,
-      processResult: function(result) {
+      processResult: function(result: any) {
         // Customize result display
         return result;
       }

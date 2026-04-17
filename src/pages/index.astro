@@ -414,11 +414,11 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
         if (!modalId) return;
         
         // Create new handler function
-        const clickHandler = (e) => {
+        const clickHandler = (e: Event) => {
           e.preventDefault();
           e.stopPropagation();
-                    
-          const openFn = window[`open_${modalId}`];
+
+          const openFn = (window as any)[`open_${modalId}`];
           if (openFn) {
             openFn();
           } else {
@@ -572,27 +572,25 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
 
       const closeBtn = modal.querySelector('.modal-close-btn');
 
-      // Create fresh open function
-      function openModal() {
+      // Arrow functions close over the narrowed `modal` type
+      const openModal = () => {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         modal.setAttribute('aria-hidden', 'false');
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        
-      }
+      };
 
-      // Create fresh close function
-      function closeModal() {
+      const closeModal = () => {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
         modal.setAttribute('aria-hidden', 'true');
         modal.style.display = '';
         document.body.style.overflow = '';
-      }
+      };
 
       // Re-attach event listeners
-      if (closeBtn) {
+      if (closeBtn && closeBtn.parentNode) {
         const newCloseBtn = closeBtn.cloneNode(true);
         closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
         newCloseBtn.addEventListener('click', closeModal);
@@ -609,8 +607,8 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
       }, { signal });
 
       // Replace global function
-      window[`open_${modalId}`] = openModal;
-      });
+      (window as any)[`open_${modalId}`] = openModal;
+    });
   }
 
   // Initialize on load

@@ -6,11 +6,18 @@ interface Props {
   pubDate: Date;
   heroImage?: string;
   heroImageAlt?: string;
-  cardImage?: string;        // NEW
-  cardImageAlt?: string;     // NEW
+  cardImage?: string;
+  cardImageAlt?: string;
   slug: string;
-  collection: 'whatarel4' | 'signature-collections' | 'ancestors';
+  collection: 'whatarel4' | 'signature-collections' | 'ancestors' | 'newsletters';
   tags?: string[];
+  // Optional metadata surfaced by specific collection templates (ignored here)
+  author?: string;
+  seriesTitle?: string;
+  seriesOrder?: number;
+  lifespan?: string;
+  ancestorName?: string;
+  tribe?: string;
 }
 
 const { title, description, pubDate, heroImage, heroImageAlt, cardImage, cardImageAlt, slug, collection, tags = [] } = Astro.props;

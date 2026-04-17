@@ -40,7 +40,7 @@ type Props = {
   allPostsSorted: CollectionEntry<'whatarel4'>[];
 };
 
-const { page, allTags, allPostsSorted } = Astro.props;
+const { page, allTags, allPostsSorted } = Astro.props as Props;
 
 // Get tag from URL query parameter
 const activeTag = Astro.url.searchParams.get('tag');

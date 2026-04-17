@@ -16,7 +16,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }));
 };
 
-const { year } = Astro.props;
+type Props = { year: number };
+const { year } = Astro.props as Props;
 
 // Get all posts for this year
 const allPosts = await getCollection('whatarel4', ({ data }) => data.draft !== true);

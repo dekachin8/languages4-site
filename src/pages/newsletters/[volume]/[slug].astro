@@ -2,6 +2,7 @@
 // src/pages/newsletters/[volume]/[slug].astro - Individual newsletter article
 import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import SocialShare from '../../../components/SocialShare.astro';
 import ArticleSchema from '../../../components/ArticleSchema.astro';
@@ -9,17 +10,21 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getCollection('newsletter-articles');
-  
+
   return articles.map((article) => ({
-    params: { 
+    params: {
       volume: `volume-${article.data.volumeNumber}`,
-      slug: article.slug 
+      slug: article.slug
     },
     props: { article },
   }));
 };
 
-const { article } = Astro.props;
+type Props = {
+  article: CollectionEntry<'newsletter-articles'>;
+};
+
+const { article } = Astro.props as Props;
 const { Content } = await article.render();
 
 // Get the parent volume
@@ -71,7 +76,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <Breadcrumbs items={[
       { name: 'Home', url: '/' },
       { name: 'Newsletters', url: '/newsletters/' },
-      ...(parentVolume ? [{ name: `Volume ${parentVolume.data.volumeNumber}`, url: `/newsletters/${parentVolume.slug}/` }] : []),
+      ...(parentVolume ? [{ name: `Volume ${parentVolume.data.volumeNumber}`, url: `/newsletters/${parentVolume.id}/` }] : []),
       { name: article.data.title }
     ]} />
     
@@ -103,7 +108,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
             <a 
-              href={`/newsletters/${parentVolume.slug}`}
+              href={`/newsletters/${parentVolume.id}`}
               class="hover:text-accent-600 transition-colors"
             >
               From Volume {parentVolume.data.volumeNumber}
@@ -193,7 +198,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     {parentVolume && (
       <div class="text-center">
         <a 
-          href={`/newsletters/${parentVolume.slug}`}
+          href={`/newsletters/${parentVolume.id}`}
           class="inline-flex items-center gap-2 px-6 py-3 bg-primary-900 text-white font-semibold rounded-lg hover:bg-primary-800 transition-colors duration-brand"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
