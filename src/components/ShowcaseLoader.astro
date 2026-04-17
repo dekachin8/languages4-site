@@ -130,6 +130,8 @@
 
 // Initialize function
 function init() {
+  // Mosaic is hidden on mobile (lg:flex) — skip loading to save bandwidth
+  if (window.innerWidth < 1024) return;
   initShowcaseAnimation();
 }
 
