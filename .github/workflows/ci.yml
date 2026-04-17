@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel in-flight runs for the same branch when a new push comes in
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck, lint, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck (astro check)
+        run: npm run typecheck
+
+      - name: Lint (eslint)
+        run: npm run lint
+
+      - name: Build (astro + pagefind)
+        run: npm run build
+
+# ---------------------------------------------------------------------------
+# Notes for future workflows (not implemented here to keep CI fast and
+# decoupled from external services)
+# ---------------------------------------------------------------------------
+#
+# Redirect smoke tests (tests/redirects.spec.ts) run against the live
+# www.languages4.com domain by default. Running them on every PR would
+# couple CI to production availability and wouldn't test the PR branch's
+# changes to public/_redirects. Better options:
+#
+#   1) Scheduled workflow: nightly cron against production to catch
+#      regressions in deployed redirects.
+#   2) Deploy-preview-triggered workflow: run tests against the Netlify
+#      branch preview URL once the preview deploy finishes (requires
+#      Netlify → GitHub Actions webhook plumbing).
+#
+# For now, run tests locally before merging redirect changes:
+#
+#   BASE_URL=https://www.languages4.com npm run test:redirects
