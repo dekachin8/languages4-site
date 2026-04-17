@@ -38,3 +38,8 @@ Design Files/
 
 # Lightroom sidecar files
 *.xmp
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+/playwright/.cache/
