@@ -167,20 +167,150 @@ Critical items + top-priority highs. Single branch, critical-first commits for r
 - [ ] Person schema on `/about` per team member
 - [ ] SoftwareApplication schema on homepage
 
-### Sprint 2 — Pre-Content-Scale Foundation (~3-5 days)
-- [ ] ESLint + Prettier + Playwright (smoke tests for critical 301s) + GitHub Actions CI
-- [ ] Migrate to `astro:assets` / `<Image />` (start with hero + card images)
-- [ ] Extract `<CollectionArticleLayout>` and `<CollectionListingLayout>` to kill 70% duplication
-- [ ] Delete remaining WP-era files; tighten `tsconfig` includes
-- [ ] Create `netlify.toml` with build command + Node version pinned
-- [ ] Alt-text rewrite pass on signature-collections (describe images, not repeat titles)
-- [ ] `<span lang="…">` audit + wrapping across content collections
-- [ ] Per-page OG image creative brief + generation (needs Tim's design input or AI-generated from hero images)
-- [ ] Contact form a11y polish (`aria-invalid`, `aria-describedby`, `/thank-you` success page)
-- [ ] Mobile menu width fix (`w-[min(440px,100vw)]`)
-- [ ] Contrast audit pass (neutral-500 → neutral-700, cream-200 on primary-900, etc.)
-- [ ] HSTS preload bump, COOP/CORP, CSP enforce (after Report-Only monitoring period)
-- [ ] Promote CSP from Report-Only to enforced
+### Sprint 2 — Pre-Content-Scale Foundation
+
+**Goal**: establish regression protection (lint, typecheck, tests, CI) and tackle infrastructure polish before marketing content scales up. Sprint 1 gave us quality; Sprint 2 gives us the tooling to keep quality as the site grows.
+
+---
+
+#### Micro-sprint: Today (tiered for 30min / 90min / 150min)
+
+##### Tier A — Config wins (~30-40 min total, safest)
+
+**A.1 Create `netlify.toml`** (~10 min)
+- File: `netlify.toml` at repo root (new)
+- Content: pin build command, publish dir, Node version
+- Acceptance: `cat netlify.toml` returns expected TOML; Netlify still builds identically
+
+**A.2 Pin Node version in `package.json` `engines`** (~2 min)
+- File: `package.json`
+- Add `"engines": { "node": ">=20.0.0" }`
+- Acceptance: `npm install` still succeeds; Netlify picks up the constraint
+
+**A.3 Add `typecheck` script** (~5 min)
+- File: `package.json` `scripts`
+- Add `"typecheck": "astro check"`
+- Verify `@astrojs/check` + `typescript` are installed (install if not)
+- Acceptance: `npm run typecheck` exits 0 on current codebase
+
+**A.4 Install Prettier + prettier-plugin-astro** (~15 min)
+- Install: `npm install --save-dev prettier prettier-plugin-astro`
+- New files: `.prettierrc` (JSON config with Astro plugin), `.prettierignore` (dist, .astro, node_modules, public/pagefind)
+- Add scripts: `"format": "prettier --write ."`, `"format:check": "prettier --check ."`
+- **Do NOT run `prettier --write .`** in this sprint (would create a massive reformat diff). Just install + configure so it's ready.
+- Acceptance: `npm run format:check` runs (may report unformatted files, that's fine for now)
+
+**A.5 Mobile menu width fix** (~5 min)
+- File: `src/components/Navigation.astro:76`
+- Change `w-[440px] md:w-[480px]` → `w-[min(440px,100vw)] md:w-[480px]`
+- Acceptance: menu no longer overflows on 375px viewport
+
+**Tier A commit**: `Sprint 2 A: netlify.toml, Node pin, typecheck+format scripts, mobile menu fix`
+
+---
+
+##### Tier B — Tier A + ESLint baseline (~90 min total)
+
+Adds to Tier A:
+
+**B.1 Install ESLint with Astro plugin** (~25-35 min)
+- Install: `npm install --save-dev eslint @eslint/js typescript-eslint eslint-plugin-astro eslint-plugin-jsx-a11y globals`
+- New file: `eslint.config.mjs` (flat config — ESLint 9 style) — include: `@eslint/js` recommended, typescript-eslint recommended, eslint-plugin-astro recommended, jsx-a11y for anchor/button rules
+- Ignore: `dist`, `.astro`, `node_modules`, `public/pagefind`
+- Add script: `"lint": "eslint ."` (note: don't use `--max-warnings 0` yet — will surface pre-existing warnings we'll fix gradually)
+- **Do NOT run auto-fix yet** — just wire it up so errors surface.
+- Acceptance: `npm run lint` runs without tool failure (may emit warnings/errors from pre-existing code; that's expected)
+
+**B.2 Triage the first pass of lint output** (~20-30 min)
+- Capture output of `npm run lint` to a file or note
+- Categorize: obvious fixes (unused imports, etc.) vs noisy rules to disable vs real issues
+- Apply autofixes with `npx eslint . --fix` only for whitespace/import-order safe rules
+- Tune rules in `eslint.config.mjs` to silence false positives that don't matter
+- Commit config + any autofix results
+
+**Tier B commit(s)**: `Sprint 2 B: ESLint + Prettier tooling` (may split if triage produces meaningful code changes)
+
+---
+
+##### Tier C — Tier B + Lang-check script + CI (~150 min total)
+
+Adds to Tier B:
+
+**C.1 `npm run check:lang` script** (~60 min)
+- New file: `scripts/check-lang-tags.mjs`
+- Reads a dictionary (inline const or separate JSON) of known Indigenous terms → BCP 47 codes (pulled from README table we wrote)
+- Scans all `src/content/**/*.md` files (skip frontmatter)
+- For each dictionary term found in body content, check if it appears inside an `<span lang="…">` wrapper
+- Emit warnings: `FILE:LINE: "term" found without lang wrapper`
+- Exit code: 0 if clean, 1 if unwrapped terms found (so CI fails)
+- New script: `"check:lang": "node scripts/check-lang-tags.mjs"`
+- Acceptance: `npm run check:lang` passes on current codebase (since we wrapped everything in Sprint 1); if we drop one wrap, it fails
+
+**C.2 Minimal GitHub Actions workflow** (~15 min)
+- New file: `.github/workflows/ci.yml`
+- Runs on push + pull_request
+- Node 20, npm ci, then: typecheck, lint, format:check, check:lang, build
+- Acceptance: first push triggers green CI (or surfaces specific failures we fix)
+
+**Tier C commit(s)**: `Sprint 2 C: lang-tag lint script + CI workflow`
+
+---
+
+#### Rest of Sprint 2 (not today, but queued)
+
+**Layout extraction** (~2-3 hours)
+- Extract shared `<CollectionArticleLayout>` covering the ~70% duplication across `src/pages/whatarel4/[slug].astro`, `signature-collections/[slug].astro`, `ancestors/[slug].astro`
+- Extract `<CollectionListingLayout>` for the `[...page].astro` trio
+- Acceptance: all 6 listing/article pages render identically post-refactor; diff between the three article templates reduced to just collection-specific bits (tribe/lifespan for ancestors, seriesTitle/seriesOrder for signature-collections)
+
+**`astro:assets` migration** (~1-2 hours initial, 3-4 total if comprehensive)
+- Phase 1: hero LCP image (homepage `mobile-hero-1`) → `<Image />` with explicit width/height
+- Phase 2: card images on article listing pages (ArticleCard component)
+- Phase 3: gallery images
+- Acceptance: build emits optimized webp/avif variants; no Lighthouse regressions
+
+**Playwright smoke tests for 301 redirects** (~2 hours)
+- Install: `npm install --save-dev @playwright/test`
+- New file: `tests/redirects.spec.ts`
+- Cover: ~15-20 representative old WP URLs → new Astro URLs (pick from the high-traffic ones in `_redirects`), verify 301 status + `Location` header
+- Add script: `"test:redirects": "playwright test"`
+- Add to CI workflow
+- Acceptance: all sampled redirects return 301 with expected Location; CI fails if any drift
+
+**Contact form a11y polish** (~45 min)
+- File: `src/pages/contact.astro`
+- Add `aria-required="true"` on all required fields
+- Add `aria-invalid="false"` initially; JS to toggle `true` on validation failure
+- Create `/thank-you` page (`src/pages/thank-you.astro`) + point Netlify form `action` there
+- Move error messages into `aria-describedby`-linked elements
+- Acceptance: screen-reader walkthrough announces required status, success state, and validation errors correctly
+
+**Contrast audit pass** (~30-45 min)
+- Grep for `text-neutral-500` usage and verify each against its background. Current instances flagged in audit: `TestimonialSlider.astro:60`, `Sidebar.astro:71`, `ArticleCard.astro:50`
+- Grep for `text-white/80`, `text-white/90`, `text-white/60` on non-dark backgrounds
+- Check chip on `index.astro:71` — `bg-neutral-600` + white text at small size (3.6:1, fails AA)
+- Use a contrast checker for ambiguous cases
+- Acceptance: no text on background combinations below 4.5:1 (normal) / 3:1 (large 18pt+ or 14pt+ bold)
+
+**Per-page OG image generation** (~depends on your design input)
+- Decision gate: brand template (fill-in-the-blank) vs per-article custom vs AI-generated from hero images
+- Blocked on Tim's design direction
+- Deferred items 6-7 from lang audit (frontmatter title wrapping + ImageStoryModal set:html) pair naturally with template-layer work
+
+**Promote CSP to enforced** (~15 min)
+- Only after 1-2 weeks of Report-Only monitoring in production (needs deploy first!)
+- File: `public/_headers`
+- Rename header `Content-Security-Policy-Report-Only` → `Content-Security-Policy`
+- Acceptance: no real user-facing violations after 48 hours
+
+**Lang-tagging deferred items from Sprint 1** (~60 min bundled):
+- Frontmatter `<span lang>` support — requires template edit to unescape HTML in title rendering; touches 4 `[slug].astro` files
+- ImageStoryModal `set:html` decision — 1-line change if approved
+- Chokma'shki newsletter title — enabled by frontmatter support above
+- Remark plugin for auto-wrapping — alternative to the lint script; replaces manual wraps at build time (Sprint 3 territory if content scale justifies it)
+
+**Code quality deferred items**:
+- Navigation.astro DRY (extract LogoLink component)
 
 ### Sprint 3 — Marketing Hub Foundation (scope TBD)
 - Cultural authenticity pass (land acknowledgment, indigenous greeting, `lang`-tagging)
