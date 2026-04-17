@@ -58,7 +58,7 @@ const {
   <!-- Adobe Fonts - Neue Kabel (non-render-blocking async load) -->
   <link rel="preconnect" href="https://use.typekit.net" crossorigin />
   <link rel="preconnect" href="https://p.typekit.net" crossorigin />
-  <link rel="preload" href="https://use.typekit.net/zrh5nnx.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <link rel="preload" href="https://use.typekit.net/zrh5nnx.css" as="style" fetchpriority="low" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://use.typekit.net/zrh5nnx.css" /></noscript>
 
   <!-- Structured Data for Rich Snippets -->
@@ -162,6 +162,33 @@ const {
     <script is:inline src="/pagefind/pagefind-ui.js"></script>
   </>
 )}
+
+<!-- Analytics: deferred after LCP to avoid main-thread blocking -->
+<script is:inline>
+  function loadAnalytics() {
+    // Microsoft Clarity
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      var t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      var y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "ly48sltfjz");
+
+    // Google Analytics (GA4)
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-CFD2XKNKTT';
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', 'G-CFD2XKNKTT');
+  }
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadAnalytics, { timeout: 4000 });
+  } else {
+    setTimeout(loadAnalytics, 3000);
+  }
+</script>
 
 </body>
 </html>
