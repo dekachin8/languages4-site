@@ -1,5 +1,4 @@
 // archiveUtils.ts - Utility functions for archive pages
-import type { CollectionEntry } from "astro:content";
 
 // Type constraint to ensure posts have a pubDate
 type PostWithDate = {

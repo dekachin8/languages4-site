@@ -1,5 +1,4 @@
 // tagFilter.ts - Tag filtering utilities for collection pages
-import type { CollectionEntry } from "astro:content";
 
 // Type constraint to ensure posts have tags
 type PostWithTags = {
