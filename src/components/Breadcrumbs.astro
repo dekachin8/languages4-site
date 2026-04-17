@@ -1,0 +1,55 @@
+---
+interface Crumb {
+  name: string;
+  url?: string;
+}
+interface Props {
+  items: Crumb[];
+  visible?: boolean;
+}
+
+const { items, visible = true } = Astro.props;
+const SITE = 'https://www.languages4.com';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    ...(item.url
+      ? { item: item.url.startsWith('http') ? item.url : `${SITE}${item.url}` }
+      : {}),
+  })),
+};
+---
+
+{visible && (
+  <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-neutral-600 flex-wrap">
+      {items.map((item, i) => (
+        <>
+          <li>
+            {item.url ? (
+              <a href={item.url} class="hover:text-accent-600 transition-colors">
+                {item.name}
+              </a>
+            ) : (
+              <span class="text-primary-900 font-semibold" aria-current="page">{item.name}</span>
+            )}
+          </li>
+          {i < items.length - 1 && (
+            <li aria-hidden="true">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </li>
+          )}
+        </>
+      ))}
+    </ol>
+  </nav>
+)}
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

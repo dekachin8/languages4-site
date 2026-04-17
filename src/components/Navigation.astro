@@ -8,7 +8,7 @@
   <!-- Logo Left -->
   <a href="/" class="block w-10 h-10 transition-transform duration-brand hover:scale-110" aria-label="Languages 4 Home">
     <img 
-      src="/images/logo-sparrow-invert.svg" 
+      src="/images/logo-languages4.svg" 
       alt="Languages 4 Logo" 
       class="w-full h-full object-contain"
     />
@@ -33,7 +33,7 @@
   <div class="flex flex-col items-center">
     <a href="/" class="block w-12 h-12 md:w-16 md:h-16 transition-transform duration-brand hover:scale-110" aria-label="Languages 4 Home">
       <img 
-        src="/images/logo-sparrow-invert.svg" 
+        src="/images/logo-languages4.svg" 
         alt="Languages 4 Logo" 
         class="w-full h-full object-contain"
       />
@@ -155,13 +155,19 @@
 </div>
 
 <script>
-  // Initialize navigation - works with View Transitions
+  let navListenerController = null;
+  let lastFocusedBeforeMenu = null;
+
   function initNavigation() {
+    if (navListenerController) navListenerController.abort();
+    navListenerController = new AbortController();
+    const { signal } = navListenerController;
+
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const desktopMenuButton = document.getElementById('desktop-menu-button');
     const closeButton = document.getElementById('close-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
-    
+
     // Highlight active page
     const currentPath = window.location.pathname;
     document.querySelectorAll('.menu-link').forEach(link => {
@@ -171,73 +177,84 @@
         link.classList.remove('text-white');
       }
     });
-    
-    function openMenu() {
-      if (mobileMenu) {
-        mobileMenu.style.transform = 'translateX(0)';
-        mobileMenu.setAttribute('aria-hidden', 'false');
-        mobileMenu.removeAttribute('inert');
-        if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'true');
-        if (desktopMenuButton) desktopMenuButton.setAttribute('aria-expanded', 'true');
+
+    const isOpen = () => mobileMenu?.style.transform === 'translateX(0px)';
+
+    function getFocusables() {
+      if (!mobileMenu) return [];
+      return Array.from(mobileMenu.querySelectorAll('a[href], button:not([disabled])'))
+        .filter(el => !el.hasAttribute('inert'));
+    }
+
+    function trapFocus(e) {
+      if (e.key !== 'Tab' || !isOpen()) return;
+      const focusables = getFocusables();
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
+    }
+
+    function openMenu(trigger) {
+      if (!mobileMenu) return;
+      lastFocusedBeforeMenu = trigger || document.activeElement;
+      mobileMenu.style.transform = 'translateX(0)';
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      mobileMenu.removeAttribute('inert');
+      mobileMenuButton?.setAttribute('aria-expanded', 'true');
+      desktopMenuButton?.setAttribute('aria-expanded', 'true');
+      setTimeout(() => closeButton?.focus(), 50);
     }
 
     function closeMenu() {
-      if (mobileMenu) {
-        mobileMenu.style.transform = 'translateX(100%)';
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        mobileMenu.setAttribute('inert', '');
-        if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'false');
-        if (desktopMenuButton) desktopMenuButton.setAttribute('aria-expanded', 'false');
-      }
+      if (!mobileMenu) return;
+      mobileMenu.style.transform = 'translateX(100%)';
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      mobileMenu.setAttribute('inert', '');
+      mobileMenuButton?.setAttribute('aria-expanded', 'false');
+      desktopMenuButton?.setAttribute('aria-expanded', 'false');
+      lastFocusedBeforeMenu?.focus?.();
+      lastFocusedBeforeMenu = null;
     }
 
-    // Mobile menu button
-    if (mobileMenuButton) {
-      mobileMenuButton.addEventListener('click', () => {
-        const isOpen = mobileMenu?.style.transform === 'translateX(0px)';
-        isOpen ? closeMenu() : openMenu();
-      });
-    }
+    mobileMenuButton?.addEventListener('click', () => {
+      isOpen() ? closeMenu() : openMenu(mobileMenuButton);
+    }, { signal });
 
-    // Desktop menu button
-    if (desktopMenuButton) {
-      desktopMenuButton.addEventListener('click', () => {
-        const isOpen = mobileMenu?.style.transform === 'translateX(0px)';
-        isOpen ? closeMenu() : openMenu();
-      });
-    }
+    desktopMenuButton?.addEventListener('click', () => {
+      isOpen() ? closeMenu() : openMenu(desktopMenuButton);
+    }, { signal });
 
-    if (closeButton) {
-      closeButton.addEventListener('click', closeMenu);
-    }
+    closeButton?.addEventListener('click', closeMenu, { signal });
 
     document.querySelectorAll('.menu-link').forEach(link => {
-      link.addEventListener('click', closeMenu);
+      link.addEventListener('click', closeMenu, { signal });
     });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobileMenu?.style.transform === 'translateX(0px)') {
+      if (e.key === 'Escape' && isOpen()) {
         closeMenu();
+      } else {
+        trapFocus(e);
       }
-    });
+    }, { signal });
 
-    // Click outside to close
     document.addEventListener('click', (e) => {
-      const isOpen = mobileMenu?.style.transform === 'translateX(0px)';
-      if (isOpen && mobileMenu && !mobileMenu.contains(e.target) && 
+      if (isOpen() && mobileMenu && !mobileMenu.contains(e.target) &&
           e.target !== mobileMenuButton && !mobileMenuButton?.contains(e.target) &&
           e.target !== desktopMenuButton && !desktopMenuButton?.contains(e.target)) {
         closeMenu();
       }
-    });
+    }, { signal });
   }
 
-  // Run on initial load
   initNavigation();
-
-  // Re-run after View Transitions
   document.addEventListener('astro:after-swap', initNavigation);
 </script>
 
@@ -253,7 +270,7 @@
     30% { transform: scale(1); }
   }
   .hamburger-menu:hover { animation: none; }
-  
+
   .menu-link { animation: slideInRight 0.4s ease-out backwards; }
   .menu-link:nth-child(2) { animation-delay: 0.1s; }
   .menu-link:nth-child(3) { animation-delay: 0.15s; }
@@ -263,9 +280,16 @@
   .menu-link:nth-child(9) { animation-delay: 0.35s; }
   .menu-link:nth-child(10) { animation-delay: 0.4s; }
   .menu-link:nth-child(12) { animation-delay: 0.45s; }
-  
+
   @keyframes slideInRight {
     from { opacity: 0; transform: translateX(30px); }
     to { opacity: 1; transform: translateX(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hamburger-menu,
+    .menu-link {
+      animation: none !important;
+    }
   }
 </style>

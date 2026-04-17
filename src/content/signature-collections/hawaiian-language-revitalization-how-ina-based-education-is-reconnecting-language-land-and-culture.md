@@ -30,13 +30,13 @@ By the 1890s, the Indigenous Hawaiian population had plummeted from an estimated
 
 By the 1980s, Hawaiian was on the brink of extinction, with fewer than 50 fluent child speakers remaining. But the community fought back.
 
-Through grassroots efforts, language immersion programs like ʻAha Pūnana Leo and Hawaiian medium schools reclaimed the language from the edge of extinction. Today, thousands of children are learning and living in Hawaiian, marking one of the most significant Indigenous language revitalization successes in history.
+Through grassroots efforts, language immersion programs like <span lang="haw">ʻAha Pūnana Leo</span> and Hawaiian medium schools reclaimed the language from the edge of extinction. Today, thousands of children are learning and living in Hawaiian, marking one of the most significant Indigenous language revitalization successes in history.
 
-Yet, true revitalization means ensuring the language thrives beyond the classroom—in the land, in daily life, and in the wisdom of ancestors. This is where ʻĀina-Based Education plays a vital role in sustaining and deepening language learning for future generations.
+Yet, true revitalization means ensuring the language thrives beyond the classroom—in the land, in daily life, and in the wisdom of ancestors. This is where <span lang="haw">ʻĀina</span>-Based Education plays a vital role in sustaining and deepening language learning for future generations.
 
 ![Native Hawaiian Elder, teaching](/images/signature-collections/vintage_hawaiian_art_share.webp)
 
-## 🌿 Three Things We Love About ʻĀina-Based Education
+## 🌿 Three Things We Love About <span lang="haw">ʻĀina</span>-Based Education
 
 ## **\-1- Language Comes to Life Through Hands-On Learning.**
 
@@ -44,8 +44,8 @@ Hawaiian isn’t just a subject—it’s a way of life.
 
 Rather than sitting at a desk memorizing vocabulary, students learn through real-world experiences:
 
-- **🌱 In the loʻi kalo (taro fields):** They practice Hawaiian as they plant, weed, and harvest.
-- **🌊 On the waʻa (canoe):** They learn navigation terms while sailing like their ancestors.
+- **🌱 In the <span lang="haw">loʻi kalo</span> (taro fields):** They practice Hawaiian as they plant, weed, and harvest.
+- **🌊 On the <span lang="haw">waʻa</span> (canoe):** They learn navigation terms while sailing like their ancestors.
 - **🌬️ In the forest:** They chant Hawaiian prayers and use traditional plant names.
 
 **Why it works:**
@@ -60,15 +60,15 @@ Rather than sitting at a desk memorizing vocabulary, students learn through real
 
 Language thrives when elders, adults, and children learn together.
 
-Kupuna (elders) are the carriers of traditional knowledge, and their wisdom is essential for revitalization. ʻĀina-Based Education creates natural spaces for these connections to happen.
+<span lang="haw">Kupuna</span> (elders) are the carriers of traditional knowledge, and their wisdom is essential for revitalization. <span lang="haw">ʻĀina</span>-Based Education creates natural spaces for these connections to happen.
 
-- **🌺 A kupuna teaches children the Hawaiian names for plants** as they walk through the forest.
+- **🌺 A <span lang="haw">kupuna</span> teaches children the Hawaiian names for plants** as they walk through the forest.
 - **🌊 A grandfather and grandchild fish together** while speaking Hawaiian about ocean tides.
 - **🌱 A family gardens together,**reviving agricultural terms that were once nearly lost.
 
 **Why it works:**
 
-• Kupuna serve as both language and cultural teachers, ensuring knowledge transmission.
+• <span lang="haw">Kupuna</span> serve as both language and cultural teachers, ensuring knowledge transmission.
 
 • Families strengthen their bonds, making language a living part of home life.
 
@@ -80,11 +80,11 @@ Kupuna (elders) are the carriers of traditional knowledge, and their wisdom is e
 
 A single Hawaiian word can carry centuries of history, genealogy, and environmental wisdom.
 
-ʻĀina-Based Education ensures that students don’t just speak the language—they understand its deep connection to place.
+<span lang="haw">ʻĀina</span>-Based Education ensures that students don’t just speak the language—they understand its deep connection to place.
 
-- **🏔️ Place names (inoa ʻāina)** tell stories of ancestors and environmental changes.
-- **🌊 Weather terms (kaona)** teach about climate and sacred relationships with nature.
-- **📖 Oral histories (moʻolelo)** reveal the cultural and spiritual significance of each place.
+- **🏔️ Place names (<span lang="haw">inoa ʻāina</span>)** tell stories of ancestors and environmental changes.
+- **🌊 Weather terms (<span lang="haw">kaona</span>)** teach about climate and sacred relationships with nature.
+- **📖 Oral histories (<span lang="haw">moʻolelo</span>)** reveal the cultural and spiritual significance of each place.
 
 **Why it works:**
 
@@ -102,7 +102,7 @@ But the journey is not over.
 
 For Hawaiian—and all Indigenous languages—to not only survive but flourish, they must be deeply woven into daily life, cultural practices, and community traditions.
 
-That is why ʻĀina-Based Education is not just a method—it’s a movement.
+That is why <span lang="haw">ʻĀina</span>-Based Education is not just a method—it’s a movement.
 
 - ✅ It strengthens fluency **through real-world immersion.**
 - **✅ It connects generations,** ensuring knowledge is passed down.
@@ -110,17 +110,17 @@ That is why ʻĀina-Based Education is not just a method—it’s a movement.
 
 ## 🚀 Want to learn more? Stay tuned for our next article:
 
-## (Coming Soon)🔜 "Land is Our Teacher: How ʻĀina-Based Education Supports Indigenous Language Reclamation"
+## (Coming Soon)🔜 "Land is Our Teacher: How <span lang="haw">ʻĀina</span>-Based Education Supports Indigenous Language Reclamation"
 
 ---
 
 ## References:
 
-Kahakalau, Kū. “Ancient Is Modern—Transforming Public Education for Hawaiians.” The Value of Hawaiʻi 3: Hulihia, the Turning, edited by Noelani Goodyear-Ka‘ōpua et al., University of Hawai’i Press, 2020, pp. 271–74. JSTOR, https://doi.org/10.2307/j.ctv1pncr2m.66. Accessed 20 Feb. 2025.
+Kahakalau, Kū. “Ancient Is Modern—Transforming Public Education for Hawaiians.” The Value of <span lang="haw">Hawaiʻi</span> 3: Hulihia, the Turning, edited by Noelani Goodyear-Ka‘ōpua et al., University of Hawai’i Press, 2020, pp. 271–74. JSTOR, https://doi.org/10.2307/j.ctv1pncr2m.66. Accessed 20 Feb. 2025.
 
 Kaomea, Julie. “Indigenous Studies in the Elementary Curriculum: A Cautionary Hawaiian Example.” Anthropology & Education Quarterly, vol. 36, no. 1, 2005, pp. 24–42. JSTOR, http://www.jstor.org/stable/3651307. Accessed 20 Feb. 2025
 
-[ALOHA+ CHALLENGE | Green Workforce and Education 01 | ʻĀina-Based Education & Community Engagement](https://alohachallenge.hawaii.gov/pages/gwe-01-aina-based-education-community-engagement/")
+[ALOHA+ CHALLENGE | Green Workforce and Education 01 | <span lang="haw">ʻĀina</span>-Based Education & Community Engagement](https://alohachallenge.hawaii.gov/pages/gwe-01-aina-based-education-community-engagement/")
 
 ## Connect With Us
 

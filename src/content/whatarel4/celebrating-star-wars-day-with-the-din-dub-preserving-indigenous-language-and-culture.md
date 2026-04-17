@@ -35,7 +35,7 @@ galleryImages:
 
 ## "It Shattered the World's Perception"
 
-One of the most inspiring stories of cultural preservation and creativity comes from Manuelito Wheeler, a longtime Star Wars fan and the director of the Navajo Nation Museum. With his wife Jennifer, Wheeler made it their life's mission to celebrate and protect the Navajo language. Together, they achieved a remarkable feat: they translated and dubbed the entirety of "Star Wars: A New Hope" into the Navajo language, also known as Diné Bizaad.
+One of the most inspiring stories of cultural preservation and creativity comes from Manuelito Wheeler, a longtime Star Wars fan and the director of the Navajo Nation Museum. With his wife Jennifer, Wheeler made it their life's mission to celebrate and protect the Navajo language. Together, they achieved a remarkable feat: they translated and dubbed the entirety of "Star Wars: A New Hope" into the Navajo language, also known as <span lang="nv">Diné Bizaad</span>.
 
 ## A Journey of Dedication and Hope
 

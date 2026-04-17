@@ -296,7 +296,10 @@ function getImagePath(post: any) {
     }
   }
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   function startAutoRotate() {
+    if (prefersReducedMotion) return;
     autoRotateInterval = window.setInterval(() => {
       // Loop back to start when reaching the end
       if (currentIndex < totalCards - 1) {

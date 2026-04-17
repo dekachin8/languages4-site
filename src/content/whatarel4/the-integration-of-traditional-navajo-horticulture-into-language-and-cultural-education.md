@@ -36,7 +36,7 @@ Wytsalucy's work focuses on restoring the traditional peach varieties once preva
 ## Cultural Significance and Language Revitalization
 
   
-The revival of traditional peach orchards is deeply intertwined with Navajo cultural identity and language. The Navajo word for peach, "Diné didzétsoh," encapsulates more than just a fruit; it embodies a connection to ancestral land and practices. By reintroducing these traditional peaches and their Navajo names into educational programs, there is a profound opportunity to enrich language learning, making it a more immersive experience that respects and perpetuates Navajo heritage.
+The revival of traditional peach orchards is deeply intertwined with Navajo cultural identity and language. The Navajo word for peach, "<span lang="nv">Diné didzétsoh</span>," encapsulates more than just a fruit; it embodies a connection to ancestral land and practices. By reintroducing these traditional peaches and their Navajo names into educational programs, there is a profound opportunity to enrich language learning, making it a more immersive experience that respects and perpetuates Navajo heritage.
 
 ## Integrating Ecosystem Knowledge into Education
 

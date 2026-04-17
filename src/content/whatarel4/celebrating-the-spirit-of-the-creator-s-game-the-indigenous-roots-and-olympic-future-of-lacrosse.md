@@ -29,7 +29,7 @@ Vintage Illustration of Indigenous Lacrosse - Circa 1830
 
 ## The Sacred Origins of Lacrosse
 
-The story of lacrosse is not one that begins in the modern sports arenas of the 20th century, but rather in the sacred traditions of the Indigenous peoples of North America. Known traditionally as Baggataway or Tewaaraton, lacrosse was not just a game for tribes such as the Haudenosaunee, Anishinaabe, and many others across the continent. It was a spiritual practice, a means of conflict resolution, a tool for healing, and a method for cultivating strong, agile warriors.
+The story of lacrosse is not one that begins in the modern sports arenas of the 20th century, but rather in the sacred traditions of the Indigenous peoples of North America. Known traditionally as <span lang="oj">Baggataway</span> or <span lang="moh">Tewaaraton</span>, lacrosse was not just a game for tribes such as the <span lang="moh">Haudenosaunee</span>, <span lang="oj">Anishinaabe</span>, and many others across the continent. It was a spiritual practice, a means of conflict resolution, a tool for healing, and a method for cultivating strong, agile warriors.
 
 As noted by Seth Wolpowitz and Marcus Peng, "Most Indigenous nations believe that the game of lacrosse is a gift from the Creator," highlighting its esteemed origin. This deep respect for lacrosse as a divine gift permeates its practice, rendering it a ritualistic expression of gratitude to higher powers, where players engage in a symbolic battle on the field as an act of honor and prayer.
 

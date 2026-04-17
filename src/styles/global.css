@@ -1,3 +1,11 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid #fbf2c4;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}

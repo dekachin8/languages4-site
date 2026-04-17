@@ -104,12 +104,6 @@ const {
     display: none !important;
   }
   
-  /* Hide elements after article content */
-  h3:contains("Related"),
-  div:has(> h3) {
-    display: none !important;
-  }
-  
   /* Remove right padding that accounts for nav bar */
   main,
   section,
@@ -143,12 +137,17 @@ const {
 </head>
 
 <body class="font-sans text-body bg-background">
+  <!-- Skip link for keyboard users (WCAG 2.4.1) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary-900 focus:text-white focus:px-4 focus:py-2 focus:rounded focus:font-semibold">
+    Skip to main content
+  </a>
+
   <!-- Modern Tailwind Navigation Component -->
   <Navigation />
 
   <!-- Main Content Area -->
   <!-- Right padding accounts for fixed navigation (20 = 80px, 24 = 96px) -->
-  <main class="pt-16 lg:pt-0 lg:pr-20 xl:pr-24 min-h-screen">
+  <main id="main-content" class="pt-16 lg:pt-0 lg:pr-20 xl:pr-24 min-h-screen">
     <slot />
   </main>
 

@@ -70,9 +70,25 @@ const {
     </div>
 
     <!-- Navigation Controls -->
-    <div class="flex items-center justify-center gap-6 mt-8">
+    <div class="flex items-center justify-center gap-4 md:gap-6 mt-8">
+      <!-- Pause/Play Button -->
+      <button
+        id="slider-pause"
+        class="hidden w-12 h-12 rounded-full bg-primary-900 text-white items-center justify-center transition-all duration-300 hover:bg-primary-800 hover:scale-110 shadow-brand"
+        aria-label="Pause testimonial slideshow"
+        aria-pressed="false"
+      >
+        <svg class="slider-pause-icon w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="6" y="5" width="4" height="14" rx="1"/>
+          <rect x="14" y="5" width="4" height="14" rx="1"/>
+        </svg>
+        <svg class="slider-play-icon w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+
       <!-- Previous Button -->
-      <button 
+      <button
         id="slider-prev"
         class="w-12 h-12 rounded-full bg-primary-900 text-white flex items-center justify-center transition-all duration-300 hover:bg-primary-800 hover:scale-110 shadow-brand"
         aria-label="Previous testimonial"
@@ -94,7 +110,7 @@ const {
       </div>
 
       <!-- Next Button -->
-      <button 
+      <button
         id="slider-next"
         class="w-12 h-12 rounded-full bg-primary-900 text-white flex items-center justify-center transition-all duration-300 hover:bg-primary-800 hover:scale-110 shadow-brand"
         aria-label="Next testimonial"
@@ -151,8 +167,11 @@ const {
     updateSlider(newIndex);
   }
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let userPaused = false;
+
   function startAutoplay() {
-    if (autoplay) {
+    if (autoplay && !prefersReducedMotion && !userPaused) {
       autoplayInterval = setInterval(nextSlide, interval);
     }
   }
@@ -186,6 +205,31 @@ const {
   const sliderContainer = document.querySelector('.testimonial-slider');
   sliderContainer?.addEventListener('mouseenter', stopAutoplay);
   sliderContainer?.addEventListener('mouseleave', startAutoplay);
+
+  // Pause/Play button (only visible when autoplay is actually running)
+  const pauseBtn = document.getElementById('slider-pause');
+  if (pauseBtn && autoplay && !prefersReducedMotion) {
+    pauseBtn.classList.remove('hidden');
+    pauseBtn.classList.add('flex');
+    const pauseIcon = pauseBtn.querySelector('.slider-pause-icon');
+    const playIcon = pauseBtn.querySelector('.slider-play-icon');
+    pauseBtn.addEventListener('click', () => {
+      userPaused = !userPaused;
+      if (userPaused) {
+        stopAutoplay();
+        pauseBtn.setAttribute('aria-label', 'Play testimonial slideshow');
+        pauseBtn.setAttribute('aria-pressed', 'true');
+        pauseIcon?.classList.add('hidden');
+        playIcon?.classList.remove('hidden');
+      } else {
+        startAutoplay();
+        pauseBtn.setAttribute('aria-label', 'Pause testimonial slideshow');
+        pauseBtn.setAttribute('aria-pressed', 'false');
+        pauseIcon?.classList.remove('hidden');
+        playIcon?.classList.add('hidden');
+      }
+    });
+  }
 
   // Initialize
   updateSlider(0);

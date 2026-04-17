@@ -17,11 +17,50 @@ const coreValuesArticles = [
 ].filter(Boolean); // Remove any undefined articles
 ---
 
-<MainLayout 
+<MainLayout
   title="About Languages 4 - Mission & Leadership"
   description="Languages 4 is dedicated to Indigenous language reclamation and advancing language sovereignty. Learn about our mission, leadership team, and commitment to community-driven language revitalization."
   image="/images/og-default.jpg"
 >
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      name: "Tim O'Hagan",
+      jobTitle: 'Founder & President',
+      worksFor: { '@type': 'Organization', name: 'Languages 4', url: 'https://www.languages4.com' },
+      image: 'https://www.languages4.com/images/tim-ohagan.webp',
+      description: "Founder of Languages 4, making Indigenous language learning affordable and community-driven. Transitioned from teaching English in Japan to developing language technology with Chickasaw, Navajo, and Ojibwe Nations at Rosetta Stone before founding Languages 4.",
+      knowsAbout: ['Indigenous language revitalization', 'Language sovereignty', 'Educational technology', 'Speech recognition'],
+    },
+    {
+      '@type': 'Person',
+      name: "Lorelei O'Hagan",
+      jobTitle: 'Director of Community Engagement',
+      worksFor: { '@type': 'Organization', name: 'Languages 4', url: 'https://www.languages4.com' },
+      image: 'https://www.languages4.com/images/lorelei-ohagan.webp',
+      description: 'Director of Community Engagement with two decades of relationship management and community organizing experience. Focuses on building authentic partnerships with Indigenous communities for language reclamation.',
+      knowsAbout: ['Community organizing', 'Indigenous community partnerships', 'Relationship management'],
+    },
+    {
+      '@type': 'Person',
+      name: 'Jennie Korneychuk',
+      jobTitle: 'Media Consultant & Strategist',
+      worksFor: { '@type': 'Organization', name: 'Languages 4', url: 'https://www.languages4.com' },
+      description: 'Emmy-winning television executive bringing 20+ years of broadcast production to Languages 4. Specializes in video storytelling, live event coverage, and media strategy for Indigenous language learning content.',
+      knowsAbout: ['Broadcast production', 'Video storytelling', 'Media strategy', 'Content creation'],
+    },
+    {
+      '@type': 'Person',
+      name: 'Abraham Bravo',
+      jobTitle: 'CEO, SMASH Education (Platform Partner)',
+      description: 'CEO of SMASH Education and Languages 4 platform partner. Trilingual language education technology expert with 20+ years delivering programs across Canada, the U.S., Mexico, and France.',
+      knowsAbout: ['Language education technology', 'Educational software implementation', 'Cross-cultural pedagogy'],
+    },
+  ],
+})} />
 
 <!-- Hero: Mission Statement -->
 <section class="relative min-h-[60vh] bg-gradient-to-br from-primary-900 via-primary-800 to-primary-900 flex items-center justify-center overflow-hidden px-4 py-20">

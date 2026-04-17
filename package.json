@@ -11,13 +11,10 @@
     "reinstall": "npm run clean && npm install"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.71.2",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.1",
     "astro": "^5.16.7",
-    "jsdom": "^27.4.0",
-    "rehype-slug": "^6.0.0",
-    "turndown": "^7.2.2"
+    "rehype-slug": "^6.0.0"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.2",

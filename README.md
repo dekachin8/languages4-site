@@ -2,7 +2,7 @@
 
 > Marketing website for Languages 4 - Indigenous language reclamation through custom software and land-based curriculum.
 
-**Live Site:** https://wonderful-meringue-8520b4.netlify.app  
+**Live Site:** https://www.languages4.com  
 **Framework:** Astro + Tailwind CSS  
 **Deployment:** Netlify (manual deploys to conserve credits)
 
@@ -223,6 +223,56 @@ const featured = getFeaturedTestimonials();
 // Auto-rotating slider
 <TestimonialSlider testimonials={featured} />
 ```
+
+---
+
+## ✍️ Writing Content: Indigenous Language Tagging
+
+When adding a new article that contains Indigenous-language text (self-names in original orthography, in-language words or phrases), wrap those terms in a `<span>` with the correct `lang` attribute. This is semantic plumbing — invisible to sighted readers, but it makes screen readers pronounce the words correctly and signals multilingual content to search engines.
+
+### The rule
+
+- **Wrap**: Indigenous-language text in body prose — words like `ʻāina`, `Kanien'kéha`, `kwetlal`, `Diné Bizaad`, `Haudenosaunee`
+- **Skip**: fully Anglicized names where the English convention has taken over — `Mohawk`, `Navajo`, `Lakota`, `Hawaiian`, `Chickasaw`
+- **Skip**: frontmatter (`title`, `heroImageAlt`, etc.) — rendered as plain text by templates, inline HTML won't work there. Handled as a separate future task.
+- **Skip**: markdown image `![alt]()` text and link anchor text — attribute values can't contain inline HTML.
+
+### Pattern
+
+```markdown
+The <span lang="haw">ʻĀina</span>-Based Education model teaches <span lang="haw">ʻōlelo Hawaiʻi</span> through the land.
+```
+
+### BCP 47 code dictionary (used so far)
+
+| Language | Code | Example terms |
+|---|---|---|
+| Kanien'kéha (Mohawk) | `moh` | Kanien'kéha, Haudenosaunee, Tewaaraton |
+| Diné Bizaad (Navajo) | `nv` | Diné, Diné Bizaad, Diné didzétsoh |
+| Anishinaabemowin (Ojibwe) | `oj` | Anishinaabe, manoomin, Baggataway |
+| ʻŌlelo Hawaiʻi (Hawaiian) | `haw` | ʻāina, ʻōlelo Hawaiʻi, kupuna, moʻolelo, Hawaiʻi |
+| Dakota | `dak` | Ocheti Sakowin (default unless explicitly Lakota) |
+| Lakota | `lkt` | Use only when content is explicitly Lakota-identified |
+| Chikashshanompa' (Chickasaw) | `cic` | Chokma'shki |
+| Lekwungen / SENĆOŦEN | `str` | kwetlal, Lekwungen |
+| Stʼatʼimc (Lillooet) | `lil` | Xaxli'p, Tmixw, Úxwalmixw |
+| Inuktitut | `iu` | Inuit, Inuktitut |
+| Māori | `mi` | Māori, Te Reo Māori |
+
+**Dakota vs Lakota**: default to `dak` unless the source material is explicitly Lakota-identified. Dakota and Lakota are distinct peoples and distinct languages — don't conflate.
+
+### New terms?
+
+If you're writing about a community or language not in the table above, look up the ISO 639-3 code at [iso639-3.sil.org](https://iso639-3.sil.org/), add the term to your article with the correct wrap, and extend this table in the next PR so future content has the reference.
+
+### Future automation
+
+This is manual for now. Planned improvements (tracked in `AUDIT_SPRINT_PLAN.md`):
+
+- **Sprint 2**: a `npm run check:lang` script that scans content for known terms appearing unwrapped and warns during CI
+- **Sprint 3+**: a remark plugin that auto-wraps known terms at build time, so content editors don't type `<span>` manually
+
+See `LANG_AUDIT_FINDINGS.md` for the full scan that established this convention.
 
 ---
 

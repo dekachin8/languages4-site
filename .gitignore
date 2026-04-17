@@ -35,3 +35,6 @@ pnpm-debug.log*
 
 # Design files (if you don't want to commit downloads)
 Design Files/
+
+# Lightroom sidecar files
+*.xmp

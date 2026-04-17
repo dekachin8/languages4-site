@@ -34,11 +34,11 @@ galleryImages:
 
 ![A beautiful Hawaiian inspired colorful artwork](/images/signature-collections/polynesian_patchwork1200.webp)
 
-This article is the fourth and final installment in our series on ʻĀina-Based Education and Indigenous language revitalization. In our previous articles, we explored:
+This article is the fourth and final installment in our series on <span lang="haw">ʻĀina</span>-Based Education and Indigenous language revitalization. In our previous articles, we explored:
 
-- **(Part 1)** The success of Hawaiian language revitalization and how ʻĀina-Based Education connects language, land, and culture.
+- **(Part 1)** The success of Hawaiian language revitalization and how <span lang="haw">ʻĀina</span>-Based Education connects language, land, and culture.
 - **(Part 2)** The role of land-based learning in supporting Indigenous language reclamation.
-- **(Part 3)** How ʻĀina-Based Education can be scaled to create long-term, sustainable language programs.
+- **(Part 3)** How <span lang="haw">ʻĀina</span>-Based Education can be scaled to create long-term, sustainable language programs.
 
 ## 1️⃣ Government Grants and Federal Funding
 
@@ -83,7 +83,7 @@ Many foundations actively support Indigenous language and cultural revitalizatio
 
 • Build relationships with grant officers—networking can be key to securing funding.
 
-• Craft a compelling story about why ʻĀina-Based Education is essential for your language's reclamation.
+• Craft a compelling story about why <span lang="haw">ʻĀina</span>-Based Education is essential for your language's reclamation.
 
 ## 3️⃣ Community-Led Funding & Revenue-Generating Models
 
@@ -91,7 +91,7 @@ The role of communities in establishing sustainable funding models for language 
 
 ## ✅ Examples of Community-Driven Funding Approaches:
 
-- **Language-Based Tourism & Cultural Immersion** – Communities like Akwesasne and Hawaiʻi have developed language-based eco-tourism, where visitors pay to experience Indigenous culture, language, and traditions.
+- **Language-Based Tourism & Cultural Immersion** – Communities like Akwesasne and <span lang="haw">Hawaiʻi</span> have developed language-based eco-tourism, where visitors pay to experience Indigenous culture, language, and traditions.
 - **Subscription-Based Online Learning Programs** – Some Indigenous language programs generate revenue through monthly online course membership.
 - **Tribal and Regional Tax Allocation** – Some tribes allocate casino, tourism, or land-use revenue to fund language and education programs.
 
@@ -105,7 +105,7 @@ The role of communities in establishing sustainable funding models for language 
 
 ## 📍 Key Resources for Building and Sustaining Language Programs
 
-Beyond funding, successful ʻĀina-Based Education initiatives require educational resources, technology, and training. Below are a few examples of resources that support the development of language programs in different ways.
+Beyond funding, successful <span lang="haw">ʻĀina</span>-Based Education initiatives require educational resources, technology, and training. Below are a few examples of resources that support the development of language programs in different ways.
 
 ![An Innovative representation of a Languages 4 indigenous project](/images/signature-collections/smash_virtualreality.webp)
 
@@ -119,7 +119,7 @@ Beyond funding, successful ʻĀina-Based Education initiatives require education
 
 ## 🌱 How to Use These Resources:
 
-- Integrate digital tools into ʻĀina-Based Education lesson plans.
+- Integrate digital tools into <span lang="haw">ʻĀina</span>-Based Education lesson plans.
 - Train educators and community members on technology-enhanced language learning.
 - Work with companies and institutions to adapt and customize technology, led by cultural and land-based menthods.
 
@@ -143,11 +143,11 @@ Beyond funding, successful ʻĀina-Based Education initiatives require education
 
 • Create peer networks and mentorship programs for Indigenous language educators.
 
-• Support kupuna (elders) as primary language teachers, integrating them into school and community programs.
+• Support <span lang="haw">kupuna</span> (elders) as primary language teachers, integrating them into school and community programs.
 
 ## 🌍 Building a Future Where Indigenous Languages Thrive
 
-ʻĀina-Based Education is a proven model for Indigenous language revitalization, but its success depends on consistent funding, strong leadership, and adaptable resources.
+<span lang="haw">ʻĀina</span>-Based Education is a proven model for Indigenous language revitalization, but its success depends on consistent funding, strong leadership, and adaptable resources.
 
 ## 🚀 Key Takeaways:
 
@@ -177,7 +177,7 @@ When language revitalization is appropriately funded, community-led, and rooted 
 
 ## 3️⃣ Community-Led Funding & Revenue-Generating Models
 
-- [Language-Based Tourism & Cultural Immersion](https://www.cntraveler.com/story/australias-best-first-nations-led-tourism-experiences) – Communities like Akwesasne and Hawaiʻi have developed language-based eco-tourism.
+- [Language-Based Tourism & Cultural Immersion](https://www.cntraveler.com/story/australias-best-first-nations-led-tourism-experiences) – Communities like Akwesasne and <span lang="haw">Hawaiʻi</span> have developed language-based eco-tourism.
 - [Subscription-Based Online Learning Programs](https://www.firstvoices.com/) – Some Indigenous language programs generate revenue through monthly memberships.
 - [Culturally-Aligned Merchandise & Publishing](https://fpcc.ca/) – Books, apparel, and digital content featuring Indigenous languages can generate funding for language initiatives.
 

@@ -35,11 +35,11 @@ galleryImages:
 
 ![Luxury Soaps from Haipazaza Phezuta](/images/whatarel4/haipazaza_header_frame.webp)
 
-## 🌿 Haipažaža Pȟežuta: Nature's Bounty, Lakota Style
+## 🌿 <span lang="lkt">Haipažaža Pȟežuta</span>: Nature's Bounty, Lakota Style
 
   
 
-**The Roots:**-   Founded by a Lakota & Dakota Ocheti Sakowin Tha Makhoche (Homelands of the Seven Council Fires, commonly known as the Great Sioux Nation)
+**The Roots:**-   Founded by a Lakota & Dakota <span lang="dak">Ocheti Sakowin Tha Makhoche</span> (Homelands of the Seven Council Fires, commonly known as the Great Sioux Nation)
 -   Born out of a need for natural products for their children.
 
 **Star Picks:**-   [🌸 Whipped Lavender Sugar Scrub](https://www.haipazazaphezuta.com/product-page/whipped-lavender-sugar-scrub "Whipped Lavender Sugar Scrub")

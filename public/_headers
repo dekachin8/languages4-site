@@ -6,12 +6,20 @@
 # ---------------------------------------------------------------------------
 # Security headers (applied globally)
 # ---------------------------------------------------------------------------
+# CSP is in Report-Only mode: violations are logged to the browser console
+# (and any configured report endpoint) but NOT blocked. Monitor for ~1-2
+# weeks of real traffic, tighten the allowlist based on reports, then
+# promote to enforced `Content-Security-Policy`.
+# ---------------------------------------------------------------------------
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-site
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://use.typekit.net https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://use.typekit.net; img-src 'self' data: https:; font-src 'self' https://use.typekit.net https://p.typekit.net data:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
 
 # ---------------------------------------------------------------------------
 # Block old form confirmation pages from search engines

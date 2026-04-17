@@ -4,6 +4,8 @@ import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import MainLayout from '../../../layouts/MainLayout.astro';
 import SocialShare from '../../../components/SocialShare.astro';
+import ArticleSchema from '../../../components/ArticleSchema.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const articles = await getCollection('newsletter-articles');
@@ -43,7 +45,7 @@ const nextArticle = currentIndex < sortedArticles.length - 1 ? sortedArticles[cu
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<MainLayout 
+<MainLayout
   title={article.data.title}
   description={article.data.description}
   image={article.data.heroImage}
@@ -52,44 +54,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   tags={article.data.tags}
 >
 
+<ArticleSchema
+  headline={article.data.title}
+  description={article.data.description}
+  image={article.data.heroImage}
+  datePublished={article.data.pubDate}
+  author={article.data.author}
+  url={`/newsletters/volume-${article.data.volumeNumber}/${article.slug}/`}
+  keywords={article.data.tags}
+  articleSection={`Newsletter Volume ${article.data.volumeNumber}`}
+/>
+
 <article class="bg-neutral-50 py-12 pr-20 md:pr-24">
   <div class="max-w-4xl mx-auto px-8">
-    
-    <!-- Breadcrumb Navigation -->
-    <nav class="mb-8 text-sm" aria-label="Breadcrumb">
-      <ol class="flex items-center gap-2 text-neutral-600">
-        <li>
-          <a href="/newsletters" class="hover:text-accent-600 transition-colors">
-            Newsletters
-          </a>
-        </li>
-        <li>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </li>
-        {parentVolume && (
-          <>
-            <li>
-              <a 
-                href={`/newsletters/${parentVolume.slug}`}
-                class="hover:text-accent-600 transition-colors"
-              >
-                Volume {parentVolume.data.volumeNumber}
-              </a>
-            </li>
-            <li>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </li>
-          </>
-        )}
-        <li class="text-primary-900 font-semibold">
-          {article.data.title}
-        </li>
-      </ol>
-    </nav>
+
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: 'Newsletters', url: '/newsletters/' },
+      ...(parentVolume ? [{ name: `Volume ${parentVolume.data.volumeNumber}`, url: `/newsletters/${parentVolume.slug}/` }] : []),
+      { name: article.data.title }
+    ]} />
     
     <!-- Article Header -->
     <header class="mb-8">
