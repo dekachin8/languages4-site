@@ -5,6 +5,31 @@
 
 ---
 
+## Current Status (April 17, 2026)
+
+**Sprint 1: ✅ COMPLETE — deployed to production.** All Critical + High items from the audit landed; see CHANGELOG v0.9.0 for the detailed ledger. Post-deploy Mobile PageSpeed held at 93; Desktop dropped 97→95 with two tractable regressions (logged in the cleanup batch below).
+
+**Sprint 2: 🟡 ~40% COMPLETE.** Tooling foundation + regression protection are in place:
+- ✅ netlify.toml + Node 20 pin
+- ✅ typecheck script (astro check) — 0 errors
+- ✅ Prettier installed + configured (format pass deferred)
+- ✅ ESLint 9.x with TS + Astro + a11y plugins (0 errors, 9 documented warnings)
+- ✅ Playwright @playwright/test with 14 redirect smoke tests
+- ✅ GitHub Actions CI on every push/PR
+- ✅ Mobile menu overflow fix
+
+**Sprint 2 remaining work** is detailed in the Micro-sprint + wave-2 sections below.
+
+**Sprint 3: 📋 NOT STARTED.** Marketing-hub pivot — detailed at the bottom of this doc.
+
+---
+
+## Where to resume next session
+
+Start with the **Next-session cleanup batch** below (~30 min) to reclaim the post-deploy PageSpeed regressions and close out loose ends. Then the bigger Sprint 2 wave-2 items (layout extraction, astro:assets, contact form a11y, contrast audit) are queued in priority order.
+
+---
+
 ## Executive Summary
 
 Site is fundamentally healthy — fast, well-structured, no secrets or mixed content. Gaps cluster in three areas:

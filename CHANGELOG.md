@@ -53,13 +53,112 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Known regressions from 0.9.0 deploy (queued for next session)
+- Desktop PageSpeed 97 → 95 (CLS 0 → 0.062, LCP 1.0s → 1.3s) — likely hero wordmark reflow (`text-8xl` on desktop vs the old fluid `text-hero` clamp). Investigation via DevTools Performance.
+- Best Practices 100 → 92 (both viewports) — expected byproduct of adding CSP Report-Only. Next step: capture the violation list from the browser console on the live site, tighten `public/_headers` allowlist, then promote to enforced CSP.
+- GitHub Actions `actions/checkout@v4` + `actions/setup-node@v4` use deprecated Node.js 20 runtime (retired June 2026). Bump both to `@v5`.
+- 1 ESLint false positive in `PlatformShowcase.astro` (`activities` declared in `define:vars` appears unused to ESLint, is actually used inside the injected script).
+
 ### Pending (user action required)
 - Change Adobe Fonts font-display from `optional` → `fallback` (fonts.adobe.com → Edit Kit)
 - Supply OG social share images: `public/images/hero-social-share.jpg` and `about-social-share.jpg` (1200×630px)
 - Provide legal copy for `/privacy` and `/terms` pages
 - Build out `/smash` Smash Education partnership page
-- Optional: Configure Zapier → Constant Contact form integration
-- Optional: Add automated thank-you emails for form submissions
+- Draft land acknowledgment wording (Sprint 3; Tim to draft from community relationship)
+- Decide on CMS direction (Decap vs Sanity vs stay-git) for Sprint 3 scope
+
+---
+
+## [0.9.0] - 2026-04-17
+
+### Audit Sprint 1 + Sprint 2 tooling: security, SEO depth, a11y, brand hero, CI foundation
+
+**Results deployed to production:**
+- Mobile PageSpeed **93** (unchanged — no regression from the sweeping site changes)
+- Desktop PageSpeed 95 (down from 97; two tractable regressions flagged above)
+- Production vulnerabilities: **11 (1 critical, 6 high) → 0**
+- Pre-existing TypeScript errors: **133 → 0** (first time `astro check` surfaces zero issues)
+- `<span lang="…">` wraps across the content corpus: **0 → 92** (10 articles)
+- Schema.org types emitted: **1 → 5**
+- 301-redirect regression coverage: **0 tests → 14 smoke tests** (Playwright, ~2s runtime against production)
+- GitHub Actions CI: **none → running on every push + PR**
+- Legacy WP/migration code removed: **~51,000 lines**
+- 8 clean commits pushed from `7cb8b7e` to `7f128fa`
+
+---
+
+#### Security
+- **CSP Report-Only** added to `public/_headers` with allowlists for self + Typekit + GA4 + Clarity. `script-src`, `style-src`, `img-src`, `font-src`, `connect-src`, `frame-ancestors`, `object-src 'none'`, `upgrade-insecure-requests`. Report-Only today; enforce in a future release after 1-2 weeks of production data.
+- **HSTS bumped** to preload-eligible: `max-age=63072000; includeSubDomains; preload`
+- **Cross-Origin-Opener-Policy: same-origin** and **Cross-Origin-Resource-Policy: same-site** added
+- **`npm audit fix`** — resolved 11 vulnerabilities (1 critical, 6 high) in the build-time dependency tree
+- **Removed `public/projectStatus.txt`** — internal session notes were being served publicly
+
+#### SEO / Structured Data
+- **New `ArticleSchema.astro`** — BlogPosting JSON-LD emitted on all four collection `[slug]` templates (whatarel4, signature-collections, ancestors, newsletters/[volume]/[slug])
+- **New `Breadcrumbs.astro`** — visible breadcrumb trail + BreadcrumbList JSON-LD on article pages
+- **Organization schema expanded** in `SchemaOrg.astro` with `foundingDate: 2023`, `founder`, `knowsAbout` (7 topic entries), TikTok in `sameAs`, Canada added to `areaServed`
+- **Person @graph on /about** — JSON-LD for Tim O'Hagan, Lorelei O'Hagan, Jennie Korneychuk, Abraham Bravo with job titles, employer, expertise keywords
+- **SoftwareApplication schema on homepage** — describes the Languages 4 platform with application category, operating systems, features, educational audience, offers
+- **Article-page H1 bug fixed** across 3 templates (`whatarel4`, `signature-collections`, `ancestors`): the real article title is now the `<h1>`; the former generic brand label (e.g., "Signature Collections: Language & Culture") demoted to an eyebrow above. Previously H1 was the generic label and the real title was an H2 — a meaningful SEO miss.
+- **Contact URL consolidated** — `/contact` is canonical; `contact-us.astro` deleted; `/contact-us` and `/contact-us/` added as 301 redirects in `_redirects`
+
+#### Accessibility — WCAG 2.2 AA + motion safety
+- **Skip-to-content link** added to `MainLayout.astro` (`focus:not-sr-only` treatment) with matching `id="main-content"` on `<main>`
+- **Global `:focus-visible` styling** in `global.css` — 2px cream-200 outline, 2px offset. Keyboard users now see clear focus anywhere on the site.
+- **Menu focus trap + ESC-to-close** in `Navigation.astro` — Tab/Shift+Tab cycle within the open menu; ESC closes and returns focus to the triggering hamburger. AbortController pattern prevents listener leaks across View Transitions.
+- **`prefers-reduced-motion` support** on six autoplay surfaces: hero image cycler, testimonial slider, PlatformShowcase film strip, GenerationsShowcase split-screen, FeaturedStoriesCarousel, Navigation hamburger pulse + menu-link slide-in
+- **Pause/play controls** on hero image cycler (mobile) and testimonial slider — `aria-pressed` + icon toggle + separate `userPaused` flag distinct from the hover-pause behavior
+
+#### Cultural authenticity — lang-attribute pass
+- **92 `<span lang="…">` wraps** applied across 10 articles for Indigenous-language terms in body prose:
+  - Kanien'kéha (moh) — Mohawk place/program names
+  - Diné Bizaad, Diné didzétsoh (nv) — Navajo language and peach name
+  - ʻĀina, ʻōlelo Hawaiʻi, Kupuna, moʻolelo, kaulana mahina, inoa ʻāina, wahi pana, lāʻau lapaʻau, loʻi, waʻa, kalo, ua, kaona, Hawaiʻi (haw) — Hawaiian
+  - Kwetlal, Lekwungen (str) — Lekwungen/SENĆOŦEN
+  - Xaxli'p, Tmixw, Úxwalmixw, xusum (lil) — Stʼatʼimc (Lillooet)
+  - Haudenosaunee (moh), Anishinaabe (oj), Baggataway (oj), Tewaaraton (moh) — lacrosse article
+  - Haipažaža Pȟežuta (lkt) — Lakota phrase
+  - Ocheti Sakowin Tha Makhoche (dak) — Dakota (default) per Tim's rule "Dakota unless explicitly Lakota"
+  - Māori, Te Reo Māori (mi); Inuit, Inuktitut (iu); manoomin (oj)
+- **README section added** — "Writing Content: Indigenous Language Tagging" with BCP 47 code dictionary (11 languages), Dakota/Lakota default rule, and future-automation roadmap
+- **`LANG_AUDIT_FINDINGS.md`** captures the full scan + deferred items (frontmatter wrapping, ImageStoryModal set:html, remark plugin)
+
+#### Brand / Hero redesign
+- **New Q&A structure** — question chip "WHAT ARE LANGUAGES 4?" → wordmark "Languages 4" (`text-4xl md:text-8xl`, neue-kabel) → four purposes ("Reclamation · Revitalization · Preservation · Communication")
+- **The hero mirrors the circular L4 logo unfolded linearly** — the logo has L4 in the center of a ring carrying those four words; the hero delivers the same idea in typography-first format
+- **Responsive adaptations**: mobile uses a 2×2 grid for the four purposes (reinforces the "4" count visually); desktop shows them inline with middle-dot separators
+- **Combined CTA** — desktop button reads "Schedule 30-minute Call · Platform Walkthrough · Bring Your Questions"; mobile uses the shorter "Schedule 30-minute Platform Walkthrough". Replaces the old SaaS-demo CTA "Schedule Your Free Demonstration" with partnership-framing copy
+- **Supporting line** unified into a single paragraph: "Long-term partnerships with **Indigenous communities**: custom software and land-based curriculum, grounded in **language sovereignty**."
+- **`BRAND_STORY_NOTES.md`** — captures design thinking, copy decisions, and four angle options for a future relaunch article
+
+#### Code quality — Sprint 2 tooling foundation
+- **`netlify.toml`** created — pinned build command + Node 20 environment
+- **`package.json` engines** — `"node": ">=20.0.0"` ensures CI/Netlify use compatible runtimes
+- **New scripts**: `typecheck` (astro check), `format`, `format:check`, `lint`, `lint:fix`, `test:redirects`
+- **Prettier + prettier-plugin-astro** installed with `.prettierrc` and `.prettierignore` (format pass deferred to avoid a massive diff)
+- **ESLint 9.x + plugins** — `@eslint/js`, `typescript-eslint`, `eslint-plugin-astro`, `eslint-plugin-jsx-a11y`, `globals`. Flat config in `eslint.config.mjs`. Triage pass resolved 12 errors; remaining 9 warnings are documented pragmatic cases.
+- **Playwright @playwright/test** installed (no browser binaries needed — HTTP request context only)
+- **14 redirect smoke tests** in `tests/redirects.spec.ts` cover representative URL shapes (WP `.php`, `.html`, `/Contact_Us/`, catch-all `/blog/*`, etc.) — all passing against production
+- **GitHub Actions CI** (`.github/workflows/ci.yml`) — runs typecheck + lint + build on every push to `main` and every PR; concurrency group cancels superseded runs; 10-minute timeout
+- **Typecheck cleanup** — 133 pre-existing errors → 0. Highlights: `Astro.props as Props` pattern applied to 9 templates, arrow-function conversions in modal reinit code to preserve type narrowing, `parentVolume.slug` → `.id` in newsletter template (fixed an actual broken link in the rendering), shared component Props expanded (ArticleCard, ArticleHero, SocialShare) to accept collection-specific metadata.
+- **8 unused imports removed** (CollectionEntry in utilities, TagFilter in pagination templates, TestimonialPullQuote in index)
+
+#### Code cleanup
+- **Logo file renamed** — `public/images/logo-sparrow-invert.svg` → `logo-languages4.svg` (removed a misleading carryover from a pre-Astro Bootstrap "Sparrow" template)
+- **Migration scripts deleted** — `fix-metadata*.js` (3 files), `migrate-blog-posts.js`, `pre-launch-check.*` (2 files), `blog/` and `blog_fixed/` directories
+- **Unused production dependencies uninstalled** — `@anthropic-ai/sdk`, `jsdom`, `turndown` (only used by the now-deleted migration scripts)
+- **Legacy WordPress CSS deleted** from `public/` — `bootstrap-4.4.1.css`, `Languages4_bootstrap.css`, `Languages4_theme.css`, `landing-page.css`, `styles/print.css` + empty dir
+- **Orphan component `TestimonialBottomSections.astro` deleted** (145 LOC, unreferenced)
+- **`.gitignore` updated** — added `*.xmp` (Lightroom sidecars) and `test-results/` (Playwright artifacts)
+- **Invalid `h3:contains()` jQuery selector removed** from print CSS (`MainLayout.astro`)
+- **Mobile menu overflow fixed** — `Navigation.astro:76` changed `w-[440px]` → `w-[min(440px,100vw)]` so 440px menu no longer overflows 375px viewports
+- **README live URL corrected** from old Netlify preview to `https://www.languages4.com`
+
+#### Sprint/planning documentation (committed alongside code)
+- **`AUDIT_SPRINT_PLAN.md`** — full audit findings + 3-sprint execution plan + Sprint 2 tiered tasking + acceptance criteria + deferred items
+- **`LANG_AUDIT_FINDINGS.md`** — lang-tag scan results + decision log
+- **`BRAND_STORY_NOTES.md`** — hero design thinking + article angle options
 
 ---
 
