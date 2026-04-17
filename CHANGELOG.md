@@ -53,32 +53,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### 🔴 Critical Priorities (Session 6)
+### Pending (user action required)
+- Change Adobe Fonts font-display from `optional` → `fallback` (fonts.adobe.com → Edit Kit)
+- Supply OG social share images: `public/images/hero-social-share.jpg` and `about-social-share.jpg` (1200×630px)
+- Provide legal copy for `/privacy` and `/terms` pages
+- Build out `/smash` Smash Education partnership page
+- Optional: Configure Zapier → Constant Contact form integration
+- Optional: Add automated thank-you emails for form submissions
 
-**Mobile Responsive Fixes**
+---
 
-- [ ] Fix Venn diagram layout on mobile devices (WhyLanguages4Section.astro)
-  - Review responsive behavior at 320px, 375px, 414px breakpoints
-  - Fix circle positioning and overlap issues
-  - Ensure text readability on small screens
-  - Verify hover/touch interactions
-  - Consider vertical stacking on smallest screens
-- [ ] Fix mobile navigation overlap issue
-  - Hide right sidebar on mobile (`hidden lg:block`)
-  - Create mobile header with hamburger menu at top
-  - Remove social icons from mobile menu
-  - Test on real devices to verify no content overlap
-  - File: `src/layouts/MainLayout.astro`
+## [0.8.0] - 2026-04-16
 
-**Netlify Forms Backend Setup**
+### Performance: GSC Cleanup, Image Optimization & Mobile LCP
 
-- [x] Create form detection file: `public/forms/core-values-download.html` ✅
-- [x] Verify Netlify Forms dashboard recognizes the form ✅
-- [x] Test complete form submission flow ✅
-- [x] Set up email notifications for new submissions ✅
-- [x] Test PDF download trigger functionality ✅
-- [ ] Optional: Configure Zapier → Constant Contact integration
-- [ ] Optional: Add automated thank you emails
+**Results:**
+- Mobile PageSpeed: 78 → **93** performance score
+- Mobile LCP: 4.7s → **2.6s** (−2.1s)
+- Mobile TBT: 220ms → **40ms** (−82%)
+- Mobile SI: 3.1s → **2.6s**
+- Desktop: **97** performance, FCP 0.3s, LCP 1.0s (unchanged, excellent)
+
+#### Performance — Critical
+- **Deferred analytics to `requestIdleCallback`** — Clarity + GA4 scripts moved from `<head>` to end of `<body>`, loaded via `requestIdleCallback({ timeout: 4000 })`. Were synchronously blocking main thread before LCP. (`BaseHead.astro`, `MainLayout.astro`)
+- **Removed `backdrop-blur-lg` from hero card** — CSS backdrop-filter forces GPU compositing before child elements can be marked as painted; hero image is a child of this container, so LCP was blocked until blur completed. Replaced `bg-white/95 backdrop-blur-lg` with `bg-white`. (`index.astro`)
+- **Async Typekit font loading** — replaced render-blocking `<link rel="stylesheet">` with preload/onload async pattern + `fetchpriority="low"` so font fetch doesn't compete with LCP image. (`MainLayout.astro`)
+
+#### Performance — High
+- **Mobile hero LCP image fixes** (`index.astro`):
+  - Removed `transition-opacity duration-1000` from initial HTML (deferred via `requestIdleCallback` after LCP paint)
+  - Added `fetchpriority="high"` + `loading="eager"` + `width="600" height="417"` for faster decode
+  - Added `type="image/webp"` to preload link
+  - Added `loading="lazy"` to hero cycling images 2–4 (hidden on initial paint)
+- **`<slot name="head">` repositioned before BaseHead** — page-specific preload hints now fire before any analytics scripts execute in `<head>`
+- **ShowcaseLoader skips on mobile** — `if (window.innerWidth < 1024) return` prevents 21 showcase images (~300KB) from downloading on mobile where the mosaic is `display:none`
+
+#### Performance — Medium
+- **`loading="lazy"` added to all below-fold and hidden images**:
+  - 4 desktop mosaic fixed images (in `hidden lg:flex` div — `display:none` on mobile, so never load)
+  - 5 FeaturedStoriesCarousel article images (below fold on all mobile screens)
+  - 2 GenerationsShowcase background images (well below fold)
+- **CLS fix** — added explicit `width`/`height` to 4 fixed hero images in desktop mosaic to prevent flex reflow when images load at new aspect ratios after resize (CLS was 1.034, now 0)
+
+#### Performance — Image Resizing
+- **Showcase random images** — 21 images batch-resized to 500px wide WebP (8-bit source)
+- **Showcase fixed images** — 4 hero images resized to 600px wide
+- **Platform showcase images** — 5 images: 1200–1920px → 600px (183KB → 66KB for largest, −59% total folder)
+- **Generations images** — 10 images: 900–1100px → 600px wide
+- **Article images** — yurok_canoe, sunset_canoe, Mountainous_Village recompressed
+
+#### SEO / GSC Cleanup
+- **Missing `_redirects` rules added**: `/articles/*`, `/Contact_Us/*`, `/tags/*`, `/contact/www.languages4.com`, plus specific article slug fix
+- **Old WordPress sitemap** removed from GSC; Astro `sitemap-index.xml` confirmed healthy (89 URLs)
+- **"Page with redirect"** group (55 URLs) validated in GSC — all working correctly
+- **404s** (106 pages): mostly old Bootstrap template + WordPress URLs; covered by catch-all redirects
+- **Duplicate canonical** (47 pages): Bootstrap template pages redirecting to `/` — resolving as Google re-crawls
+
+#### Pending — font-display setting
+- User changed Adobe Fonts from `swap` → `fallback` → `optional` during session for testing
+- Recommendation: set back to `fallback` for best balance of performance and visual quality
+
+---
 
 ---
 
@@ -542,7 +577,8 @@ _Print Styles Refinement_
 
 ## Version History Summary
 
-- **0.7.0** (Apr 1): Site audit — bug fixes, SEO, performance, redirects
+- **0.8.0** (Apr 16): GSC cleanup, full performance overhaul — mobile 78→93, LCP 4.7s→2.6s
+- **0.7.0** (Apr 1): Site audit — bug fixes, SEO, security headers, redirects
 - **0.6.0** (Jan 28): Mobile polish, Generations showcase, Netlify Forms
 - **0.5.0** (Jan 26): Homepage rebuild, testimonials, email capture
 - **0.4.0** (Jan 20): Content migration (46 articles), gallery system
