@@ -36,9 +36,12 @@ const {
 <head>
   <!-- ClientRouter for smooth page navigation (Astro's killer feature!) -->
   <ClientRouter />
-  
+
+  <!-- Page-specific preloads (highest priority — must be first in head) -->
+  <slot name="head" />
+
   <!-- SEO Foundation - handles all meta tags, Open Graph, Twitter Cards, etc. -->
-  <BaseHead 
+  <BaseHead
     title={title}
     description={description}
     image={image}
@@ -60,9 +63,6 @@ const {
 
   <!-- Structured Data for Rich Snippets -->
   <SchemaOrg />
-
-  <!-- Page-specific head content (preloads, etc.) -->
-  <slot name="head" />
 
 <style is:global>
 @media print {

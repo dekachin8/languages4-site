@@ -39,26 +39,30 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
           id="mobile-hero-1"
           src="/images/showcase/fixed/laptop+mobile+mohawk.webp"
           alt="Language learning on multiple devices"
-          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-1000"
+          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-100"
           fetchpriority="high"
+          loading="eager"
         />
-        <img 
+        <img
           id="mobile-hero-2"
-          src="/images/showcase/fixed/Indigenous_woman_inHat_sofware.webp" 
-          alt="Indigenous woman with tablet" 
-          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+          src="/images/showcase/fixed/Indigenous_woman_inHat_sofware.webp"
+          alt="Indigenous woman with tablet"
+          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-0"
+          loading="lazy"
         />
-        <img 
+        <img
           id="mobile-hero-3"
-          src="/images/showcase/fixed/indigenous_student_learning_mobilephone.webp" 
-          alt="Student using language software" 
-          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+          src="/images/showcase/fixed/indigenous_student_learning_mobilephone.webp"
+          alt="Student using language software"
+          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-0"
+          loading="lazy"
         />
-        <img 
+        <img
           id="mobile-hero-4"
-          src="/images/showcase/fixed/ladies_haka.webp" 
-          alt="Haka cultural practice" 
-          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+          src="/images/showcase/fixed/ladies_haka.webp"
+          alt="Haka cultural practice"
+          class="mobile-hero-img absolute inset-0 w-full h-full object-cover opacity-0"
+          loading="lazy"
         />
       </div>
       
@@ -274,20 +278,29 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
 <script>
   let currentImageIndex = 0;
   const images = document.querySelectorAll('.mobile-hero-img');
-  
+
   function cycleImages() {
-    // Fade out current image
     images[currentImageIndex].style.opacity = '0';
-    
-    // Move to next image
     currentImageIndex = (currentImageIndex + 1) % images.length;
-    
-    // Fade in next image
     images[currentImageIndex].style.opacity = '1';
   }
-  
-  // Cycle every 8 seconds (slower, more time to appreciate each image)
-  setInterval(cycleImages, 8000);
+
+  if (images.length > 0) {
+    // Add transitions AFTER initial paint so LCP element (mobile-hero-1) paints
+    // without transition CSS — prevents browser from deferring LCP measurement
+    const addTransitions = () => {
+      images.forEach(img => {
+        img.style.transition = 'opacity 1s ease-in-out';
+      });
+    };
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(addTransitions);
+    } else {
+      setTimeout(addTransitions, 200);
+    }
+    // Cycle every 8 seconds
+    setInterval(cycleImages, 8000);
+  }
 </script>
 
 <!-- Image Story Modal Click Handlers -->
