@@ -173,6 +173,19 @@ Critical items + top-priority highs. Single branch, critical-first commits for r
 
 ---
 
+#### Next-session cleanup batch (~30 min, starts Sprint 2 wave next)
+
+Small-but-visible items surfaced during and after the April 17 deploy:
+
+1. **GitHub Actions deprecation** — update `.github/workflows/ci.yml`:
+   - `actions/checkout@v4` → `@v5`
+   - `actions/setup-node@v4` → `@v5`
+   - (Node.js 20 actions retirement June 2026; v5 runs on Node 24.)
+2. **Silence the `activities` false positive** — `src/components/PlatformShowcase.astro:198`. Add a proper `/* eslint-disable-next-line */` inside the script attribute context (not on the HTML parent). Or rename the variable in `define:vars` to a conventional ignored form. Leaves the remaining 8 `no-explicit-any` warnings as intentional reminders.
+3. **Investigate CSP Report-Only violations** — Best Practices dropped 100→92 post-deploy. Open DevTools on live site, capture the CSP violation list from console, tighten `public/_headers` allowlist. Expected to reclaim 6-8 Best Practices points.
+4. **Desktop CLS 0 → 0.062** — regression from hero rewrite. Likely candidates: the `text-8xl` wordmark causing font-load reflow, OR the 4-R tagline line-wrap differences between fallback font and `neue-kabel`. Fix: either reserve explicit height via `line-height`/`min-height`, or revert wordmark to fluid `text-hero` clamp. Requires DevTools Performance profiling to confirm root cause.
+5. **Desktop LCP 1.0s → 1.3s** — same hero-wordmark root cause as #4, likely. Same fix applies.
+
 #### Micro-sprint: Today (tiered for 30min / 90min / 150min)
 
 ##### Tier A — Config wins (~30-40 min total, safest)
