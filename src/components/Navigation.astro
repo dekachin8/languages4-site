@@ -224,11 +224,13 @@
     }
 
     mobileMenuButton?.addEventListener('click', () => {
-      isOpen() ? closeMenu() : openMenu(mobileMenuButton);
+      if (isOpen()) closeMenu();
+      else openMenu(mobileMenuButton);
     }, { signal });
 
     desktopMenuButton?.addEventListener('click', () => {
-      isOpen() ? closeMenu() : openMenu(desktopMenuButton);
+      if (isOpen()) closeMenu();
+      else openMenu(desktopMenuButton);
     }, { signal });
 
     closeButton?.addEventListener('click', closeMenu, { signal });

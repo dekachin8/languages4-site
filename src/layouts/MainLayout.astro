@@ -164,6 +164,7 @@ const {
 
 <!-- Analytics: deferred after LCP to avoid main-thread blocking -->
 <script is:inline>
+  /* eslint-disable no-var, prefer-rest-params -- third-party install snippets use legacy ES5 patterns by design */
   function loadAnalytics() {
     // Microsoft Clarity
     (function(c,l,a,r,i,t,y){

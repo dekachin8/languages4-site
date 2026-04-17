@@ -56,7 +56,6 @@ const { id, name, title, bio, initials, colorClass, photoUrl } = Astro.props;
               class="w-full h-full object-cover rounded-xl shadow-brand"
             />
           ) : (
-            <!-- Placeholder Circle -->
             <div class={`w-48 h-48 md:w-64 md:h-64 ${colorClass} rounded-full flex items-center justify-center shadow-brand`}>
               <span class="text-white font-display text-6xl md:text-7xl font-bold">{initials}</span>
             </div>

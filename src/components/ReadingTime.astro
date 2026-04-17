@@ -17,7 +17,7 @@ function countWords(text?: string): number {
     .replace(/```[\s\S]*?```/g, '')
     .replace(/`[^`]*`/g, '')
     .replace(/<[^>]*>/g, '')
-    .replace(/[#*_~\[\]()]/g, '')
+    .replace(/[#*_~[\]()]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
   

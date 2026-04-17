@@ -97,13 +97,13 @@ const { placeholder = "Search articles, collections, profiles..." } = Astro.prop
 <script>
   // Initialize Pagefind search
   async function initSearch() {
-    // @ts-ignore - Pagefind is loaded via CDN in production
+    // @ts-expect-error - Pagefind is loaded via CDN in production
     if (typeof PagefindUI === 'undefined') {
       console.warn('Pagefind not loaded - search will not work in development. Run build to test search.');
       return;
     }
     
-    // @ts-ignore
+    // @ts-expect-error - PagefindUI is loaded via external script
     new PagefindUI({
       element: "#search-results",
       resetStyles: false,
