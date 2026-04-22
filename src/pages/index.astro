@@ -561,13 +561,10 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
     const { signal } = modalListenerController;
 
     const modalIds = ['mohawk-modal', 'woman-modal', 'student-modal', 'haka-modal'];
-    
+
     modalIds.forEach(modalId => {
       const modal = document.getElementById(modalId);
-      if (!modal) {
-        console.error('Modal not found:', modalId);
-        return;
-      }
+      if (!modal) return;
 
       const closeBtn = modal.querySelector('.modal-close-btn');
 

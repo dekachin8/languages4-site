@@ -195,7 +195,7 @@ const activities = SHOWCASE_CONFIG.randomize ? getRandomizedActivities() : getAl
   </div>
 </section>
 
-<script define:vars={{ activities, config: SHOWCASE_CONFIG }}>
+<script define:vars={{ config: SHOWCASE_CONFIG }}>
   let currentFrame = 0;
   let autoPlayInterval;
   const frames = document.querySelectorAll('.film-frame');
