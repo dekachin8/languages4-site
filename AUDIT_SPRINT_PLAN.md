@@ -387,6 +387,10 @@ Adds to Tier B:
 - `/platform` product page
 - CMS decision (Decap vs Sanity vs stay-git)
 - GA4 event instrumentation
+- **Tag filter — make it actually filter.** Discovered non-functional April 22. Site is static (no SSR adapter), so `Astro.url.searchParams.get('tag')` returns null at build and the entire `activeTag` code path in listing templates is dead. Sidebar "Browse by topic" and article tag chips navigate to `?tag=X` URLs but serve the unfiltered index. SEO-safe today (`_headers` already canonicalizes `?tag=*` back to the clean listing + `noindex, follow`), so this is pure UX. Two viable fixes:
+  - **Cheap/client-side**: small inline JS that reads `location.search`, filters visible cards by `data-tag` attribute, renders "Clear Filter" + count badge. Doesn't generate tag-specific URLs; DOM-level filter only.
+  - **Robust/static**: generate dedicated tag pages at `/whatarel4/tag/foo/` via `getStaticPaths`, retire the `?tag=` query-string pattern. Canonical Astro idiom. Higher cost but permanent fix + better shareability (each tag URL is its own indexable page if we ever want that).
+  - Recommend path: start with client-side to restore functionality quickly, revisit static tag pages when content scale justifies the SEO win.
 
 ---
 
