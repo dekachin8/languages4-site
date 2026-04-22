@@ -1,0 +1,226 @@
+---
+// Shared layout for article-style collection pages (whatarel4,
+// signature-collections, ancestors). Each [slug].astro passes
+// collection-specific text, URLs, and pre-filtered data; the layout
+// owns the hero, breadcrumbs, article chrome, sidebar, and footer
+// blocks that are otherwise duplicated across the three templates.
+
+import type { CollectionEntry } from 'astro:content';
+import MainLayout from './MainLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import SocialShare from '../components/SocialShare.astro';
+import ReadingTime from '../components/ReadingTime.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import ArticleGallery from '../components/ArticleGallery.astro';
+import ArticleSchema from '../components/ArticleSchema.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+type ArticleCollection = 'whatarel4' | 'signature-collections' | 'ancestors';
+
+type GalleryImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
+type PopularArticle = {
+  title: string;
+  slug: string;
+  heroImage?: string;
+  collection: ArticleCollection;
+};
+
+type TagCount = { tag: string; count: number };
+
+export interface Props {
+  post: CollectionEntry<ArticleCollection>;
+  collection: ArticleCollection;
+  collectionLabel: string;        // Breadcrumb root + sidebar context
+  collectionUrl: string;          // Breadcrumb + back-link href (with trailing slash)
+  tagLinkBase: string;            // e.g. `/whatarel4?tag=`
+  eyebrow: string;                // Full text for hero eyebrow line
+  articleSection: string;         // ArticleSchema section
+  backLinkText: string;           // "Back to All Articles" / etc.
+  popularPosts: PopularArticle[];
+  allTagsWithCounts: TagCount[];
+  galleryImages: GalleryImage[];  // Parent pre-filters (combined / length threshold)
+  proseClass: string;             // Collection-specific prose styling
+  dateLabel?: string;             // Optional prefix for the <time>, e.g. "Published " (ancestors)
+}
+
+const {
+  post,
+  collection,
+  collectionLabel,
+  collectionUrl,
+  tagLinkBase,
+  eyebrow,
+  articleSection,
+  backLinkText,
+  popularPosts,
+  allTagsWithCounts,
+  galleryImages,
+  proseClass,
+  dateLabel = '',
+} = Astro.props;
+
+const { Content } = await post.render();
+
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(post.data.pubDate);
+---
+
+<MainLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.heroImage}
+>
+
+<ArticleSchema
+  headline={post.data.title}
+  description={post.data.description}
+  image={post.data.heroImage}
+  datePublished={post.data.pubDate}
+  dateModified={post.data.updatedDate}
+  author={post.data.author}
+  url={`${collectionUrl}${post.slug}/`}
+  keywords={post.data.tags}
+  articleSection={articleSection}
+/>
+
+<!-- Hero Section -->
+<section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden lg:pr-20 xl:pr-24">
+  <div class="absolute inset-0 z-0">
+    {post.data.heroImage && (
+      <>
+        <img
+          src={post.data.heroImage}
+          alt={post.data.heroImageAlt || post.data.title}
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-primary-900/70"></div>
+      </>
+    )}
+  </div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-8 py-20 text-center">
+    <p class="text-sm md:text-base uppercase tracking-widest text-cream-200 font-semibold mb-4">
+      {eyebrow}
+    </p>
+    <h1 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight">
+      {post.data.title}
+    </h1>
+  </div>
+</section>
+
+<!-- Article Content -->
+<section class="bg-neutral-50 py-12 lg:pr-20 xl:pr-24">
+  <div class="max-w-7xl mx-auto px-2 sm:px-4 md:px-8">
+
+    <Breadcrumbs items={[
+      { name: 'Home', url: '/' },
+      { name: collectionLabel, url: collectionUrl },
+      { name: post.data.title }
+    ]} />
+
+    <div class="grid lg:grid-cols-3 gap-12">
+
+      <!-- Main Content (2 columns) -->
+      <article class="lg:col-span-2">
+
+        <div class="bg-white rounded-lg p-4 sm:p-6 md:p-12 shadow-md mb-8">
+
+          <slot name="pre-content" />
+
+          <time class="text-sm text-neutral-500 block mb-4">
+            {dateLabel}{formattedDate}
+          </time>
+
+          <ReadingTime content={post.body} />
+
+          <p class="text-xl text-neutral-700 italic mt-6 mb-8 pb-8 border-b border-neutral-200">
+            {post.data.description}
+          </p>
+
+          <div class={proseClass}>
+            <Content />
+          </div>
+
+          {galleryImages.length > 0 && (
+            <ArticleGallery images={galleryImages} />
+          )}
+
+          <!-- Social Sharing -->
+          <div class="mt-12 pt-8 border-t border-neutral-200">
+            <SocialShare
+              title={post.data.title}
+              description={post.data.description}
+            />
+          </div>
+
+          {post.data.tags.length > 0 && (
+            <div class="mt-12 pt-8 border-t border-neutral-200">
+              <h3 class="text-sm font-bold text-neutral-500 uppercase tracking-wide mb-4">Tagged:</h3>
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map(tag => (
+                  <a
+                    href={`${tagLinkBase}${encodeURIComponent(tag)}`}
+                    class="px-4 py-2 bg-neutral-100 text-neutral-700 rounded-full hover:bg-accent-600 hover:text-white transition-colors text-sm font-semibold uppercase"
+                  >
+                    {tag}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div class="mt-8 pt-8 border-t border-neutral-200">
+            <p class="text-neutral-600">
+              By <span class="font-semibold text-primary-900">{post.data.author}</span>
+            </p>
+          </div>
+        </div>
+
+        <RelatedPosts
+          currentSlug={post.slug}
+          currentTags={post.data.tags}
+          collection={collection}
+        />
+
+        <div class="text-center mt-8">
+          <a
+            href={collectionUrl}
+            class="inline-flex items-center px-6 py-3 bg-accent-600 text-white font-semibold rounded-lg hover:bg-accent-700 transition-colors"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            {backLinkText}
+          </a>
+        </div>
+
+      </article>
+
+      <!-- Sidebar (1 column) -->
+      <div class="hidden lg:block lg:col-span-1 space-y-8">
+        <div class="sticky top-8">
+          <TableOfContents content={post.body} />
+        </div>
+
+        <Sidebar
+          popularArticles={popularPosts}
+          tags={allTagsWithCounts}
+          collection={collection}
+        />
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+</MainLayout>
