@@ -44,7 +44,7 @@ On local `main` ahead of origin (April 22 — not yet pushed):
 - ✅ Hero wordmark CLS defensive guards — `whitespace-nowrap` + `font-size-adjust` on the wordmark `<span>` (`4663bee`). Efficacy requires post-deploy PageSpeed measurement to confirm.
 - ⏸️ `astro:assets` migration — deferred at Sprint 2 close. Hero image already well-optimized (explicit width/height, preload, webp, eager, high priority, ~66KB); marginal AVIF gain doesn't justify the LCP-regression risk of a rushed migration. See detailed deferral note under "Rest of Sprint 2" below.
 - ⛔ Blocked: per-page OG image creative direction (Tim's design input)
-- ⏱️ Time-gated: CSP Report-Only → enforced promotion (1-2 weeks of real-traffic monitoring after current deploy)
+- ⏱️ Time-gated: CSP Report-Only → enforced promotion. Best if it follows the Peekay CSP reporting pipeline (Sprint 3 item) so the promotion is data-driven rather than vibes-based. In the meantime, console-based observation over 1-2 weeks of post-deploy traffic is a fallback.
 
 **Sprint 2 remaining work** is detailed in the Micro-sprint + wave-2 sections below.
 
@@ -408,6 +408,23 @@ Adds to Tier B:
   - **Cheap/client-side**: small inline JS that reads `location.search`, filters visible cards by `data-tag` attribute, renders "Clear Filter" + count badge. Doesn't generate tag-specific URLs; DOM-level filter only.
   - **Robust/static**: generate dedicated tag pages at `/whatarel4/tag/foo/` via `getStaticPaths`, retire the `?tag=` query-string pattern. Canonical Astro idiom. Higher cost but permanent fix + better shareability (each tag URL is its own indexable page if we ever want that).
   - Recommend path: start with client-side to restore functionality quickly, revisit static tag pages when content scale justifies the SEO win.
+- **CSP violation reporting pipeline — self-hosted on Peekay.** Scoped April 22. Currently CSP is Report-Only with console-only violation visibility (no `report-uri`), so monitoring is passive/manual via DevTools. Before promoting CSP to enforced, stand up an active reporting pipeline on Peekay (the always-on Surface Book that runs the existing uptime monitor at `~/shared/site-monitor/`). Architecture agreed:
+
+  **1. CSP listener** — `~/shared/site-monitor/csp_listener.py`, stdlib `http.server`, binds `127.0.0.1:8787`, accepts POST `/csp-report` with both `application/csp-report` and `application/reports+json` content-types, appends each report as JSONL to `~/shared/site-monitor/data/csp-reports.jsonl`, returns 204 immediately. Per-source-IP rate limit to guard against flood storms.
+
+  **2. systemd service** — `/etc/systemd/system/csp-listener.service`, always-on (not a timer), survives reboots. Complements the existing monitor.py systemd-timer pattern — listener stays up, timer-based rollup runs alongside.
+
+  **3. Tailscale Funnel config** — `sudo tailscale serve --https=443 --set-path=/csp-report http://localhost:8787` + `sudo tailscale funnel 443 on`. Exposes the listener at `https://<hostname>.<tailnet>.ts.net/csp-report` via outbound tunnel — no firewall inbound rules needed, preserves Peekay's "no inbound from public" posture. Get the tailnet name with `tailscale cert` or `tailscale whois @me` (note: `--json` returns null for that field).
+
+  **4. Rollup integration** — extend existing monitor.py tick (or add a sibling `csp_rollup.py` called from monitor.py's hook loop) to: read new lines from `csp-reports.jsonl` via an offset file, compute stats (unique directives violated, top blocked URIs, rolling 1h/24h/7d counts), write state JSON alongside the existing uptime state, alert on *new* violation types only (duplicate signatures silent after first), render a dashboard panel matching the existing dark-theme-CSS-vars aesthetic. Consider adding `csp-badge.svg` to mirror the uptime badge pattern. Note: monitor.py (1017 LOC) and dashboard.py (15K LOC, standalone) are deliberately decoupled — rollup can live in either; probably add to dashboard.py since that's where the existing HTML rendering lives.
+
+  **5. Site-side change** — single-line addition to `public/_headers` CSP directive: `; report-uri https://<hostname>.<tailnet>.ts.net/csp-report`. Takes effect on next deploy.
+
+  **Sequence:** stand up 1+2+3 on Peekay first, smoke-test the endpoint receives a manual `curl` POST, THEN push the site-side change. Otherwise browsers POST to a non-existent endpoint (fails silently but generates noise).
+
+  **Once this is live**, the CSP Report-Only → enforced promotion (currently time-gated on "1-2 weeks of console observation") becomes a measurable, data-driven decision instead of vibes-based — watch the rollup for N days, confirm no unexpected violations, flip the header.
+
+  **Alternative considered + rejected**: Netlify Function → Telegram/email direct (no archival, no trend analysis), report-uri.com (external dependency, out-of-stack). Peekay-hosted was chosen for all-local control + matches existing Python monitoring stack + Tailscale Funnel is free/clean.
 
 ---
 
