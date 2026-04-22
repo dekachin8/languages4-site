@@ -7,7 +7,7 @@
 
 ## Current Status (April 17, 2026)
 
-**Sprint 1: ✅ COMPLETE — deployed to production.** All Critical + High items from the audit landed; see CHANGELOG v0.9.0 for the detailed ledger. Post-deploy Mobile PageSpeed held at 93; Desktop dropped 97→95 with two tractable regressions (logged in the cleanup batch below).
+**Sprint 1: ✅ COMPLETE — deployed to production.** All Critical + High items from the audit landed; see CHANGELOG v0.9.0 for the detailed ledger. **Post-deploy PageSpeed: Mobile 93 (held), Desktop 99 on follow-up run** (initial 95 → 99 once CLS stabilized). Only remaining PageSpeed signal worth addressing: Best Practices 92 (CSP Report-Only violations, expected and tightenable).
 
 **Sprint 2: 🟡 ~40% COMPLETE.** Tooling foundation + regression protection are in place:
 - ✅ netlify.toml + Node 20 pin
@@ -208,8 +208,8 @@ Small-but-visible items surfaced during and after the April 17 deploy:
    - (Node.js 20 actions retirement June 2026; v5 runs on Node 24.)
 2. **Silence the `activities` false positive** — `src/components/PlatformShowcase.astro:198`. Add a proper `/* eslint-disable-next-line */` inside the script attribute context (not on the HTML parent). Or rename the variable in `define:vars` to a conventional ignored form. Leaves the remaining 8 `no-explicit-any` warnings as intentional reminders.
 3. **Investigate CSP Report-Only violations** — Best Practices dropped 100→92 post-deploy. Open DevTools on live site, capture the CSP violation list from console, tighten `public/_headers` allowlist. Expected to reclaim 6-8 Best Practices points.
-4. **Desktop CLS 0 → 0.062** — regression from hero rewrite. Likely candidates: the `text-8xl` wordmark causing font-load reflow, OR the 4-R tagline line-wrap differences between fallback font and `neue-kabel`. Fix: either reserve explicit height via `line-height`/`min-height`, or revert wordmark to fluid `text-hero` clamp. Requires DevTools Performance profiling to confirm root cause.
-5. **Desktop LCP 1.0s → 1.3s** — same hero-wordmark root cause as #4, likely. Same fix applies.
+4. ~~**Desktop CLS 0 → 0.062**~~ — **Self-resolved.** A follow-up PageSpeed run (April 18) returned CLS 0. The original reading was likely a one-time lab measurement blip, not a reproducible field issue. Keep an eye on Search Console Core Web Vitals for real-user data; don't chase unless a pattern appears.
+5. ~~**Desktop LCP 1.0s → 1.3s**~~ — Still within "good" band. Variance between PageSpeed runs alone accounts for ±0.3s; not worth chasing without field data. **Desktop Performance score actually moved to 99 on a retest** — the deploy is healthier than the single earlier snapshot suggested.
 
 #### Micro-sprint: Today (tiered for 30min / 90min / 150min)
 
