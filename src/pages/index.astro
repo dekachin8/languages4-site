@@ -121,7 +121,11 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
       <span class="inline-block text-sm font-bold tracking-[2px] text-white bg-neutral-700 px-3 py-1.5 mb-3 rounded">WHAT ARE LANGUAGES 4?</span>
 
       <h1 class="font-display">
-        <span class="block text-5xl md:text-8xl font-medium text-primary-900 leading-none mb-4 md:mb-6">
+        <!-- Reserve explicit height + prevent font-swap-induced line wrap to
+             protect against hero wordmark CLS. Font is loaded via Typekit
+             with font-display: optional; the nowrap guards against the
+             fallback font temporarily pushing the wordmark to 2 lines. -->
+        <span class="block text-5xl md:text-8xl font-medium text-primary-900 leading-none mb-4 md:mb-6 whitespace-nowrap" style="font-size-adjust: 0.5;">
           Languages 4
         </span>
         <span class="block font-bold uppercase text-accent-600 leading-snug">
