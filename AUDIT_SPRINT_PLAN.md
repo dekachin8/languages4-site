@@ -5,30 +5,36 @@
 
 ---
 
-## Current Status (April 17, 2026)
+## Current Status (April 22, 2026)
 
 **Sprint 1: ✅ COMPLETE — deployed to production.** All Critical + High items from the audit landed; see CHANGELOG v0.9.0 for the detailed ledger. **Post-deploy PageSpeed (3 desktop runs averaged):**
 - Desktop: ~95 Performance (range 95-99), CLS ~0.04 (range 0-0.062), LCP ~1.4s
 - Mobile: 93 Performance, CLS 0 (original post-deploy reading)
-- Best Practices 92 on both (CSP Report-Only violations, expected and tightenable)
+- Best Practices 92 on both (CSP Report-Only violations — cleanup batch below, landing next deploy)
 
-**Root cause of desktop CLS found + fixed** (April 18, pushed to `main` as `57af165` but NOT yet deployed): the 4×4 desktop hero mosaic's 12 empty-src placeholders had no height anchor, so row 4 (all placeholders) collapsed on load and expanded when `ShowcaseLoader` filled the images. Fix: `aspect-[3/2]` on each placeholder container + positional compensation (`-top-[45%]` lg/xl, `-top-[60%]` 2xl) + row-2 Mohawk card moved from col 1 → col 2 for better visibility. Also pushed `415e829`: removed `upgrade-insecure-requests` from Report-Only CSP (was throwing console warnings, hurting Best Practices score).
+**Root cause of desktop CLS found + fixed** (April 18, pushed to `main` as `57af165`): the 4×4 desktop hero mosaic's 12 empty-src placeholders had no height anchor, so row 4 (all placeholders) collapsed on load and expanded when `ShowcaseLoader` filled the images. Fix: `aspect-[3/2]` on each placeholder container + positional compensation (`-top-[45%]` lg/xl, `-top-[60%]` 2xl) + row-2 Mohawk card moved from col 1 → col 2 for better visibility. Also pushed `415e829`: removed `upgrade-insecure-requests` from Report-Only CSP (was throwing console warnings, hurting Best Practices score).
 
-## Pending next Netlify deploy (2 commits already on origin/main)
+## Pending next Netlify deploy (4 commits on origin/main + 2 local)
 
+On `origin/main` (from April 18):
 - `57af165` — mosaic CLS fix + positional tuning + row-2 swap
 - `415e829` — CSP `upgrade-insecure-requests` removed
 
-**Not deployed today** (April 18) — Tim rationing monthly Netlify build credits. Next deploy will batch these with 3-4 more small items to make one credit count. See "Next-session cleanup batch" below.
+On local `main` ahead of origin (April 22 — not yet pushed):
+- `724c5d7` — GHA actions v4→v5 bumps, drop unused `activities` define:var, silence modal reinit `console.error` on non-homepage navigation
+- `f4eb37c` — CSP allowlist for `p.typekit.net` (stylesheet) + `data:` in script-src (Astro ClientRouter requirement)
 
-**Sprint 2: 🟡 ~40% COMPLETE.** Tooling foundation + regression protection are in place:
+**Still not deployed** (April 22) — Tim rationing monthly Netlify build credits. Deploy pushes 4 commits at once.
+
+**Sprint 2: 🟡 ~60% COMPLETE.** Tooling foundation + regression protection are in place:
 - ✅ netlify.toml + Node 20 pin
 - ✅ typecheck script (astro check) — 0 errors
 - ✅ Prettier installed + configured (format pass deferred)
-- ✅ ESLint 9.x with TS + Astro + a11y plugins (0 errors, 9 documented warnings)
+- ✅ ESLint 9.x with TS + Astro + a11y plugins (0 errors, 8 documented warnings — all intentional `no-explicit-any`)
 - ✅ Playwright @playwright/test with 14 redirect smoke tests
-- ✅ GitHub Actions CI on every push/PR
+- ✅ GitHub Actions CI on every push/PR (bumped to actions v5 on April 22)
 - ✅ Mobile menu overflow fix
+- ✅ CSP Report-Only violation triage (April 22, live DevTools pass on homepage + listing + article)
 
 **Sprint 2 remaining work** is detailed in the Micro-sprint + wave-2 sections below.
 
@@ -38,7 +44,7 @@
 
 ## Where to resume next session
 
-Start with the **Next-session cleanup batch** below (~30 min) to reclaim the post-deploy PageSpeed regressions and close out loose ends. Then the bigger Sprint 2 wave-2 items (layout extraction, astro:assets, contact form a11y, contrast audit) are queued in priority order.
+Two open items remain from the Next-session cleanup batch: desktop CLS/LCP wordmark font-load reflow (#4 and #5 below, ~30 min combined, not urgent — under the "good" band). After that, **biggest ROI is the layout extraction** (3 article `[slug].astro` templates at ~70% duplication, already drifting — 2-3 hours). Contact form a11y polish and contrast audit are both small (~45 min each). Per-page OG images are blocked on Tim's design direction. CSP enforce-promotion is time-gated (1-2 weeks of Report-Only monitoring after the pending deploy).
 
 ---
 
@@ -210,18 +216,22 @@ Critical items + top-priority highs. Single branch, critical-first commits for r
 
 ---
 
-#### Next-session cleanup batch (~30 min, starts Sprint 2 wave next)
+#### Next-session cleanup batch (3 of 5 done — #4 and #5 remain)
 
 Small-but-visible items surfaced during and after the April 17 deploy:
 
-1. **GitHub Actions deprecation** — update `.github/workflows/ci.yml`:
+1. ✅ **GitHub Actions deprecation** — `.github/workflows/ci.yml`:
    - `actions/checkout@v4` → `@v5`
    - `actions/setup-node@v4` → `@v5`
-   - (Node.js 20 actions retirement June 2026; v5 runs on Node 24.)
-2. **Silence the `activities` false positive** — `src/components/PlatformShowcase.astro:198`. Add a proper `/* eslint-disable-next-line */` inside the script attribute context (not on the HTML parent). Or rename the variable in `define:vars` to a conventional ignored form. Leaves the remaining 8 `no-explicit-any` warnings as intentional reminders.
-3. **Investigate CSP Report-Only violations** — Best Practices dropped 100→92 post-deploy. Open DevTools on live site, capture the CSP violation list from console, tighten `public/_headers` allowlist. Expected to reclaim 6-8 Best Practices points.
-4. **Desktop CLS (small but present, ~0.04-0.06)** — across 3 post-deploy runs: 0.062 / 0 / 0.041. Variance-heavy but pattern is real — hero wordmark font-load reflow is the likely cause. All readings stay under the "good" band (0.1), so not urgent, but worth a ~30 min investigation pass when convenient. Fix candidates: reserve explicit height on the wordmark `<span>` via `min-height`/`line-height`, set `font-size-adjust` for fallback font metrics matching, or revert wordmark to fluid `text-hero` clamp.
-5. **Desktop LCP 1.3-1.7s** — slightly slower than the pre-deploy 1.0s. Still well within "good" band (<2.5s). Same hero-wordmark root cause as #4 likely. Same fix applies; same priority (not urgent).
+   - Done April 22, commit `724c5d7`. Verified v5 releases real (v5.0.0 Aug/Sep 2025); breaking changes are Node 24 runtime + auto package-manager-cache (latter doesn't trigger — no `packageManager` field in `package.json`).
+2. ✅ **Silence the `activities` false positive** — `src/components/PlatformShowcase.astro:198`. Done April 22, commit `724c5d7` — `activities` was genuinely unused in the script body (only `config` is used), so dropped from `define:vars` rather than disabled. Lint now 8 warnings (all intentional `no-explicit-any`).
+3. ✅ **Investigate CSP Report-Only violations** — Done April 22, commit `f4eb37c`. Live DevTools pass across homepage + `/signature-collections/` listing + an article page surfaced:
+   - `style-src` blocked `https://p.typekit.net/p.css` (Adobe Fonts bootstrap stylesheet) — added `https://p.typekit.net` to `style-src`.
+   - `script-src` blocked `data:application/javascript,` (Astro ClientRouter injects an empty-data module script at `node_modules/astro/dist/transitions/router.js:88` during View Transitions) — added `data:` to `script-src`. Security impact low (`'unsafe-inline'` already permits inline; no `'unsafe-eval'`).
+   - Bonus unrelated fix (same commit batch, `724c5d7`): `reinitializeModals()` in `index.astro` was logging 4× `console.error('Modal not found: …')` on every View Transition to non-homepage pages. Silenced — iterate only modals that exist.
+   - Expected to reclaim 6-8 Best Practices points post-deploy. Not yet verified (waiting for deploy + Lighthouse retest).
+4. ⏳ **Desktop CLS (small but present, ~0.04-0.06)** — across 3 post-deploy runs: 0.062 / 0 / 0.041. Variance-heavy but pattern is real — hero wordmark font-load reflow is the likely cause. All readings stay under the "good" band (0.1), so not urgent, but worth a ~30 min investigation pass when convenient. Fix candidates: reserve explicit height on the wordmark `<span>` via `min-height`/`line-height`, set `font-size-adjust` for fallback font metrics matching, or revert wordmark to fluid `text-hero` clamp.
+5. ⏳ **Desktop LCP 1.3-1.7s** — slightly slower than the pre-deploy 1.0s. Still well within "good" band (<2.5s). Same hero-wordmark root cause as #4 likely. Same fix applies; same priority (not urgent).
 
 ### Desktop PageSpeed retest observations (no action — document only)
 - Three post-deploy desktop runs: **95 / 99 / 95** Performance.
