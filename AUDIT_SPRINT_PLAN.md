@@ -26,7 +26,7 @@ On local `main` ahead of origin (April 22 — not yet pushed):
 
 **Still not deployed** (April 22) — Tim rationing monthly Netlify build credits. Deploy pushes 4 commits at once.
 
-**Sprint 2: 🟡 ~70% COMPLETE.** Tooling foundation + regression protection are in place:
+**Sprint 2: 🟡 ~80% COMPLETE.** Tooling foundation + regression protection are in place:
 - ✅ netlify.toml + Node 20 pin
 - ✅ typecheck script (astro check) — 0 errors
 - ✅ Prettier installed + configured (format pass deferred)
@@ -35,7 +35,7 @@ On local `main` ahead of origin (April 22 — not yet pushed):
 - ✅ GitHub Actions CI on every push/PR (bumped to actions v5 on April 22)
 - ✅ Mobile menu overflow fix
 - ✅ CSP Report-Only violation triage (April 22, live DevTools pass on homepage + listing + article)
-- ✅ Article template extraction — `CollectionArticleLayout.astro` absorbs 3 article `[slug].astro` pages (April 22, commit `4e25e59`); drift between collections now structurally prevented. Listing `[...page].astro` extraction still pending.
+- ✅ Article + listing template extraction — `CollectionArticleLayout.astro` (April 22, `4e25e59`) + `CollectionListingLayout.astro` (April 22, `c5b39f2`) now own the shared chrome across whatarel4, signature-collections, and ancestors. Total src reduction across 6 pages: 1385 → 1046 lines (-339, -24%). Drift between collections now structurally prevented.
 
 **Sprint 2 remaining work** is detailed in the Micro-sprint + wave-2 sections below.
 
@@ -325,9 +325,10 @@ Adds to Tier B:
 
 #### Rest of Sprint 2 (not today, but queued)
 
-**Layout extraction** — Phase 1 done, Phase 2 pending
-- ✅ **Phase 1 (article templates)** — April 22, commit `4e25e59`. `CollectionArticleLayout.astro` now owns the shared hero/breadcrumbs/article/sidebar structure for whatarel4, signature-collections, and ancestors. Each `[slug].astro` shrank from ~220 lines to 66-89 lines; diff reduced to collection-specific logic (popular-post selection strategy, gallery composition, tribe/lifespan info box via slot, seriesOrder "Part N" badge via slot). Total src reduction: 669 → 456 lines (-32%). NOT browser-verified; visual parity to be confirmed on next deploy preview.
-- ⏳ **Phase 2 (listing templates)** — `[...page].astro` trio still has substantial duplication. Sizes: whatarel4 10052 bytes (biggest — has archive link generation), signature-collections 8551, ancestors 8224. ~60-90 min to extract `CollectionListingLayout.astro`. Acceptance: all 3 listing pages render identically post-refactor.
+**Layout extraction** — ✅ DONE (April 22)
+- ✅ **Phase 1 (article templates)** — commit `4e25e59`. `CollectionArticleLayout.astro` owns shared hero/breadcrumbs/article/sidebar. Each `[slug].astro` shrank from ~220 lines to 66-89 lines. Collection-specific logic (popular-post selection, gallery composition, tribe/lifespan info box, seriesOrder "Part N" badge) now expressed via props + a single `pre-content` slot. Total src reduction: 669 → 456 lines (-32%).
+- ✅ **Phase 2 (listing templates)** — commit `c5b39f2`. `CollectionListingLayout.astro` owns hero, info box, results count, no-results block, pagination, sidebar. Each `[...page].astro` shrank from ~220-270 lines to 112-156 lines. Card grid stays in the parent's default slot (ArticleCard props differ by collection). whatarel4 retains its "Latest + More" section split + archiveYears — genuinely collection-specific. Total src reduction: 716 → 590 lines (-18%).
+- Combined: 6 pages 1385 → 1046 lines (-24%). NOT browser-verified; visual parity to confirm on next deploy preview.
 
 **`astro:assets` migration** (~1-2 hours initial, 3-4 total if comprehensive)
 - Phase 1: hero LCP image (homepage `mobile-hero-1`) → `<Image />` with explicit width/height
