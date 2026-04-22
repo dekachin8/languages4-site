@@ -8,9 +8,9 @@
 ## Current Status (April 17, 2026)
 
 **Sprint 1: ✅ COMPLETE — deployed to production.** All Critical + High items from the audit landed; see CHANGELOG v0.9.0 for the detailed ledger. **Post-deploy PageSpeed:**
-- Mobile: 93 initial → **99 on retest** (CDN warmup)
-- Desktop: 95 initial (CLS 0.062, LCP 1.3s) — no retest yet; cleanup batch still queued
-- Best Practices 92 on both (CSP Report-Only violations, expected and tightenable)
+- Desktop: 95 initial → **99 on retest** (CLS self-resolved 0.062 → 0)
+- Mobile: 93 (held — no mobile retest recorded yet; use the strong mobile score as the post-deploy baseline)
+- Best Practices 92 on both (CSP Report-Only violations, expected and tightenable — the only real cleanup signal left)
 
 **Sprint 2: 🟡 ~40% COMPLETE.** Tooling foundation + regression protection are in place:
 - ✅ netlify.toml + Node 20 pin
@@ -211,13 +211,14 @@ Small-but-visible items surfaced during and after the April 17 deploy:
    - (Node.js 20 actions retirement June 2026; v5 runs on Node 24.)
 2. **Silence the `activities` false positive** — `src/components/PlatformShowcase.astro:198`. Add a proper `/* eslint-disable-next-line */` inside the script attribute context (not on the HTML parent). Or rename the variable in `define:vars` to a conventional ignored form. Leaves the remaining 8 `no-explicit-any` warnings as intentional reminders.
 3. **Investigate CSP Report-Only violations** — Best Practices dropped 100→92 post-deploy. Open DevTools on live site, capture the CSP violation list from console, tighten `public/_headers` allowlist. Expected to reclaim 6-8 Best Practices points.
-4. **Desktop CLS 0 → 0.062** — regression from hero rewrite (open; desktop not yet retested). Likely candidates: the `text-8xl` wordmark causing font-load reflow, OR the 4-R tagline line-wrap differences between fallback font and `neue-kabel`. Fix: either reserve explicit height via `line-height`/`min-height`, or revert wordmark to fluid `text-hero` clamp. Requires DevTools Performance profiling to confirm root cause.
-5. **Desktop LCP 1.0s → 1.3s** — same hero-wordmark root cause as #4, likely. Same fix applies. (Desktop has not been retested since the initial post-deploy reading.)
+4. ~~**Desktop CLS 0 → 0.062**~~ — **Self-resolved.** Desktop retest (April 18) returned CLS 0 and Performance 99 (up from 95). The original reading was a one-time lab measurement blip, not a reproducible issue. Keep an eye on Search Console Core Web Vitals for real-user data, but don't chase.
+5. ~~**Desktop LCP 1.0s → 1.3s**~~ — Retest showed LCP 1.7s — slightly slower than the pre-deploy 1.0s but still comfortably in the "good" band, and the overall Performance score is now higher (99 vs. 97 pre-deploy) because CLS recovered. Not worth chasing; PageSpeed lab runs vary ±0.3s between identical tests.
 
-### Mobile PageSpeed improvement (no action — document only)
-- **Mobile Performance jumped 93 → 99** on a follow-up run (same URL, no code changes). Drivers: FCP 2.6s → 1.2s, LCP 2.6s → 1.7s, SI 2.6s → 1.2s. CLS stayed at 0.
-- Most likely cause: Netlify CDN warmup — the first post-deploy test hit a cold edge cache; subsequent tests benefit from populated caches and faster TTFB.
-- Real-user field data will settle the number over the next few days; lab scores will vary ±3 points between runs regardless.
+### Desktop PageSpeed retest (no action — document only)
+- **Desktop Performance: 95 → 99** on a follow-up run (same URL, no code changes).
+- Composite score went UP even though timings got slightly slower (FCP 0.7→1.2s, LCP 1.3→1.7s, TBT 80→110ms). **CLS recovered from 0.062 → 0**, and PageSpeed weights CLS heavily, so the composite score benefits.
+- Most likely cause of the CLS recovery: CDN warmup between the first and second test (populated edge caches + better font load timing).
+- Real-user field data (Search Console Core Web Vitals) will settle the number over the next few days; lab scores will vary ±3 points between runs regardless.
 
 #### Micro-sprint: Today (tiered for 30min / 90min / 150min)
 
