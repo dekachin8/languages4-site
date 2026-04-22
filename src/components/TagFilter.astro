@@ -66,7 +66,7 @@ const baseUrl = `/${collection}`;
           {showCounts && (
             <span class:list={[
               "ml-1.5 text-xs font-normal",
-              isActive ? "text-white/80" : "text-neutral-500"
+              isActive ? "text-white/80" : "text-neutral-700"
             ]}>
               ({count})
             </span>
@@ -78,7 +78,7 @@ const baseUrl = `/${collection}`;
   
   <!-- No Tags Message -->
   {tags.length === 0 && (
-    <p class="text-neutral-500 text-center py-4">
+    <p class="text-neutral-700 text-center py-4">
       No tags available yet.
     </p>
   )}

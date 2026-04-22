@@ -17,7 +17,7 @@ export const categoryColors = {
   elder: "bg-[#74a892]", // Green
   student: "bg-accent-600", // Orange
   administrator: "bg-[#005485]", // Blue
-  community: "bg-neutral-600", // Gray
+  community: "bg-neutral-700", // Gray
 };
 
 // Helper to get initials from name
