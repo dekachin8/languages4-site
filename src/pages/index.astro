@@ -198,9 +198,9 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
 
     <!-- Device Showcase - Hidden on mobile, visible on large screens -->
     <div class="hidden lg:flex absolute 
-        lg:-top-[50%] lg:-right-[15%] lg:w-[90%] lg:h-[150%] 
-        xl:-top-[50%] xl:-right-[10%] xl:w-[90%] xl:h-[135%] 
-        2xl:-top-[70%] 2xl:-right-[8%] 2xl:w-[75%] 2xl:h-[120%] 
+        lg:-top-[45%] lg:-right-[15%] lg:w-[90%] lg:h-[150%]
+        xl:-top-[45%] xl:-right-[10%] xl:w-[90%] xl:h-[135%]
+        2xl:-top-[60%] 2xl:-right-[8%] 2xl:w-[75%] 2xl:h-[120%] 
         max-w-[1850px] flex-col justify-around 
         gap-6 lg:gap-8 xl:gap-7 2xl:gap-8 
         p-8 lg:p-6 xl:p-7 2xl:p-6 
@@ -208,10 +208,10 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
       
       <!-- ROW 1 -->
       <div class="flex gap-6 items-stretch w-full">
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-1-img-1">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-1-img-1">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-1-img-2">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-1-img-2">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
         <div 
@@ -226,14 +226,17 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
             </span>
           </div>
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-1-img-4">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-1-img-4">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
       </div>
 
       <!-- ROW 2 -->
       <div class="flex gap-6 items-stretch w-full">
-        <div 
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-2-img-2">
+          <img src="" alt="Language software" class="w-full h-full object-cover rounded-[12%] " />
+        </div>
+        <div
           data-modal-open="mohawk-modal"
           class="relative rounded-xl overflow-hidden shadow-[0_15px_45px_rgba(199,82,42,0.2)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-[1.5] hero-1 cursor-pointer group"
         >
@@ -245,10 +248,7 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
             </span>
           </div>
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-2-img-2">
-          <img src="" alt="Language software" class="w-full h-full object-cover rounded-[12%] " />
-        </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-2-img-3">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-2-img-3">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
         <div 
@@ -267,10 +267,10 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
 
       <!-- ROW 3 -->
       <div class="flex gap-6 items-stretch w-full">
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-3-img-1">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-3-img-1">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-3-img-2">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-3-img-2">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
         <div 
@@ -285,23 +285,23 @@ const featuredToShow = featured.length > 0 ? featured : allTestimonials.slice(0,
             </span>
           </div>
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-3-img-4">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-3-img-4">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
       </div>
 
       <!-- ROW 4 -->
       <div class="flex gap-6 items-stretch w-full">
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-4-img-1">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-4-img-1">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-4-img-2">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-4-img-2">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-4-img-3">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-4-img-3">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
-        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 row-4-img-4">
+        <div class="relative rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.25)] bg-white p-2.5 transition-all duration-400 hover:scale-110 hover:shadow-[0_25px_60px_rgba(0,0,0,0.4)] hover:z-[1000] flex-1 aspect-[3/2] row-4-img-4">
           <img src="" alt="Community member" class="w-full h-full object-cover rounded-[12%] " />
         </div>
       </div>
