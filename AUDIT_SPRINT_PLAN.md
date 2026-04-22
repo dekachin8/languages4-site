@@ -36,17 +36,21 @@ All Sprint 2 work + April 18 fixes pushed to `origin/main` and deployed via Netl
 - Desktop CLS 0.04-0.06 → 0 — wordmark guards effective.
 - Desktop LCP 1.3-1.7s → 0.7s — better than the pre-Sprint-1 1.0s baseline.
 
-**Run-to-run variance observed (two runs, April 22):**
-- Mobile Performance: 90 → 68. TBT 210ms → 1,290ms. SI 2.8s → 4.2s. SEO 90 → 68. CLS 0 → 0.001.
-- Desktop Performance: 99 → 89. TBT 30ms → 250ms. SI 1.0s → 1.5s. SEO 100 → 89.
+**4-run mobile picture (April 22, corrected):**
+- Run 1 (original browser): Perf 90, SEO 100, TBT 210ms
+- Run 2 (original browser, likely cached result): Perf 68, SEO 100, TBT 1,290ms
+- Run 3 (original browser, likely cached result): Perf 62, SEO 100, TBT 1,250ms
+- Run 4 (**different browser, fresh**): Perf 92, SEO 100, TBT 40ms
 
-Constants across both runs: FCP, LCP, CLS, Accessibility 91, Best Practices 100.
+**Correction:** SEO was 100 on every run (I misread the paste layout initially and confused Accessibility scores with SEO scores — corrected after Tim pointed it out). The only thing that actually varied was Performance, and Performance tracks TBT almost 1:1.
 
-The SEO drop is the most actionable signal — SEO scoring is mostly deterministic (meta tags, structured data, robots.txt, canonical URLs), so a 100 → 68 swing suggests some SEO audits are failing silently in the second run (likely because the page didn't finish rendering / a resource didn't load within Lighthouse's timeout on that run). TBT 40x swings aren't normal PageSpeed variance either — points to third-party analytics (Clarity + GA4) having a bad server-side moment during the slow run, or Netlify edge cache being cold.
+**The "bad runs" were likely one cached PageSpeed result re-served.** PageSpeed Insights caches results per URL for 30-60 min; hitting "re-run" in the same browser session can return the cached result rather than running fresh. Tim confirmed this pattern by running from a fresh different browser and getting Perf 92 / TBT 40ms — matching Run 1's picture, not Runs 2-3.
 
-**Action queued for next session:** run PageSpeed 3-5 times spaced by a minute, look at the SEO audit details when it fails (which specific audits dropped), correlate timing with Netlify edge cache state. Until we have that data, treat the current post-deploy measurement as "variance-uncovered" rather than a baseline.
+**Real post-deploy baseline (fresh-browser runs only):**
+- Mobile: Perf 90-92, TBT 40-210ms, LCP 2.5-2.8s, CLS 0, SEO 100, BP 100, A11y 91
+- Desktop: Perf 99, TBT 30ms, LCP 0.7s, CLS 0, SEO 100, BP 100, A11y 91
 
-**Perf floor** (Tim's framing, April 22): mobile ≥ 90 is the bar. Single-run dips into 80s don't count until 3+ consecutive runs confirm them. Saved as project memory `project_perf_floor.md`.
+**Perf floor:** mobile ≥ 90 is the bar. Saved as project memory `project_perf_floor.md`, now including the "fresh browser / incognito" cache-busting lesson so future sessions don't chase ghost patterns.
 
 **Sprint 2: 🟢 ~95% COMPLETE (effectively closed).** Tooling + refactors + a11y + contrast all landed:
 - ✅ netlify.toml + Node 20 pin
