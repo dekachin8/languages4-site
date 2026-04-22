@@ -1,0 +1,22 @@
+---
+// LogoLink.astro - The Languages 4 logo as a link to home.
+// Used in both mobile header and desktop sidebar navigation.
+
+interface Props {
+  sizeClass: string; // Tailwind sizing, e.g. "w-10 h-10" or "w-12 h-12 md:w-16 md:h-16"
+}
+
+const { sizeClass } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={["block", sizeClass, "transition-transform duration-brand hover:scale-110"]}
+  aria-label="Languages 4 Home"
+>
+  <img
+    src="/images/logo-languages4.svg"
+    alt="Languages 4 Logo"
+    class="w-full h-full object-contain"
+  />
+</a>

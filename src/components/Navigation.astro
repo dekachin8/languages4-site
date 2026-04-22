@@ -1,18 +1,13 @@
 ---
 // Navigation.astro - Mobile top header + Desktop right sidebar
 // Enhanced with icons, section labels, and active page highlighting
+import LogoLink from './LogoLink.astro';
 ---
 
 <!-- MOBILE: Top Header (hidden on large screens) -->
 <nav class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-primary-900 flex items-center justify-between px-2 z-fixed shadow-brand-teal">
   <!-- Logo Left -->
-  <a href="/" class="block w-10 h-10 transition-transform duration-brand hover:scale-110" aria-label="Languages 4 Home">
-    <img 
-      src="/images/logo-languages4.svg" 
-      alt="Languages 4 Logo" 
-      class="w-full h-full object-contain"
-    />
-  </a>
+  <LogoLink sizeClass="w-10 h-10" />
 
   <!-- Hamburger Right -->
   <button 
@@ -31,13 +26,7 @@
 <nav class="hidden lg:flex fixed right-0 top-0 h-screen w-20 lg:w-24 bg-primary-900 flex-col justify-between items-center py-8 z-fixed shadow-brand-teal">
   <!-- Logo Section -->
   <div class="flex flex-col items-center">
-    <a href="/" class="block w-12 h-12 md:w-16 md:h-16 transition-transform duration-brand hover:scale-110" aria-label="Languages 4 Home">
-      <img 
-        src="/images/logo-languages4.svg" 
-        alt="Languages 4 Logo" 
-        class="w-full h-full object-contain"
-      />
-    </a>
+    <LogoLink sizeClass="w-12 h-12 md:w-16 md:h-16" />
   </div>
 
   <!-- Animated Hamburger Menu Button -->
