@@ -14,17 +14,39 @@
 
 **Root cause of desktop CLS found + fixed** (April 18, pushed to `main` as `57af165`): the 4×4 desktop hero mosaic's 12 empty-src placeholders had no height anchor, so row 4 (all placeholders) collapsed on load and expanded when `ShowcaseLoader` filled the images. Fix: `aspect-[3/2]` on each placeholder container + positional compensation (`-top-[45%]` lg/xl, `-top-[60%]` 2xl) + row-2 Mohawk card moved from col 1 → col 2 for better visibility. Also pushed `415e829`: removed `upgrade-insecure-requests` from Report-Only CSP (was throwing console warnings, hurting Best Practices score).
 
-## Pending next Netlify deploy (4 commits on origin/main + 2 local)
+## Deploy (April 22, 2026) — 16 commits shipped
 
-On `origin/main` (from April 18):
-- `57af165` — mosaic CLS fix + positional tuning + row-2 swap
-- `415e829` — CSP `upgrade-insecure-requests` removed
+All Sprint 2 work + April 18 fixes pushed to `origin/main` and deployed via Netlify on April 22. Sprint 1 post-deploy regressions reclaimed; new capabilities landed:
 
-On local `main` ahead of origin (April 22 — not yet pushed):
-- `724c5d7` — GHA actions v4→v5 bumps, drop unused `activities` define:var, silence modal reinit `console.error` on non-homepage navigation
-- `f4eb37c` — CSP allowlist for `p.typekit.net` (stylesheet) + `data:` in script-src (Astro ClientRouter requirement)
+- Mosaic CLS fix (`57af165`)
+- CSP allowlist fixes (`415e829` + `f4eb37c`)
+- GHA v5 bumps + lint cleanup + modal reinit noise (`724c5d7`)
+- Article + listing layout extraction (`4e25e59` + `c5b39f2`)
+- TOC markdown strip, LogoLink, contrast, contact a11y, lang-tagging, wordmark CLS (`6366be6`, `0feae85`, `2cfed4a`, `3176ff2`, `38cf72f`, `4663bee`)
+- Plan docs (`f0b0106`, `a1be4cb`, `cc55e27`, `f58298b`, `0413ca0`, `5d85cb5`)
 
-**Still not deployed** (April 22) — Tim rationing monthly Netlify build credits. Deploy pushes 4 commits at once.
+### Post-Deploy PageSpeed (single run each — lab variance caveat applies)
+
+**Desktop:** Performance 99 / Accessibility 91 / Best Practices 100 / SEO 100. FCP 0.7s, LCP 0.7s, TBT 30ms, CLS 0, SI 1.0s.
+
+**Mobile:** Performance 90 / Accessibility 91 / Best Practices 100 / SEO 90. FCP 2.5s, LCP 2.5s, TBT 210ms, CLS 0, SI 2.8s.
+
+**Confirmed wins:**
+- Best Practices 92 → 100 on both — CSP fixes worked as designed.
+- Desktop CLS 0.04-0.06 → 0 — wordmark guards effective.
+- Desktop LCP 1.3-1.7s → 0.7s — better than the pre-Sprint-1 1.0s baseline.
+
+**Run-to-run variance observed (two runs, April 22):**
+- Mobile Performance: 90 → 68. TBT 210ms → 1,290ms. SI 2.8s → 4.2s. SEO 90 → 68. CLS 0 → 0.001.
+- Desktop Performance: 99 → 89. TBT 30ms → 250ms. SI 1.0s → 1.5s. SEO 100 → 89.
+
+Constants across both runs: FCP, LCP, CLS, Accessibility 91, Best Practices 100.
+
+The SEO drop is the most actionable signal — SEO scoring is mostly deterministic (meta tags, structured data, robots.txt, canonical URLs), so a 100 → 68 swing suggests some SEO audits are failing silently in the second run (likely because the page didn't finish rendering / a resource didn't load within Lighthouse's timeout on that run). TBT 40x swings aren't normal PageSpeed variance either — points to third-party analytics (Clarity + GA4) having a bad server-side moment during the slow run, or Netlify edge cache being cold.
+
+**Action queued for next session:** run PageSpeed 3-5 times spaced by a minute, look at the SEO audit details when it fails (which specific audits dropped), correlate timing with Netlify edge cache state. Until we have that data, treat the current post-deploy measurement as "variance-uncovered" rather than a baseline.
+
+**Perf floor** (Tim's framing, April 22): mobile ≥ 90 is the bar. Single-run dips into 80s don't count until 3+ consecutive runs confirm them. Saved as project memory `project_perf_floor.md`.
 
 **Sprint 2: 🟢 ~95% COMPLETE (effectively closed).** Tooling + refactors + a11y + contrast all landed:
 - ✅ netlify.toml + Node 20 pin
