@@ -13,23 +13,36 @@ interface Heading {
   id: string;
 }
 
+// Strip markdown formatting delimiters so the TOC displays clean text
+// instead of raw `**bold**` / `\-escaped` syntax from heading source.
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*([^*]+)\*\*/g, '$1') // **bold**
+    .replace(/\*([^*]+)\*/g, '$1')     // *italic*
+    .replace(/`([^`]+)`/g, '$1')       // `code`
+    .replace(/\\(.)/g, '$1');          // \X → X
+}
+
 function extractHeadings(markdown: string): Heading[] {
   const headingRegex = /^(#{2})\s+(.+)$/gm; // Only H2 headings
   const headings: Heading[] = [];
   let match;
-  
+
   while ((match = headingRegex.exec(markdown)) !== null) {
     const level = match[1].length;
-    const text = match[2].trim();
-    // Create URL-safe ID
-    const id = text
+    const rawText = match[2].trim();
+    const text = stripMarkdown(rawText);
+    // IDs derived from rawText to preserve legacy anchor behavior
+    // (rehypeSlug-generated heading IDs follow the raw text, not the
+    // cleaned display text).
+    const id = rawText
       .toLowerCase()
       .replace(/[^\w\s-]/g, '')
       .replace(/\s+/g, '-');
-    
+
     headings.push({ level, text, id });
   }
-  
+
   return headings;
 }
 
