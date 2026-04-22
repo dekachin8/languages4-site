@@ -9,7 +9,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
 <section class="py-16 md:py-24 bg-gradient-to-b from-white to-neutral-50">
   <div class="max-w-3xl mx-auto px-4">
-    
+
     <div class="text-center mb-12">
       <h1 class="font-display text-4xl md:text-5xl font-bold text-primary-900 mb-6">
         Let's Talk About Your Language Program
@@ -20,15 +20,18 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
 
     <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-      <form 
+      <form
+        id="contact-form"
         name="contact"
         method="POST"
+        action="/thank-you/"
         data-netlify="true"
         netlify-honeypot="bot-field"
+        novalidate
         class="space-y-6"
       >
         <input type="hidden" name="form-name" value="contact" />
-        
+
         <!-- Honeypot for spam -->
         <p class="hidden">
           <label>Don't fill this out: <input name="bot-field" /></label>
@@ -36,38 +39,53 @@ import MainLayout from '../layouts/MainLayout.astro';
 
         <div>
           <label for="name" class="block text-sm font-semibold text-primary-900 mb-2">
-            Name *
+            Name <span class="text-accent-600" aria-hidden="true">*</span>
           </label>
-          <input 
-            type="text" 
-            id="name" 
-            name="name" 
+          <input
+            type="text"
+            id="name"
+            name="name"
             required
+            aria-required="true"
+            aria-invalid="false"
+            aria-describedby="name-error"
+            autocomplete="name"
             class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-accent-600 focus:border-transparent"
           />
+          <p id="name-error" class="text-sm text-red-700 mt-1 hidden" role="alert">
+            Please enter your name.
+          </p>
         </div>
 
         <div>
           <label for="email" class="block text-sm font-semibold text-primary-900 mb-2">
-            Email Address *
+            Email Address <span class="text-accent-600" aria-hidden="true">*</span>
           </label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
+          <input
+            type="email"
+            id="email"
+            name="email"
             required
+            aria-required="true"
+            aria-invalid="false"
+            aria-describedby="email-error"
+            autocomplete="email"
             class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-accent-600 focus:border-transparent"
           />
+          <p id="email-error" class="text-sm text-red-700 mt-1 hidden" role="alert">
+            Please enter a valid email address.
+          </p>
         </div>
 
         <div>
           <label for="organization" class="block text-sm font-semibold text-primary-900 mb-2">
             Community / Organization
           </label>
-          <input 
-            type="text" 
-            id="organization" 
+          <input
+            type="text"
+            id="organization"
             name="organization"
+            autocomplete="organization"
             class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-accent-600 focus:border-transparent"
           />
         </div>
@@ -76,9 +94,9 @@ import MainLayout from '../layouts/MainLayout.astro';
           <label for="language" class="block text-sm font-semibold text-primary-900 mb-2">
             Language(s) You're Working With
           </label>
-          <input 
-            type="text" 
-            id="language" 
+          <input
+            type="text"
+            id="language"
             name="language"
             placeholder="e.g., Kanien'kéha (Mohawk)"
             class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-accent-600 focus:border-transparent"
@@ -87,19 +105,25 @@ import MainLayout from '../layouts/MainLayout.astro';
 
         <div>
           <label for="message" class="block text-sm font-semibold text-primary-900 mb-2">
-            Tell Us About Your Needs *
+            Tell Us About Your Needs <span class="text-accent-600" aria-hidden="true">*</span>
           </label>
-          <textarea 
-            id="message" 
-            name="message" 
+          <textarea
+            id="message"
+            name="message"
             rows="6"
             required
+            aria-required="true"
+            aria-invalid="false"
+            aria-describedby="message-error"
             placeholder="What are your language revitalization goals? What challenges are you facing?"
             class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-accent-600 focus:border-transparent"
           ></textarea>
+          <p id="message-error" class="text-sm text-red-700 mt-1 hidden" role="alert">
+            Please tell us a little about your needs.
+          </p>
         </div>
 
-        <button 
+        <button
           type="submit"
           class="w-full py-4 px-8 bg-accent-600 text-white rounded-lg font-bold text-lg transition-all duration-300 hover:bg-accent-700 hover:-translate-y-1 hover:shadow-brand-orange"
         >
@@ -108,11 +132,57 @@ import MainLayout from '../layouts/MainLayout.astro';
 
         <p class="text-sm text-neutral-700 text-center">
           We'll respond within 1 business day to schedule your free demonstration.
+          Fields marked <span class="text-accent-600 font-semibold">*</span> are required.
         </p>
       </form>
     </div>
 
   </div>
 </section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const requiredFields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]');
+
+    const setFieldValidity = (field: HTMLInputElement | HTMLTextAreaElement, valid: boolean) => {
+      field.setAttribute('aria-invalid', valid ? 'false' : 'true');
+      const errorId = field.getAttribute('aria-describedby');
+      const errorEl = errorId ? document.getElementById(errorId) : null;
+      if (errorEl) {
+        errorEl.classList.toggle('hidden', valid);
+      }
+      // Visual ring on invalid fields
+      if (valid) {
+        field.classList.remove('border-red-700', 'ring-2', 'ring-red-200');
+        field.classList.add('border-neutral-300');
+      } else {
+        field.classList.add('border-red-700', 'ring-2', 'ring-red-200');
+        field.classList.remove('border-neutral-300');
+      }
+    };
+
+    // Clear errors once the user starts correcting a field
+    requiredFields.forEach((field) => {
+      field.addEventListener('input', () => {
+        if (field.validity.valid) setFieldValidity(field, true);
+      });
+    });
+
+    form.addEventListener('submit', (event) => {
+      let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
+      requiredFields.forEach((field) => {
+        const isValid = field.validity.valid;
+        setFieldValidity(field, isValid);
+        if (!isValid && !firstInvalid) firstInvalid = field;
+      });
+
+      if (firstInvalid) {
+        event.preventDefault();
+        (firstInvalid as HTMLElement).focus();
+      }
+    });
+  }
+</script>
 
 </MainLayout>
