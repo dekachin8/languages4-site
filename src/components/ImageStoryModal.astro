@@ -73,7 +73,7 @@ const ctaUrl = link || "/contact";
 
       <!-- Description -->
       <p class="text-neutral-700 text-base md:text-lg leading-relaxed mb-8">
-        {description}
+        <Fragment set:html={description} />
       </p>
 
       <!-- CTA Button -->

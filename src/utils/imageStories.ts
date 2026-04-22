@@ -23,7 +23,7 @@ export const heroImageStories: ImageStory[] = [
     title: "Language Sovereignty in Action",
     category: "Technology",
     description:
-      "The Languages 4 platform, built in partnership with the Wahta Mohawk Community, brings Kanien'kéha (Mohawk) language learning to laptops, tablets, and phones. Language sovereignty is the right of Indigenous Peoples to control how their ancestral languages are used, taught, and revitalized. This project puts that principle into practice, with the community guiding every step of the process.",
+      "The Languages 4 platform, built in partnership with the Wahta Mohawk Community, brings <span lang=\"moh\">Kanien'kéha</span> (Mohawk) language learning to laptops, tablets, and phones. Language sovereignty is the right of Indigenous Peoples to control how their ancestral languages are used, taught, and revitalized. This project puts that principle into practice, with the community guiding every step of the process.",
     link: "/whatarel4/languages-4-core-value-language-sovereignty-the-first-pillar-of-languages-4/",
   },
   {

@@ -112,7 +112,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
       {eyebrow}
     </p>
     <h1 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight">
-      {post.data.title}
+      <Fragment set:html={post.data.title} />
     </h1>
   </div>
 </section>

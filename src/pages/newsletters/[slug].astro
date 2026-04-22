@@ -75,7 +75,7 @@ const shareTitle = `${title} - Languages 4 Newsletter`;
         <ul class="space-y-4">
           {articles.map((article) => (
             <li class="border-l-4 border-primary-200 pl-4 py-2 hover:border-accent-600 transition-colors">
-              <h3 class="font-semibold text-neutral-900 mb-1">{article.title}</h3>
+              <h3 class="font-semibold text-neutral-900 mb-1"><Fragment set:html={article.title} /></h3>
               <p class="text-sm text-neutral-600">by {article.author}</p>
             </li>
           ))}

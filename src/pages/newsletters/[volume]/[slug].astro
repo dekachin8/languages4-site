@@ -89,7 +89,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       
       <!-- Title -->
       <h1 class="text-4xl md:text-5xl font-display font-bold text-primary-900 mb-4">
-        {article.data.title}
+        <Fragment set:html={article.data.title} />
       </h1>
       
       <!-- Metadata -->
