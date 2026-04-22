@@ -11,7 +11,15 @@
 - Desktop: ~95 Performance (range 95-99), CLS ~0.04 (range 0-0.062), LCP ~1.4s
 - Mobile: 93 Performance, CLS 0 (original post-deploy reading)
 - Best Practices 92 on both (CSP Report-Only violations, expected and tightenable)
-- **Small but real desktop CLS regression** (pre-deploy was 0) — hero wordmark font-load reflow, fixable in ~30 min, not urgent since values stay well inside "good" band.
+
+**Root cause of desktop CLS found + fixed** (April 18, pushed to `main` as `57af165` but NOT yet deployed): the 4×4 desktop hero mosaic's 12 empty-src placeholders had no height anchor, so row 4 (all placeholders) collapsed on load and expanded when `ShowcaseLoader` filled the images. Fix: `aspect-[3/2]` on each placeholder container + positional compensation (`-top-[45%]` lg/xl, `-top-[60%]` 2xl) + row-2 Mohawk card moved from col 1 → col 2 for better visibility. Also pushed `415e829`: removed `upgrade-insecure-requests` from Report-Only CSP (was throwing console warnings, hurting Best Practices score).
+
+## Pending next Netlify deploy (2 commits already on origin/main)
+
+- `57af165` — mosaic CLS fix + positional tuning + row-2 swap
+- `415e829` — CSP `upgrade-insecure-requests` removed
+
+**Not deployed today** (April 18) — Tim rationing monthly Netlify build credits. Next deploy will batch these with 3-4 more small items to make one credit count. See "Next-session cleanup batch" below.
 
 **Sprint 2: 🟡 ~40% COMPLETE.** Tooling foundation + regression protection are in place:
 - ✅ netlify.toml + Node 20 pin

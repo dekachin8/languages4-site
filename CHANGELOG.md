@@ -53,10 +53,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Known regressions from 0.9.0 deploy (queued for next session)
-- Desktop PageSpeed 97 → 95 (CLS 0 → 0.062, LCP 1.0s → 1.3s) — likely hero wordmark reflow (`text-8xl` on desktop vs the old fluid `text-hero` clamp). Investigation via DevTools Performance.
-- Best Practices 100 → 92 (both viewports) — expected byproduct of adding CSP Report-Only. Next step: capture the violation list from the browser console on the live site, tighten `public/_headers` allowlist, then promote to enforced CSP.
-- GitHub Actions `actions/checkout@v4` + `actions/setup-node@v4` use deprecated Node.js 20 runtime (retired June 2026). Bump both to `@v5`.
+### Pushed to origin/main, awaiting next Netlify deploy
+- `57af165` **Desktop mosaic CLS fix** — `aspect-[3/2]` on the 12 empty-src placeholder containers reserves vertical space before `ShowcaseLoader` fills them. Eliminates the post-deploy 0.04-0.06 CLS regression (root cause confirmed via PerformanceObserver: row 4 of the mosaic collapsed and expanded during image load). Also compensated parent positioning (`-top-[45%]` at lg/xl, `-top-[60%]` at 2xl) and swapped the Mohawk/buffalo hero card from row-2 col-1 → col-2 for better visibility past the hero card.
+- `415e829` **CSP cleanup** — removed `upgrade-insecure-requests` from Report-Only CSP; that directive is spec-meaningless in Report-Only and was throwing a console warning on every page load, costing Best Practices points.
+
+Not deployed today to conserve monthly Netlify build credits. Will batch with additional cleanup in the next session (see the plan doc's "Next-session cleanup batch").
+
+### Known regressions from 0.9.0 deploy (partially addressed, see above)
+- Desktop PageSpeed 97 → 95 (CLS 0 → 0.062, LCP 1.0s → 1.3s) — **root cause identified + fix pushed (57af165); pending deploy.**
+- Best Practices 100 → 92 (both viewports) — partial cleanup pushed (415e829); the remaining ~6-point gap is the CSP Report-Only violations themselves. Full path: deploy current fixes → capture violations from browser console → tighten `public/_headers` allowlist → promote to enforced CSP.
+- GitHub Actions `actions/checkout@v4` + `actions/setup-node@v4` use deprecated Node.js 20 runtime (retired June 2026). Bump both to `@v5`. (CI-only change; does not consume a Netlify deploy credit.)
 - 1 ESLint false positive in `PlatformShowcase.astro` (`activities` declared in `define:vars` appears unused to ESLint, is actually used inside the injected script).
 
 ### Pending (user action required)
