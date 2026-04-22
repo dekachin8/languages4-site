@@ -26,7 +26,7 @@ On local `main` ahead of origin (April 22 — not yet pushed):
 
 **Still not deployed** (April 22) — Tim rationing monthly Netlify build credits. Deploy pushes 4 commits at once.
 
-**Sprint 2: 🟡 ~80% COMPLETE.** Tooling foundation + regression protection are in place:
+**Sprint 2: 🟢 ~95% COMPLETE (effectively closed).** Tooling + refactors + a11y + contrast all landed:
 - ✅ netlify.toml + Node 20 pin
 - ✅ typecheck script (astro check) — 0 errors
 - ✅ Prettier installed + configured (format pass deferred)
@@ -35,7 +35,16 @@ On local `main` ahead of origin (April 22 — not yet pushed):
 - ✅ GitHub Actions CI on every push/PR (bumped to actions v5 on April 22)
 - ✅ Mobile menu overflow fix
 - ✅ CSP Report-Only violation triage (April 22, live DevTools pass on homepage + listing + article)
-- ✅ Article + listing template extraction — `CollectionArticleLayout.astro` (April 22, `4e25e59`) + `CollectionListingLayout.astro` (April 22, `c5b39f2`) now own the shared chrome across whatarel4, signature-collections, and ancestors. Total src reduction across 6 pages: 1385 → 1046 lines (-339, -24%). Drift between collections now structurally prevented.
+- ✅ Article + listing template extraction — `CollectionArticleLayout.astro` (`4e25e59`) + `CollectionListingLayout.astro` (`c5b39f2`). Total src reduction across 6 pages: 1385 → 1046 lines (-24%). Drift between collections now structurally prevented.
+- ✅ TOC markdown-delimiter strip — `TableOfContents.astro` (`6366be6`). Preexisting bug surfaced during refactor eyeball; unrelated to refactor.
+- ✅ LogoLink extraction — Navigation.astro DRY done (`0feae85`).
+- ✅ Contrast audit pass — `text-neutral-500` and `bg-neutral-600` (WCAG AA fails) replaced site-wide (`2cfed4a`).
+- ✅ Contact form a11y — aria-required/invalid/describedby + `/thank-you` page (`3176ff2`). SR walkthrough not yet manually confirmed.
+- ✅ Lang-tagging deferred items from Sprint 1 — opt-in HTML in titles + ImageStoryModal description, Kanien'kéha + Chokma'shki wrapped (`38cf72f`).
+- ✅ Hero wordmark CLS defensive guards — `whitespace-nowrap` + `font-size-adjust` on the wordmark `<span>` (`4663bee`). Efficacy requires post-deploy PageSpeed measurement to confirm.
+- ⏸️ `astro:assets` migration — deferred at Sprint 2 close. Hero image already well-optimized (explicit width/height, preload, webp, eager, high priority, ~66KB); marginal AVIF gain doesn't justify the LCP-regression risk of a rushed migration. See detailed deferral note under "Rest of Sprint 2" below.
+- ⛔ Blocked: per-page OG image creative direction (Tim's design input)
+- ⏱️ Time-gated: CSP Report-Only → enforced promotion (1-2 weeks of real-traffic monitoring after current deploy)
 
 **Sprint 2 remaining work** is detailed in the Micro-sprint + wave-2 sections below.
 
@@ -45,7 +54,17 @@ On local `main` ahead of origin (April 22 — not yet pushed):
 
 ## Where to resume next session
 
-Two open items remain from the Next-session cleanup batch: desktop CLS/LCP wordmark font-load reflow (#4 and #5 below, ~30 min combined, not urgent — under the "good" band). After that, **biggest ROI is the layout extraction** (3 article `[slug].astro` templates at ~70% duplication, already drifting — 2-3 hours). Contact form a11y polish and contrast audit are both small (~45 min each). Per-page OG images are blocked on Tim's design direction. CSP enforce-promotion is time-gated (1-2 weeks of Report-Only monitoring after the pending deploy).
+**Sprint 2 is effectively closed** — push the 14-commit queue to deploy, confirm visual parity + Lighthouse in the deploy preview, then measure post-deploy PageSpeed (desktop + mobile) to see if the wordmark CLS guards helped.
+
+After measurement:
+- If LCP regressed or AVIF savings look meaningful in the field data → pick up the `astro:assets` migration as a dedicated ~60-90 min session.
+- Otherwise → keep astro:assets parked and move to **Sprint 3** planning (marketing hub, cultural authenticity pass, pillar content, `/platform` product page, CMS decision, GA4 events, tag-filter fix, etc.).
+
+Other open loops still worth tracking:
+- Per-page OG image creative direction (blocked on Tim)
+- CSP Report-Only → enforced promotion (time-gated: wait 1-2 weeks of post-deploy monitoring)
+- SR walkthrough of the contact form (acceptance bar on `3176ff2`)
+- Browser validation of the layout refactor on all ~25 article permutations (acceptance bar on `4e25e59` + `c5b39f2`)
 
 ---
 
@@ -330,11 +349,15 @@ Adds to Tier B:
 - ✅ **Phase 2 (listing templates)** — commit `c5b39f2`. `CollectionListingLayout.astro` owns hero, info box, results count, no-results block, pagination, sidebar. Each `[...page].astro` shrank from ~220-270 lines to 112-156 lines. Card grid stays in the parent's default slot (ArticleCard props differ by collection). whatarel4 retains its "Latest + More" section split + archiveYears — genuinely collection-specific. Total src reduction: 716 → 590 lines (-18%).
 - Combined: 6 pages 1385 → 1046 lines (-24%). NOT browser-verified; visual parity to confirm on next deploy preview.
 
-**`astro:assets` migration** (~1-2 hours initial, 3-4 total if comprehensive)
-- Phase 1: hero LCP image (homepage `mobile-hero-1`) → `<Image />` with explicit width/height
-- Phase 2: card images on article listing pages (ArticleCard component)
-- Phase 3: gallery images
-- Acceptance: build emits optimized webp/avif variants; no Lighthouse regressions
+**`astro:assets` migration** — ⏸️ DEFERRED (April 22 decision)
+- Status: Sprint 2 candidate; deferred at the close of Sprint 2 per Tim's call ("I don't think the micro-improvement is worth the risk").
+- Why deferred: the hero LCP image (`mobile-hero-1`) already has explicit width/height (600×417), `fetchpriority="high"`, `loading="eager"`, a WebP-typed preload link, and is ~66KB. Current LCP sits in the "good" band (1.0-1.7s desktop). The marginal benefit from astro:assets is an AVIF variant + src-imported fingerprinting — modest gains that don't justify the risk of breaking the LCP path when the existing setup is healthy.
+- What's involved (for a future dedicated session):
+  - Phase 1: move `public/images/showcase/fixed/laptop+mobile+mohawk.webp` → `src/assets/`; `import heroImage from '../assets/…'`; replace `<img>` with `<Image src={heroImage} width={600} height={417} …/>`. Update preload link to use the hashed import URL. Touches 4 references in `index.astro` + `src/utils/imageStories.ts`.
+  - Phase 2: card images on article listing pages (ArticleCard component).
+  - Phase 3: gallery images.
+- Acceptance (whenever picked up): build emits webp/avif variants; Lighthouse LCP no worse than current baseline; preview eyeball on hero card confirms visual parity.
+- Revisit trigger: post-deploy PageSpeed read after the current 14-commit deploy. If LCP regresses or AVIF savings look meaningful on field data, prioritize. Otherwise park.
 
 **Playwright smoke tests for 301 redirects** (~2 hours)
 - Install: `npm install --save-dev @playwright/test`
@@ -344,20 +367,13 @@ Adds to Tier B:
 - Add to CI workflow
 - Acceptance: all sampled redirects return 301 with expected Location; CI fails if any drift
 
-**Contact form a11y polish** (~45 min)
-- File: `src/pages/contact.astro`
-- Add `aria-required="true"` on all required fields
-- Add `aria-invalid="false"` initially; JS to toggle `true` on validation failure
-- Create `/thank-you` page (`src/pages/thank-you.astro`) + point Netlify form `action` there
-- Move error messages into `aria-describedby`-linked elements
-- Acceptance: screen-reader walkthrough announces required status, success state, and validation errors correctly
+**Contact form a11y polish** — ✅ DONE (April 22, commit `3176ff2`)
+- `aria-required`, `aria-invalid` (JS-toggled on submit), `aria-describedby`-linked error spans, `/thank-you` page + form action, autocomplete hints, novalidate + custom submit handler so JS owns the UX. Screen-reader walkthrough NOT yet confirmed manually — recommended before closing acceptance.
 
-**Contrast audit pass** (~30-45 min)
-- Grep for `text-neutral-500` usage and verify each against its background. Current instances flagged in audit: `TestimonialSlider.astro:60`, `Sidebar.astro:71`, `ArticleCard.astro:50`
-- Grep for `text-white/80`, `text-white/90`, `text-white/60` on non-dark backgrounds
-- Check chip on `index.astro:71` — `bg-neutral-600` + white text at small size (3.6:1, fails AA)
-- Use a contrast checker for ambiguous cases
-- Acceptance: no text on background combinations below 4.5:1 (normal) / 3:1 (large 18pt+ or 14pt+ bold)
+**Contrast audit pass** — ✅ DONE (April 22, commit `2cfed4a`)
+- Replaced `text-neutral-500` (#b1c0c9, 1.87:1 on white) with `text-neutral-700` (#636466, 6.03:1) across 18 files.
+- Replaced `bg-neutral-600` (white-text chips + testimonial community-category avatar, 2.89:1) with `bg-neutral-700` (6.03:1) across 4 files.
+- Audited `text-white/60-90` instances; remaining uses are all on dark backgrounds (primary-900 hero gradients, colored card backgrounds) — AA-safe.
 
 **Per-page OG image generation** (~depends on your design input)
 - Decision gate: brand template (fill-in-the-blank) vs per-article custom vs AI-generated from hero images
@@ -370,14 +386,15 @@ Adds to Tier B:
 - Rename header `Content-Security-Policy-Report-Only` → `Content-Security-Policy`
 - Acceptance: no real user-facing violations after 48 hours
 
-**Lang-tagging deferred items from Sprint 1** (~60 min bundled):
-- Frontmatter `<span lang>` support — requires template edit to unescape HTML in title rendering; touches 4 `[slug].astro` files
-- ImageStoryModal `set:html` decision — 1-line change if approved
-- Chokma'shki newsletter title — enabled by frontmatter support above
-- Remark plugin for auto-wrapping — alternative to the lint script; replaces manual wraps at build time (Sprint 3 territory if content scale justifies it)
+**Lang-tagging deferred items from Sprint 1** — ✅ DONE (April 22, commit `38cf72f`)
+- ✅ Frontmatter `<span lang>` support — `CollectionArticleLayout` h1 and `newsletters/[volume]/[slug]` h1 now render titles with `Fragment set:html`. Newsletter volume listing (`newsletters/[slug]`) also updated so "In This Issue" titles support lang wrapping.
+- ✅ ImageStoryModal `set:html` — description now supports HTML; `Kanien'kéha` wrapped in `<span lang="moh">` in the Wahta Mohawk homepage modal story (`utils/imageStories.ts`).
+- ✅ Chokma'shki newsletter title — wrapped in `<span lang="cho">` in `content/newsletters/volume-5.json`.
+- ⚠️ Known limitation: opt-in HTML in titles renders correctly in article `<h1>` and modal description, but appears as literal text in the `<title>` tag, OG/Twitter meta, breadcrumbs, and card previews (all use `{title}` text interpolation). For now, HTML in titles should be used sparingly with that in mind. Future enhancement: add a `stripHtml` utility for the non-h1 render sites.
+- Remark plugin for auto-wrapping — still Sprint 3 territory when content scale justifies it.
 
-**Code quality deferred items**:
-- Navigation.astro DRY (extract LogoLink component)
+**Code quality deferred items** — ✅ DONE (April 22, commit `0feae85`)
+- `LogoLink.astro` component extracted; Navigation.astro now uses `<LogoLink sizeClass="…" />` for both mobile header and desktop sidebar.
 
 ### Sprint 3 — Marketing Hub Foundation (scope TBD)
 - Cultural authenticity pass (land acknowledgment, indigenous greeting, `lang`-tagging)
